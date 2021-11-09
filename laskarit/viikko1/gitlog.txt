@@ -1,0 +1,131 @@
+commit fd2347c5d1ed0d5f37ef6910459a03a1d3d9e3d6
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:45:41 2021 +0200
+
+    rename and delete excercises
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit c5e83e91f707d7ce68bbde00920a75683a3d27eb
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:44:33 2021 +0200
+
+    made dir with three files
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 76b971c2f00f4847c92370d1407079b44903335d
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:41:21 2021 +0200
+
+    make changes
+
+ eka.txt    | 9 +++------
+ kolmas.txt | 3 ++-
+ 2 files changed, 5 insertions(+), 7 deletions(-)
+
+commit 1a355551e137b6a8a0aa3a375a698cd82e7f4486
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:39:40 2021 +0200
+
+    rename tiedosto.txt as eka.txt
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c6b70b0f9cc2e4d31215736451e1dbd2f93e0645
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:38:39 2021 +0200
+
+    commit toinen.txt removal again after git rm
+
+ toinen.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit b674acaa3de92636ba91babe4a435cacbe1d2c2a
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:34:05 2021 +0200
+
+    return toinen.txt to try git rm before commit
+
+ toinen.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c98dee1d8b8407d6df87898e1da150959c06ba5c
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:33:00 2021 +0200
+
+    remove toinen
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 6ce972991a3999374b959a80835c880f631bab10
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:30:40 2021 +0200
+
+    change part of text in tiedosto.txt
+
+ tiedosto.txt | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+commit 698478a984292825889c7b85731fe554ccaac44d
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:29:50 2021 +0200
+
+    Copy text to tiedosto.txt
+
+ tiedosto.txt | 50 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
+
+commit eeb4a9c263060a8b41fbe5472640da0d1ab92eb8
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:26:51 2021 +0200
+
+    make stuff folder with file
+
+ stuff/jokin_tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 3448de37b5d4f7236c59302661259480ee2cce5a
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:26:10 2021 +0200
+
+    changed contents of toinen and kolmas.
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 4c9c232ce7646f53e203217d93b55c547bc7ed03
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:25:20 2021 +0200
+
+    kolmas luotu
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit b617201ecce41c840abfe554f80624387a30b063
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 21:24:02 2021 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 243efbf68867c81f2bc8a755ae69b825ff46597e
+Author: ElectricShakuhachi <haavistoaaro@gmail.com>
+Date:   Tue Nov 9 10:05:26 2021 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
