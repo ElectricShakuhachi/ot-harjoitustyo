@@ -8,3 +8,4 @@
 
 [komentorivi.txt](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
 
+muutos
