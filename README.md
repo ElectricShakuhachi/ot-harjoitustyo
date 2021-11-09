@@ -1,8 +1,8 @@
 # Ohjelmistotekniikka, harjoitustyö
 
-##Tehtävät
+## Tehtävät
 
-##Viikko 1
+### Viikko 1
 
 [gitlog.txt](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
 
