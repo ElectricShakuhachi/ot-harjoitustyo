@@ -1,7 +1,9 @@
-# Ohjelmistotekniikka -kurssin harjoitustyö
+# Ohjelmistotekniikka, harjoitustyö
 
-Tässä vaiheessa tämä teksti on vain **placeholder**,
-koska readme -tiedoston sisältö kurssin edetessä ei
-ole selvillä.
+##Tehtävät
 
-*Lorem ipsum jne*
+##Viikko 1
+
+[gitlog.txt](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
+
+[komentorivi.txt](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
