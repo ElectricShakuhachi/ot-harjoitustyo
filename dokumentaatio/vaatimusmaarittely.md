@@ -8,7 +8,7 @@ Sovelluksella voi luoda japanilaiselle shakuhachi -bambuhuilulle tarkoitettuja n
 
 Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla painikkeilla tapahtuvat kaikki käyttäjän ja sovelluksen väliset interaktiot:
 
-<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/v-1.jpg" width="750">
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/v-1.jpg" width="420">
 
 ## Perusversion tarjoama toiminnallisuus
 
