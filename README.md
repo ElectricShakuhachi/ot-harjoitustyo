@@ -1,5 +1,9 @@
 # Ohjelmistotekniikka, harjoitustyö
 
+[vaatimusmaarittely.md](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
+
+[tyoaikakirjanpito.md](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
+
 ## Tehtävät
 
 ### Viikko 1
