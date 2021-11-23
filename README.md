@@ -1,27 +1,36 @@
-# Ohjelmistotekniikka, harjoitustyö
+# Shakuhachi Music Maker
+
+Japanilaisen bambuhuilun - shakuhachin - musiikin perinteisen japanilaisen notaation kirjoittamiseen tarkoitettu sovellus.
+
+Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmistotekniikan menetelmät -kurssin kurssityönä.
+
+## Dokumentaatio
 
 [vaatimusmaarittely.md](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
 [tyoaikakirjanpito.md](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
 
-## Tehtävät
+## Asennus
 
-### Viikko 1
+ ```bash
+poetry install
+```
 
-[gitlog.txt](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
+## Komentorivitoiminnot
 
-[komentorivi.txt](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
+Ohjelman käynnistäminen:
 
-### Viikko 2
+ ```bash
+poetry run invoke start
+```
 
-[coverage.png](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko2/coverage.png)
+Testien suorittaminen:
 
-### Viikko 3
+ ```bash
+poetry run invoke test
+```
+Testikattavuusraportin generoiminen hmtlcov -hakemistoon:
 
-[luokkakaavio1.pdf](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko3/luokkakaavio1.pdf)
-
-[luokkakaavio2.pdf](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko3/luokkakaavio2.pdf)
-
-[sequence1.pdf](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko3/sequence1.pdf)
-
-[sequence2.pdf](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko3/sequence2.pdf)
+ ```bash
+poetry run invoke coverage-report
+```

@@ -3,4 +3,5 @@
 | päivä | aika | mitä tein  |
 | :----:|:-----| :-----|
 | 15.11. | 2    | alustavaa dokumentaatiota |
-| yht   | 2   | | 
+| 23.11. | 5    | UI:n hahmottelua ja testien luontia |
+| yht    | 7     | |
