@@ -44,8 +44,8 @@ class UI:
     def add_note(self, note: Note, text: str):
         self.music.add_note(note)
         note_png = PhotoImage(file=Graphics.get_note_png(text))
-        self.sheet.create_image(15, 15, image=note_png)
-        print("dingdong")
+        self.sheet.create_image(100, 200, image=note_png)
+        self.window.pack()
 
     def create_text_boxes(self):
         self.labels.append(Label(self.top_frame, text="Name"))
