@@ -43,9 +43,8 @@ class UI:
 
     def add_note(self, note: Note, text: str):
         self.music.add_note(note)
-        note_png = PhotoImage(file=Graphics.get_note_png(text))
-        self.sheet.create_image(100, 200, image=note_png)
-        self.window.pack()
+        self.note_png = PhotoImage(file=Graphics.get_note_png(text))
+        self.sheet.create_image(100, 200, anchor=NW, image=self.note_png)
 
     def create_text_boxes(self):
         self.labels.append(Label(self.top_frame, text="Name"))
@@ -58,10 +57,10 @@ class UI:
     def populate_buttons(self):
         button_texts = ["RO", "TSU", "RE", "CHI", "HA", "HI"]
         for i in range(len(button_texts)):
-            self.buttons.append(ShakuButton(button_texts[i], i, type="note"))
+            self.buttons.append(ShakuButton(button_texts[i], i, self, type="note"))
         for b in self.buttons:
             if b.type == "note":
-                note = Note(b.pitch, self.music.next_position()) #if you dont send lenght, it's assumed to be 1
-                Button(self.right_frame, text=b.text, command=lambda: self.add_note(note, b.text)).pack(side=TOP)
+                newbutton = Button(self.right_frame, text=b.text, command=b.press)
+                newbutton.pack(side=TOP)
             if b.type == "lenght":
                 pass

@@ -12,9 +12,10 @@ class Music:
         self.notes = []
 
     def next_position(self):
+        return [100, 100]#placeholder
         if len(self.notes) == 0:
-            return 
+            return #something here 
         last = self.notes[-1].position
 
     def add_note(self, note: Note):
-        pass
+        self.notes.append(note)
