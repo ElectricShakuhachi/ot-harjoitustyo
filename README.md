@@ -24,4 +24,4 @@
 
 [sequence1.pdf](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko3/sequence1.pdf)
 
-[sequence2.pdf](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko3/sequence1.pdf)
+[sequence2.pdf](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/laskarit/viikko3/sequence2.pdf)
