@@ -12,6 +12,13 @@ Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmisto
 
 ## Asennus
 
+1. Kloonaa sovellus githubista:
+
+ ```bash
+git clone git@github.com:ElectricShakuhachi/ot-harjoitustyo.git shakuhachi_music_maker
+```
+
+2. Asenna riippuvuudet komennolla:
  ```bash
 poetry install
 ```
