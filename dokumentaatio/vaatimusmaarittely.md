@@ -12,19 +12,27 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 
 ## Perusversion tarjoama toiminnallisuus
 
-- Käyttäjä voi nimetä kappaleen ja säveltäjän kirjoittamalla nämä tekstikenttiin, ohjelma keskittää nimen nuottiin sopivaan kohtaan
+- Käyttäjä voi nimetä kappaleen ja säveltäjän kirjoittamalla nämä tekstikenttiin, jotka ohjelma piirtää nuottipohjan yläreunoihin
+  - TEHTY
 
 - Käyttäjä voi lisätä nuottisivuun nuottimerkkejä painamalla merkkejä vastaavia nappeja
+  - TEHTY
 
-- Nuotit ilmestyvät oletusarvoisesti viimeisen nuotissa olevan nuotin jälkeen
-   - nuoteissa merkit alkavat yläoikealta, rivit kirjoittuvat alaspäin ja seuraava rivi on edellisen vasemmalla puolella
+- Nuotit ilmestyvät oletusarvoisesti viimeisen nuotissa olevan nuotin jälkeen (eli alle japanilaisten nuottien mukaisesti)
+  - TEHTY
+
+- Nuotit jatkuvat seuraavalle riville edellisen vasemmalle puolelle kun tila edelliseltä loppuu
+  - TEHTY
+
+- Sivun täytyttyä ohjelma ilmoittaa sivun täyttymisestä, kehoittaa tallentamaan, eikä nuotteja voi enää lisätä
+  - TEHTY
 
 - Käyttäjä voi valita nuotissa jo olevan nuotin klikkaamalla sitä, jolloin se indikoidaan nuotin muuttumisella harmaaksi
-   - jos jokin nuotti on jo valittuna, se muuttuu takaisin mustaksi, eli valittuna voi olla yksi nuotti kerrallaan
+  - jos jokin nuotti on jo valittuna, se muuttuu takaisin mustaksi, eli valittuna voi olla yksi nuotti kerrallaan
 
 - Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun
 
-- Käyttäjä voi peruuttaa viimeisimmän muutoksen painamalla ctrl+z (ei koske tallentamista tai tiedoston aukaisemista)
+- Käyttäjä voi peruuttaa viimeisimmän muutoksen painamalla ohjelman ui:ssa olevaa peruutusnappia tai ctrl+z (ei koske tallentamista tai tiedoston aukaisemista)
 
 - Käyttäjä voi tallentaa nuotin ohjelman käyttämään tiedostomuotoon
 
@@ -37,10 +45,14 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 
 Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
 
+- Nuottisivun täytyttyä avautuu muokkausnäkymään uusi nuottisivu, ja edelliset sivut tallentuvat välilehdiksi, joiden muokkaukseen voi palata
+
 - Käyttäjä voi vaihtaa nuotinnustyylin eri japanilaisten shakuhachi-koulukuntien nuotinnustyylien välillä
 
-- Käyttäjä voi vaihtaa nuottien fonttia tietokoneen sisältämien fonttien tarjoamissa rajoissa
+- Käyttäjä voi vaihtaa nuottien fonttia
 
 - Käyttäjä voi tehdä tekstuaalisia merkintöjä nuottiin (kirjoittaa tekstiä, piirtää hiirellä jne)
+
+- Käyttäjä voi muuttaa otsikon ja säveltäjän tekstin fonttia
 
 - Käyttäjä voi luoda shakuhachi-huilulla äänitetyistä äänistä generoidun esikatselun kappaleesta
