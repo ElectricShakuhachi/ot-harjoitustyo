@@ -12,3 +12,4 @@ class TestUI(unittest.TestCase):
     def test_starting_ui_creates_canvas(self):
         self.ui.start()
         self.assertEqual(type(self.ui.sheet), type(Canvas()))
+
