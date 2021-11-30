@@ -16,7 +16,7 @@ class Music:
 
     def next_position(self):
         if len(self.notes) == 0:
-            return [60, 80]
+            return [500, 80]
         next = copy(self.notes[-1].position)
         next[1] += self.notes[-1].lenght * 30
         if next[1] > 770:

@@ -6,9 +6,13 @@ Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmisto
 
 ## Dokumentaatio
 
-[vaatimusmaarittely.md](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
+- [Vaatimusmäärittely](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
-[tyoaikakirjanpito.md](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
+- [Arkkitehtuuri](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
+
+- [Tyoaikakirjanpito](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
+
+- [Testaus](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/testaus.md)
 
 ## Asennus
 
