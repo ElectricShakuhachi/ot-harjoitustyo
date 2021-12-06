@@ -8,15 +8,17 @@ class UI:
         self.window = window
         self.window.geometry("800x1000")
         self.generate_frames()
-        self.buttons = Buttons(self, "Ueda")
+        self.create_sheet()
+        self.music = Music()
+        self.buttons = Buttons(self, "Tozan")
         self.textboxes = {}
         self.textboxbuttons = {} #move this to Buttons class later
+        self.create_text_boxes()
         self.note_pngs = self.load_pngs()
-        self.sheet = None
-        self.music = Music()
         self.name = ""
         self.composer = ""
         self.messages = []
+        self.temp_dot = None
 
     def generate_frames(self):
         self.frame = Frame(self.window)
@@ -29,11 +31,6 @@ class UI:
         self.left_frame.pack(side=LEFT)
         self.right_frame = Frame(self.window)
         self.right_frame.pack(side=RIGHT, padx=20)
-  
-    def start(self):
-        self.create_sheet()
-        self.create_text_boxes()
-        self.populate_buttons()
 
     def create_sheet(self):
         self.sheet = Canvas(
@@ -43,6 +40,24 @@ class UI:
             background="white",
         )
         self.sheet.pack(side = LEFT)
+        self.sheet.create_line(542, 70, 542, 840, fill="black", width=1)
+        self.sheet.create_line(482, 70, 482, 840, fill="black", width=1)
+        self.sheet.create_line(422, 70, 422, 840, fill="black", width=1)
+        self.sheet.create_line(362, 70, 362, 840, fill="black", width=1)
+        self.sheet.create_line(302, 70, 302, 840, fill="black", width=1)
+        self.sheet.create_line(242, 70, 242, 840, fill="black", width=1)
+        self.sheet.create_line(182, 70, 182, 840, fill="black", width=1)
+        self.sheet.create_line(122, 70, 122, 840, fill="black", width=1)
+        self.sheet.create_line(62, 70, 62, 840, fill="black", width=1)
+
+        self.sheet.create_line(542, 70, 62, 70, fill="black", width=1)
+        self.sheet.create_line(542, 180, 62, 180, fill="black", width=1)
+        self.sheet.create_line(542, 290, 62, 290, fill="black", width=1)
+        self.sheet.create_line(542, 400, 62, 400, fill="black", width=1)
+        self.sheet.create_line(542, 510, 62, 510, fill="black", width=1)
+        self.sheet.create_line(542, 620, 62, 620, fill="black", width=1)
+        self.sheet.create_line(542, 730, 62, 730, fill="black", width=1)
+        self.sheet.create_line(542, 840, 62, 840, fill="black", width=1)
 
     def load_pngs(self):
         self.pngs = {}
@@ -53,18 +68,33 @@ class UI:
         for note in self.music.notes:
             self.sheet.create_image(note.position[0], note.position[1], anchor=NW, image=self.pngs[note.text])
 
-    def load_music(self):#should not be at ui -> move elsewhere before developing feature
-        pass
-
-    def save_music(self):#should not be at ui -> move elsewhere before developing feature
-        pass
+    def draw_time_notation(self, note):#REFACTOR -> too much repetition, basically jammed through in this form for now -> consider if this is a job for the UI to handle by itself?
+        if note.lenght > 8:
+            return
+        self.sheet.create_line(note.position[0] + 15, note.position[1], note.position[0] + 15, note.position[1] + 10, fill="black", width=2)
+        if note.lenght == 8:
+            return
+        if len(self.music.notes) > 1 and self.music.notes[-2].lenght < 8 and self.music.measure_counter != self.music.notes[-1].lenght:
+            self.sheet.create_line(note.position[0] + 15, self.music.notes[-2].position[1], note.position[0] + 15, note.position[1] + 10, fill="black", width=2)
+            if self.music.notes[-1].lenght == 4 and self.temp_dot:
+                self.sheet.delete(self.temp_dot)
+        if note.lenght == 4:
+            if len(self.music.notes) < 2 or self.music.measure_counter == self.music.notes[-1].lenght or self.music.notes[-2].lenght > 4:
+                self.temp_dot = self.sheet.create_line(note.position[0] + 12, note.position[1] + 4, note.position[0] + 18, note.position[1] + 8, fill="black", width=2)
+            return
+        self.sheet.create_line(note.position[0] + 20, note.position[1], note.position[0] + 20, note.position[1] + 10, fill="black", width=2)
+        if len(self.music.notes) > 1 and self.music.notes[-2].lenght < 3 and self.music.measure_counter != self.music.notes[-1].lenght:
+            self.sheet.create_line(note.position[0] + 20, note.position[1] - 10, note.position[0] + 20, note.position[1] + 10, fill="black", width=2)
+        if note.lenght == 1: #note specific case
+            self.sheet.create_line(note.position[0] + 13, note.position[1] + 5, note.position[0] + 23, note.position[1] + 7, fill="black", width=2)
 
     def add_note(self, note: Note, text: str):
         status = self.music.add_note(note)
         if status == "full":
             self.messages.append(ShakuMessage("Full Sheet"))
         else:
-            self.sheet.create_image(note.position[0], note.position[1], anchor=NW, image=self.pngs[note.text])
+            self.sheet.create_image(note.position[0], note.position[1], anchor=NW, image=self.pngs[note.text])    
+            self.draw_time_notation(note)
 
     def draw_texts(self):
         self.erase_texts()
@@ -96,9 +126,3 @@ class UI:
             label.pack(side = LEFT)
         for box in self.textboxes.values():
             box.pack(side = RIGHT)
-
-    def populate_buttons(self):
-        for b in self.buttons.notebuttons:
-            newbutton = Button(self.right_frame, text=b.text, command=b.press)
-            newbutton.pack(side=TOP)
-

@@ -45,6 +45,10 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 
 Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
 
+- Käyttäjä voi konfiguroida haluamansa nuottien koon ja niiden välien pituuden
+
+- Käyttäjän luomat konfiguraatiot tallentuavat erilliselle konfigurointitiedostolle, joka ladataan tämän käyttistäessä ohjelmaa
+
 - Nuottisivun täytyttyä avautuu muokkausnäkymään uusi nuottisivu, ja edelliset sivut tallentuvat välilehdiksi, joiden muokkaukseen voi palata
 
 - Käyttäjä voi vaihtaa nuotinnustyylin eri japanilaisten shakuhachi-koulukuntien nuotinnustyylien välillä

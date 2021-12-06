@@ -2,7 +2,7 @@ from types import prepare_class
 from copy import copy
 
 class Note:
-    def __init__(self, text: str, pitch: int, position: list, lenght=1):
+    def __init__(self, text: str, pitch: int, position: list, lenght=8):
         self.text = text
         self.pitch = pitch
         self.lenght = lenght
@@ -13,13 +13,17 @@ class Music:
         self.notes = []
         self.name = ""
         self.composer = ""
+        self.next_lenght = 8
+        self.measure_counter = 0
 
     def next_position(self):
         if len(self.notes) == 0:
-            return [500, 80]
+            return [505, 80]
         next = copy(self.notes[-1].position)
-        next[1] += self.notes[-1].lenght * 30
-        if next[1] > 770:
+        next[1] += self.notes[-1].lenght * 6
+        if self.measure_counter == 0:
+            next[1] += 14
+        if next[1] > 830:
             next[1] = 80
             next[0] -= 60
         return next
@@ -29,4 +33,7 @@ class Music:
             return "full"
         else:
             self.notes.append(note)
+            self.measure_counter += note.lenght
+            if self.measure_counter == 16:
+                self.measure_counter = 0
             return "ok"
