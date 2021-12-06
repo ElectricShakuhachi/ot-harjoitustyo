@@ -2,6 +2,8 @@ from tkinter import *
 from entities.music import *
 from entities.buttons import *
 from ui.messages import *
+from pathlib import Path
+import os
 
 class UI:
     def __init__(self, window):
@@ -60,9 +62,10 @@ class UI:
         self.sheet.create_line(542, 840, 62, 840, fill="black", width=1)
 
     def load_pngs(self):
+        dirname = Path(__file__)
         self.pngs = {}
         for notebutton in self.buttons.notebuttons:
-            self.pngs[notebutton.text] = PhotoImage(file="./graphics/" + notebutton.text + ".png")
+            self.pngs[notebutton.text] = PhotoImage(file=os.path.join(dirname.parent.parent, "./graphics/" + notebutton.text + ".png"))
 
     def draw_all_notes(self):
         for note in self.music.notes:
