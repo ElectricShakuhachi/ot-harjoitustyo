@@ -14,19 +14,19 @@ class TestMusic(unittest.TestCase):
         self.music.add_part(1)
         part = self.music.parts[1]
         for i in range(notecount):
-            notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
+            part.add_note(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
         self.music.add_part(2)
         part = self.music.parts[2]
         for i in range(notecount):
-            notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
+            part.add_note(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
         self.music.add_part(3)
         part = self.music.parts[3]
         for i in range(notecount):
-            notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
+            part.add_note(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
         self.music.add_part(4)
         part = self.music.parts[4]
         for i in range(notecount):
-            notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
+            part.add_note(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
 
     def test_convert_to_json_all_parts_created(self):
         data = self.music.convert_to_json()
