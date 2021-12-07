@@ -4,7 +4,7 @@ from entities.music import Music, Note
 class TestMusic(unittest.TestCase):
     def setUp(self):
         self.music = Music()
-        notecount = 20
+        notecount = 8
         notes = []
         self.music.set_composer("Professor Test")
         self.music.set_name("Fudaiji")
