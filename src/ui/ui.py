@@ -1,7 +1,7 @@
-from tkinter import *
-from entities.music import *
-from entities.buttons import *
-from ui.messages import *
+from tkinter import constants, Frame, Canvas, PhotoImage, Entry, Button
+from entities.music import Music, Note
+from entities.buttons import ShakuButton, Buttons
+from ui.messages import ShakuMessage
 from pathlib import Path
 import os
 
@@ -32,13 +32,13 @@ class UI:
         self.frame = Frame(self.window)
         self.frame.pack()
         self.top_frame1 = Frame(self.window)
-        self.top_frame1.pack(side=TOP)
+        self.top_frame1.pack(side=constants.TOP)
         self.top_frame2 = Frame(self.window)
-        self.top_frame2.pack(side=TOP)
+        self.top_frame2.pack(side=constants.TOP)
         self.left_frame = Frame(self.window, padx=20)
-        self.left_frame.pack(side=LEFT)
+        self.left_frame.pack(side=constants.LEFT)
         self.right_frame = Frame(self.window)
-        self.right_frame.pack(side=RIGHT, padx=20)
+        self.right_frame.pack(side=constants.RIGHT, padx=20)
 
     def create_sheet(self):
         self.sheet = Canvas(
@@ -47,7 +47,7 @@ class UI:
             height=891,
             background="white",
         )
-        self.sheet.pack(side = LEFT)
+        self.sheet.pack(side = constants.LEFT)
         self.grid = []
 
     def create_grid(self, spacing=4, measure_lenght=2):
@@ -92,13 +92,13 @@ class UI:
         if status == "full":
             self.messages.append(ShakuMessage("Full Sheet"))
         else:
-            self.sheet.create_image(note.position[0], note.position[1], anchor=NW, image=self.pngs[note.text])    
+            self.sheet.create_image(note.position[0], note.position[1], anchor=constants.NW, image=self.pngs[note.text])    
             self.draw_time_notation(note)
 
     def draw_texts(self):
         self.erase_texts()
-        self.name = self.sheet.create_text(20, 20, text=self.music.get_name(), fill="black", anchor=NW, font=("Helvetica 16"))
-        self.composer = self.sheet.create_text(600, 20, text=self.music.get_composer(), fill="black", anchor=NE, font=("Helvetica 16"))
+        self.name = self.sheet.create_text(20, 20, text=self.music.get_name(), fill="black", anchor=constants.NW, font=("Helvetica 16"))
+        self.composer = self.sheet.create_text(600, 20, text=self.music.get_composer(), fill="black", anchor=constants.NE, font=("Helvetica 16"))
 
     def erase_texts(self):
         if self.name != "":
@@ -122,6 +122,6 @@ class UI:
         self.textboxbuttons["namebutton"] = (Button(self.top_frame1, text="Add Name", command=lambda: self.add_name()))
         self.textboxbuttons["composerbutton"] = (Button(self.top_frame2, text="Add Composer", command=lambda: self.add_composer()))
         for label in self.textboxbuttons.values():
-            label.pack(side = LEFT)
+            label.pack(side = constants.LEFT)
         for box in self.textboxes.values():
-            box.pack(side = RIGHT)
+            box.pack(side = constants.RIGHT)

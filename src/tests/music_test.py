@@ -1,6 +1,5 @@
 import unittest
-from tkinter import *
-from entities.music import *
+from entities.music import Music, Note
 
 class TestMusic(unittest.TestCase):
     def setUp(self):

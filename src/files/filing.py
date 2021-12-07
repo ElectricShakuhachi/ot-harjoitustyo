@@ -1,6 +1,6 @@
 import json
 from tkinter import filedialog
-from entities.music import *
+from entities.music import Note
 
 class FileManager:
     def __init__(self, music, ui):

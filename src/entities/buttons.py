@@ -1,5 +1,5 @@
-from entities.music import *
-from tkinter import *
+from entities.music import Note
+from tkinter import Button, constants
 from files.filing import FileManager
 
 class Buttons:
@@ -38,7 +38,7 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
         elif button_type == "part":
             self.part = data
         self.button = Button(self.ui.right_frame, text=self.text, command=self.press)
-        self.button.pack(side=TOP)
+        self.button.pack(side=constants.TOP)
 
     def press(self):
         if self.button_type == "note":
@@ -46,15 +46,15 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
             self.ui.add_note(note)
         elif self.button_type == "lenght":
             self.ui.active_part.next_lenght = self.lenght
-            self.button.config(relief=SUNKEN)
+            self.button.config(relief=constants.SUNKEN)
             for b in self.owner.lenghtbuttons.values():
                 if b.text != self.text:
-                    b.button.config(relief=RAISED)
+                    b.button.config(relief=constants.RAISED)
         elif self.button_type == "part":
-            self.button.config(relief=SUNKEN)
+            self.button.config(relief=constants.SUNKEN)
             for b in self.owner.partbuttons:
                 if b.text != self.text:
-                    b.button.config(relief=RAISED)
+                    b.button.config(relief=constants.RAISED)
             if self.part not in self.ui.music.parts.keys():
                 self.ui.music.add_part(self.part)
             self.ui.active_part = self.ui.music.parts[self.part]

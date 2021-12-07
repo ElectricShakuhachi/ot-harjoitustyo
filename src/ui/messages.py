@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Label
 
 class ShakuMessage:
     def __init__(self, message_type):

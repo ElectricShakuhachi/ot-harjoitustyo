@@ -1,5 +1,5 @@
 import unittest
-from tkinter import *
+from tkinter import Tk, Canvas
 from ui.ui import UI 
 
 class TestUI(unittest.TestCase):
