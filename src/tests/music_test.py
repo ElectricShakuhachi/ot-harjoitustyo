@@ -12,19 +12,19 @@ class TestMusic(unittest.TestCase):
         test_lenghts = [4, 4, 8, 8, 8, 8, 2, 16]
         test_pitches = [4, 2, 3, 1, 2, 3, 3, 3]
         self.music.add_part(1)
-        part = self.music.parts[-1]
+        part = self.music.parts[1]
         for i in range(notecount):
             notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
         self.music.add_part(2)
-        part = self.music.parts[-1]
+        part = self.music.parts[2]
         for i in range(notecount):
             notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
         self.music.add_part(3)
-        part = self.music.parts[-1]
+        part = self.music.parts[3]
         for i in range(notecount):
             notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
         self.music.add_part(4)
-        part = self.music.parts[-1]
+        part = self.music.parts[4]
         for i in range(notecount):
             notes.append(Note("RO", test_pitches[i], part.next_position(), test_lenghts[i]))
 
