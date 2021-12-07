@@ -6,4 +6,6 @@
 | 23.11. | 6    | UI:n hahmottelua ja testien luontia |
 | 30.11. | 4    | Featuret: nimi, säveltäjä, nuottien piirtyminen oikeille paikoille, pylintin lisääminen |
 | 01.12. | 2    | Dokumentaation päivitystä - tällä hetkellä edellä todellisuutta |
-| yht    | 12     | |
+| 06.12. | 4    | Tallennus- ja moniäänisyystoiminnallisuuksien toteutusta |
+| 07.12. | 4    | Debuggausta, refaktorointia, testien luontia |
+| yht    | 20     | |

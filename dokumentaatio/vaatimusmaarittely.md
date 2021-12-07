@@ -13,37 +13,50 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 ## Perusversion tarjoama toiminnallisuus
 
 - Käyttäjä voi nimetä kappaleen ja säveltäjän kirjoittamalla nämä tekstikenttiin, jotka ohjelma piirtää nuottipohjan yläreunoihin
-  - TEHTY
+    TEHTY
 
 - Käyttäjä voi lisätä nuottisivuun nuottimerkkejä painamalla merkkejä vastaavia nappeja
-  - TEHTY
+    TEHTY
 
 - Nuotit ilmestyvät oletusarvoisesti viimeisen nuotissa olevan nuotin jälkeen (eli alle japanilaisten nuottien mukaisesti)
-  - TEHTY
+    TEHTY
 
 - Nuotit jatkuvat seuraavalle riville edellisen vasemmalle puolelle kun tila edelliseltä loppuu
-  - TEHTY
+    TEHTY
 
 - Sivun täytyttyä ohjelma ilmoittaa sivun täyttymisestä, kehoittaa tallentamaan, eikä nuotteja voi enää lisätä
-  - TEHTY
+    TEHTY
+
+- Käyttäjä voi kirjoittaa yksiäänisten kappaleiden lisäksi myös moniäänisiä kappaleita, kirjoitettavana olevan äänen voi vaihtaa napeista
+    TEHTY
+
+- Käyttäjä voi lisätä moniääniseen kappaleeseen ääniä maksimissaan 8 erityisellä napilla, jolla voi lisätä ääniä, äänien napit (Part1, Part2) jne ilmestyvät vasta äänen lisäyksen tapahduttua
+
+- Uutta ääntä luodessa ohjelma siirtää jo kirjoitettuja ääniä ja leventää pystyviivojen välejä siten, että äänien määrästä huolimatta ne on keskitetty tasaisesti pystyviivojen väliin
 
 - Käyttäjä voi valita nuotissa jo olevan nuotin klikkaamalla sitä, jolloin se indikoidaan nuotin muuttumisella harmaaksi
   - jos jokin nuotti on jo valittuna, se muuttuu takaisin mustaksi, eli valittuna voi olla yksi nuotti kerrallaan
 
-- Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun
+- Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun.
 
-- Käyttäjä voi peruuttaa viimeisimmän muutoksen painamalla ohjelman ui:ssa olevaa peruutusnappia tai ctrl+z (ei koske tallentamista tai tiedoston aukaisemista)
+- Käyttäjä voi tallentaa nuotin ohjelman käyttämään .shaku tiedostomuotoon (johon tieto tallentuu json-muotoisena)
+    TEHTY
 
-- Käyttäjä voi tallentaa nuotin ohjelman käyttämään tiedostomuotoon
+- Käyttäjä voi ladata nuotin ohjelman .shaku -tiedostosta muokattavaksi
+    TEHTY
 
-- Käyttäjä voi ladata nuotin ohjelman tallentamasta tiedostosta muokattavaksi
+- Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
 
-- Käyttäjä voi tallentaa nuotin sekä pdf, että svg -muodossa
-    -tallentaessa näihin muotoihin nuottiin tallentuu myös merkintä siitä, että nuotti on generoitu kyseisellä sovelluksella
+- Käyttäjä voi eksportata nuotin pdf ja png-muotoihin
+    -tallentaessa nuottiin tallentuu myös merkintä siitä, että nuotti on generoitu kyseisellä sovelluksella
 
 ## Jatkokehitysideoita
 
 Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
+
+- Jos näkymän pienentää niin pieneksi että koko nuotti ei näyt, siihen ilmestyy palkit navigoimista varten
+
+- Käyttäjä voi tallentaa nuotin svg-muotoon jatkomuokkausta varten muissa ohjelmistoissa siten että nuotin sisältämät tiedot tallentuvat piirtoina joita voi muokata cad-ohjelmistoissa
 
 - Käyttäjä voi konfiguroida haluamansa nuottien koon ja niiden välien pituuden
 
@@ -60,3 +73,5 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 - Käyttäjä voi muuttaa otsikon ja säveltäjän tekstin fonttia
 
 - Käyttäjä voi luoda shakuhachi-huilulla äänitetyistä äänistä generoidun esikatselun kappaleesta
+
+- Käyttäjä voi peruuttaa viimeisimmän muutoksen painamalla ohjelman ui:ssa olevaa peruutusnappia tai ctrl+z (ei koske tallentamista tai tiedoston aukaisemista)
