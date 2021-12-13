@@ -94,7 +94,7 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
             self.owner.filemanager.save()
         if self.button_type == "load":
             self.owner.filemanager.load()
-        if self.button_type == "octave": #not ready
+        if self.button_type == "octave":
             self.button.config(relief=constants.SUNKEN)
             for b in self.owner.octave_buttons:
                 if b.text != self.text:

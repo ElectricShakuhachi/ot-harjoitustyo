@@ -17,5 +17,3 @@ class MidiPlayer:
         except pygame.error:
             print("Unable to load file")
         pygame.mixer.music.play()
-        while pygame.mixer.music.get_busy():
-            clock.tick(38)
