@@ -48,7 +48,7 @@ class UI:
         self.grid = []
 
     def create_grid(self, measure_lenght=2):
-        spacing=self.music.parts[1].spacing
+        spacing = max(2, self.music.parts[1].spacing)
         self.clear_grid()
         for x in range(543, 62, -20 * spacing):
             self.grid.append(self.sheet.create_line(x, 70, x, 840, fill="black", width=1))

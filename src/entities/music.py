@@ -14,8 +14,11 @@ class Music:
         self._composer = ""
 
     def add_part(self, part_id):
-        first_part_x = 526
-        start_x = first_part_x - (part_id - 1) * 20
+        first_part_x = 516
+        if part_id == 1:
+            start_x = first_part_x
+        else:
+            start_x = (first_part_x + 10) - (part_id - 1) * 20
         self.change_spacing(1)
         self.parts[part_id] = Part(start_x, len(self.parts) + 1)
 
@@ -77,7 +80,7 @@ class Part:
             next[1] += 14
         if next[1] > 830:
             next[1] = 80
-            next[0] -= self.spacing * 20
+            next[0] -= max(self.spacing, 2) * 20
         return next
 
     def add_note(self, note: Note):
@@ -93,7 +96,11 @@ class Part:
     def change_spacing(self, spacing):
         self.spacing += spacing
         row = 0
-        for i in range(1, len(self.notes)):
-            if self.notes[i].position[0] < self.notes[i - 1].position[0]:
-                row += 1
-            self.notes[i].position[0] -= row * 20
+        if self.spacing == 2:
+            for note in self.notes:
+                note.position[0] += 10 
+        else:
+            for i in range(1, len(self.notes)):
+                if self.notes[i].position[0] < self.notes[i - 1].position[0]:
+                    row += 1
+                self.notes[i].position[0] -= row * 20
