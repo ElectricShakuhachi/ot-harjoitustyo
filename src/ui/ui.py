@@ -1,6 +1,6 @@
-from tkinter import constants, Frame, Canvas, PhotoImage, Entry, Button
+from tkinter import constants, Frame, Canvas, PhotoImage
 from entities.music import Music, Note
-from entities.buttons import ShakuButton, Buttons
+from entities.buttons import Controls
 from ui.messages import ShakuMessage
 from pathlib import Path
 import os
@@ -17,10 +17,7 @@ class UI:
         self.music = Music()
         self.music.add_part(1)
         self.active_part = self.music.parts[1]
-        self.buttons = Buttons(self, "Tozan")
-        self.textboxes = {}
-        self.textboxbuttons = {} #move this to Buttons class later
-        self.create_text_boxes()
+        self.buttons = Controls(self, "Kinko")
         self.note_pngs = self.load_pngs()
         self.name = ""
         self.composer = ""
@@ -116,12 +113,3 @@ class UI:
         self.music.set_composer(composer)
         self.draw_texts()
 
-    def create_text_boxes(self):
-        self.textboxes["musicname"] = (Entry(self.top_frame1))
-        self.textboxes["composername"] = (Entry(self.top_frame2))
-        self.textboxbuttons["namebutton"] = (Button(self.top_frame1, text="Add Name", command=lambda: self.add_name()))
-        self.textboxbuttons["composerbutton"] = (Button(self.top_frame2, text="Add Composer", command=lambda: self.add_composer()))
-        for label in self.textboxbuttons.values():
-            label.pack(side = constants.LEFT)
-        for box in self.textboxes.values():
-            box.pack(side = constants.RIGHT)

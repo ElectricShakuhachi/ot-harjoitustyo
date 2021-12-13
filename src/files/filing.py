@@ -1,6 +1,6 @@
 import json
 from tkinter import filedialog
-from entities.music import Note
+from entities.music import Note, Music
 
 class FileManager:
     def __init__(self, music, ui):
@@ -13,7 +13,6 @@ class FileManager:
             json.dump(data, file, indent=4)
 
     def load(self):
-        print(self.music.parts.keys())
         self.music = self.ui.music = Music()
         self.ui.sheet.delete('all')
         with filedialog.askopenfile(mode='r', defaultextension=".shaku") as file:

@@ -1,0 +1,37 @@
+from midiutil import MIDIFile
+from entities.music import Part
+
+class MidiTrack:
+    def __init__(self, channel, ro_pitch=62):
+        self.channel = channel
+        self.notes = []
+        self.lenghts = []
+        self.notemap = {}
+        for i in range(0, 39):
+            self.notemap[i] = i + ro_pitch
+
+    def fill(self, part: Part):
+        for note in part.notes:
+            self.notes.append(self.notemap[note.pitch])
+            self.lenghts.append(note.lenght)
+
+class MidiCreator:
+    def __init__(self, tempo=100):
+        self.tempo = tempo
+        self.time = 0
+        self.tracks = []
+        self.volume = 100
+
+    def create_track(self, part, ro_pitch=62):
+        track = MidiTrack(len(self.tracks), ro_pitch)
+        track.fill(part)
+        self.tracks.append(track)
+
+    def write_file(self):
+        file = MIDIFile(len(self.tracks))
+        for track in range(len(self.tracks)):
+            file.addTempo(track, self.time, self.tempo)
+            for num, pitch in enumerate(self.tracks[track].notes):
+                file.addNote(track, self.tracks[track].channel, pitch, self.time + num, self.tracks[track].lenghts[num], self.volume)
+        with open("music.mid", "wb") as f:
+            file.writeFile(f)

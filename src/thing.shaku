@@ -1,0 +1,98 @@
+{
+    "name": "",
+    "composer": "",
+    "parts": {
+        "1": [
+            {
+                "text": "HA",
+                "pitch": 12,
+                "lenght": 8,
+                "position": [
+                    526,
+                    80
+                ]
+            },
+            {
+                "text": "HA",
+                "pitch": 12,
+                "lenght": 8,
+                "position": [
+                    526,
+                    128
+                ]
+            },
+            {
+                "text": "RO",
+                "pitch": 2,
+                "lenght": 16,
+                "position": [
+                    526,
+                    190
+                ]
+            },
+            {
+                "text": "HA",
+                "pitch": 12,
+                "lenght": 8,
+                "position": [
+                    526,
+                    300
+                ]
+            },
+            {
+                "text": "HA",
+                "pitch": 12,
+                "lenght": 8,
+                "position": [
+                    526,
+                    348
+                ]
+            },
+            {
+                "text": "RO",
+                "pitch": 2,
+                "lenght": 16,
+                "position": [
+                    526,
+                    410
+                ]
+            },
+            {
+                "text": "HA",
+                "pitch": 12,
+                "lenght": 8,
+                "position": [
+                    526,
+                    520
+                ]
+            },
+            {
+                "text": "RO",
+                "pitch": 2,
+                "lenght": 8,
+                "position": [
+                    526,
+                    568
+                ]
+            },
+            {
+                "text": "TSU",
+                "pitch": 5,
+                "lenght": 8,
+                "position": [
+                    526,
+                    630
+                ]
+            },
+            {
+                "text": "RO",
+                "pitch": 2,
+                "lenght": 8,
+                "position": [
+                    526,
+                    678
+                ]
+            }
+        ]
+    }
+}

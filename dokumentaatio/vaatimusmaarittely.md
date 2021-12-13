@@ -45,14 +45,24 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 - Käyttäjä voi ladata nuotin ohjelman .shaku -tiedostosta muokattavaksi
     TEHTY
 
+- Käyttäjä voi lisätä nuottiin myös taukoja
+
 - Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
 
 - Käyttäjä voi eksportata nuotin pdf ja png-muotoihin
     -tallentaessa nuottiin tallentuu myös merkintä siitä, että nuotti on generoitu kyseisellä sovelluksella
 
+- Käyttäjä voi kuunnella  / tallentaa nuotista MIDI-muotoisena tuotetun ääniraidan
+
 ## Jatkokehitysideoita
 
 Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
+
+- Käyttäjä voi avata uuteen ikkunaan ohjesivun, jossa löytyy sormitusten ja länsimaisen asteikon äänten vastaavuudet shakuhachin ääniin
+
+- Käyttäjä voi vaihtaa shakuhachi-notaatiojärjestelmien välillä, jolloin jo kirjoitettu notaatio, sekä käytettävissä olevat napit muuttuvat valitun notaatiojärjestelmän mukaiseksi
+
+- Käyttäjä voi konvertoida jollakin muulla avoimen lähdekoodin ohjelmistolla tuotettua länsimaista notaatiota ohjelmaan shakuhachinotaatioksi
 
 - Jos näkymän pienentää niin pieneksi että koko nuotti ei näyt, siihen ilmestyy palkit navigoimista varten
 
@@ -72,6 +82,6 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 
 - Käyttäjä voi muuttaa otsikon ja säveltäjän tekstin fonttia
 
-- Käyttäjä voi luoda shakuhachi-huilulla äänitetyistä äänistä generoidun esikatselun kappaleesta
+- MIDI-ääniraidan generointi ottaa huomioon äänenkorkeuksien ja -pituuksien lisäksi shakuhachille tyypilliset soittotekniikat kuten mikrointervallit, vibraaton, crescendon, hälyäänet ja muita dynaamisia yksityiskohtia
 
 - Käyttäjä voi peruuttaa viimeisimmän muutoksen painamalla ohjelman ui:ssa olevaa peruutusnappia tai ctrl+z (ei koske tallentamista tai tiedoston aukaisemista)

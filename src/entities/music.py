@@ -1,4 +1,3 @@
-from types import prepare_class
 from copy import copy
 
 class Note:
