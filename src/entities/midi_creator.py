@@ -16,7 +16,7 @@ class MidiTrack:
             self.lenghts.append(note.lenght)
 
 class MidiCreator:
-    def __init__(self, tempo=100):
+    def __init__(self, tempo=65):
         self.tempo = tempo
         self.time = 0
         self.tracks = []
@@ -33,6 +33,7 @@ class MidiCreator:
             file.addTempo(track, self.time, self.tempo)
             for num, pitch in enumerate(self.tracks[track].notes):
                 file.addNote(track, self.tracks[track].channel, pitch, self.time, self.tracks[track].lenghts[num], self.volume)
-                self.time += (self.tracks[track].lenghts[num]) / 4
+                self.time += (self.tracks[track].lenghts[num]) / 8
+            self.time = 0
         with open("music.mid", "wb") as f:
             file.writeFile(f)
