@@ -17,7 +17,7 @@ class FileManager:
         self.ui.sheet.delete('all')
         with filedialog.askopenfile(mode='r', defaultextension=".shaku") as file:
             data = json.load(file)
-            self.ui.create_grid(4)
+            self.ui.create_grid()
             for part_n, part_data in data['parts'].items():
                 self.music.add_part(int(part_n))
                 self.ui.active_part = self.music.parts[int(part_n)]

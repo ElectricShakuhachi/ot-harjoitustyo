@@ -81,6 +81,7 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
                     b.button.config(relief=constants.RAISED)
             if self.part not in self.ui.music.parts.keys():
                 self.ui.music.add_part(self.part)
+                self.ui.draw_all_notes()
             self.ui.active_part = self.ui.music.parts[self.part]
             self.owner.lenghtbuttons[8].press()
         if self.button_type == "export" or self.button_type == "play":

@@ -13,11 +13,11 @@ class UI:
         self.window.geometry("800x1000")
         self.generate_frames()
         self.create_sheet()
-        self.create_grid()
         self.music = Music()
         self.music.add_part(1)
+        self.create_grid()
         self.active_part = self.music.parts[1]
-        self.buttons = Controls(self, "Kinko")
+        self.controls = Controls(self, "Kinko")
         self.note_pngs = self.load_pngs()
         self.name = ""
         self.composer = ""
@@ -47,7 +47,8 @@ class UI:
         self.sheet.pack(side = constants.LEFT)
         self.grid = []
 
-    def create_grid(self, spacing=4, measure_lenght=2):
+    def create_grid(self, measure_lenght=2):
+        spacing=self.music.parts[1].spacing
         self.clear_grid()
         for x in range(543, 62, -20 * spacing):
             self.grid.append(self.sheet.create_line(x, 70, x, 840, fill="black", width=1))
@@ -61,7 +62,7 @@ class UI:
     def load_pngs(self):
         dirname = Path(__file__)
         self.pngs = {}
-        for notebutton in self.buttons.notebuttons:
+        for notebutton in self.controls.notebuttons:
             self.pngs[notebutton.text] = PhotoImage(file=os.path.join(dirname.parent.parent, "./graphics/" + notebutton.text + ".png"))
 
     def draw_time_notation(self, note):#REFACTOR -> too much repetition, basically jammed through in this form for now -> consider if this is a job for the UI to handle by itself?
@@ -84,13 +85,25 @@ class UI:
         if note.lenght == 1: #note specific case
             self.sheet.create_line(note.position[0] + 13, note.position[1] + 5, note.position[0] + 23, note.position[1] + 7, fill="black", width=2)
 
+    def draw_note(self, note: Note):
+        self.sheet.create_image(note.position[0], note.position[1], anchor=constants.NW, image=self.pngs[note.text])    
+        self.draw_time_notation(note)
+
     def add_note(self, note: Note):
         status = self.active_part.add_note(note)
         if status == "full":
             self.messages.append(ShakuMessage("Full Sheet"))
         else:
-            self.sheet.create_image(note.position[0], note.position[1], anchor=constants.NW, image=self.pngs[note.text])    
-            self.draw_time_notation(note)
+            self.draw_note(note)
+
+    def draw_all_notes(self):
+        self.sheet.delete('all')
+        self.create_grid()
+        for id, part in self.music.parts.items():
+            self.active_part = part
+            for note in part.notes:
+                self.draw_note(note)
+        self.draw_texts()
 
     def draw_texts(self):
         self.erase_texts()
@@ -104,12 +117,12 @@ class UI:
             self.sheet.delete(self.composer)
 
     def add_name(self):
-        name = self.textboxes["musicname"].get()
+        name = self.controls.textboxes["musicname"].get()
         self.music.set_name(name)
         self.draw_texts()
 
     def add_composer(self):
-        composer = self.textboxes["composername"].get()
+        composer = self.controls.textboxes["composername"].get()
         self.music.set_composer(composer)
         self.draw_texts()
 
