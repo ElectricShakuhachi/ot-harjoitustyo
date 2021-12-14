@@ -17,12 +17,12 @@ class FileManager:
         self.ui.sheet.delete('all')
         with filedialog.askopenfile(mode='r', defaultextension=".shaku") as file:
             data = json.load(file)
-            self.ui.create_grid()
             for part_n, part_data in data['parts'].items():
                 self.music.add_part(int(part_n))
                 self.ui.active_part = self.music.parts[int(part_n)]
                 for note in part_data:
                     self.ui.add_note(Note(note['text'], int(note['pitch']), note['position'], int(note['lenght'])))
+            self.ui.create_grid()
             self.music.set_name(data['name'])
             self.music.set_composer(data['composer'])
             self.ui.draw_texts()

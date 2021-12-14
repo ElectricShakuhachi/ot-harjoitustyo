@@ -1,6 +1,6 @@
 from tkinter import constants, Frame, Canvas, PhotoImage
 from entities.music import Music, Note
-from entities.buttons import Controls
+from entities.controls import Controls
 from ui.messages import ShakuMessage
 from pathlib import Path
 import os
@@ -18,7 +18,7 @@ class UI:
         self.create_grid()
         self.active_part = self.music.parts[1]
         self.controls = Controls(self, "Kinko")
-        self.note_pngs = self.load_pngs()
+        #self.note_pngs = self.load_pngs()
         self.name = ""
         self.composer = ""
         self.messages = []
@@ -40,8 +40,8 @@ class UI:
     def create_sheet(self):
         self.sheet = Canvas(
             self.left_frame,
-            width=630,
-            height=891,
+            width=620,
+            height=877,
             background="white",
         )
         self.sheet.pack(side = constants.LEFT)
@@ -65,28 +65,14 @@ class UI:
         for notebutton in self.controls.notebuttons:
             self.pngs[notebutton.text] = PhotoImage(file=os.path.join(dirname.parent.parent, "./graphics/" + notebutton.text + ".png"))
 
-    def draw_time_notation(self, note):#REFACTOR -> too much repetition, basically jammed through in this form for now -> consider if this is a job for the UI to handle by itself?
-        if note.lenght > 8:
-            return
-        self.sheet.create_line(note.position[0] + 11, note.position[1], note.position[0] + 11, note.position[1] + 10, fill="black", width=2)
-        if note.lenght == 8:
-            return
-        if len(self.active_part.notes) > 1 and self.active_part.notes[-2].lenght < 8 and self.active_part.measure_counter != self.active_part.notes[-1].lenght:
-            self.sheet.create_line(note.position[0] + 11, self.active_part.notes[-2].position[1], note.position[0] + 11, note.position[1] + 10, fill="black", width=2)
-            if self.active_part.notes[-1].lenght == 4 and self.temp_dot:
-                self.sheet.delete(self.temp_dot)
-        if note.lenght == 4:
-            if len(self.active_part.notes) < 2 or self.active_part.measure_counter == self.active_part.notes[-1].lenght or self.active_part.notes[-2].lenght > 4:
-                self.temp_dot = self.sheet.create_line(note.position[0] + 12, note.position[1] + 4, note.position[0] + 18, note.position[1] + 8, fill="black", width=2)
-            return
-        self.sheet.create_line(note.position[0] + 15, note.position[1], note.position[0] + 15, note.position[1] + 10, fill="black", width=2)
-        if len(self.active_part.notes) > 1 and self.active_part.notes[-2].lenght < 3 and self.active_part.measure_counter != self.active_part.notes[-1].lenght:
-            self.sheet.create_line(note.position[0] + 15, note.position[1] - 10, note.position[0] + 15, note.position[1] + 10, fill="black", width=2)
-        if note.lenght == 1: #note specific case
-            self.sheet.create_line(note.position[0] + 13, note.position[1] + 5, note.position[0] + 23, note.position[1] + 7, fill="black", width=2)
+    def draw_time_notation(self, note):
+        part = self.active_part
+        for line in part.time_notation(len(part.notes) - 1):
+            self.sheet.create_line(line[0][0], line[0][1], line[1][0], line[1][1], fill="black", width=2)
 
     def draw_note(self, note: Note):
-        self.sheet.create_image(note.position[0], note.position[1], anchor=constants.NW, image=self.pngs[note.text])    
+        #self.sheet.create_image(note.position[0], note.position[1], anchor=constants.NW, image=self.pngs[note.text])
+        self.sheet.create_text(note.position[0]-2, note.position[1]-3, anchor=constants.NW, text=note.text, font=("有澤太楷書 11"))
         self.draw_time_notation(note)
 
     def add_note(self, note: Note):
@@ -108,7 +94,8 @@ class UI:
     def draw_texts(self):
         self.erase_texts()
         self.name = self.sheet.create_text(20, 20, text=self.music.get_name(), fill="black", anchor=constants.NW, font=("Helvetica 16"))
-        self.composer = self.sheet.create_text(600, 20, text=self.music.get_composer(), fill="black", anchor=constants.NE, font=("Helvetica 16"))
+        self.composer = self.sheet.create_text(600, 20, text=self.music.get_composer(), fill="black", anchor=constants.NE, font=("有澤太楷書 16"))
+        self.sheet.postscript()
 
     def erase_texts(self):
         if self.name != "":

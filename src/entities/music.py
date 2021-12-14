@@ -1,11 +1,12 @@
 from copy import copy
 
 class Note:
-    def __init__(self, text: str, pitch: int, position: list, lenght=8):
+    def __init__(self, text: str, pitch: int, position: list, lenght=8, first=False):
         self.text = text
         self.pitch = pitch
         self.lenght = lenght
         self.position = position
+        self.first = first
 
 class Music:
     def __init__(self):
@@ -62,6 +63,12 @@ class Music:
                 })
         return data
 
+    def extract_time_notation(self):
+        parts = []
+        for part in self.parts.values():
+            parts.append(part.time_notations())
+        return parts
+
 class Part:
     def __init__(self, start_x, spacing=4):
         self.notes = []
@@ -70,6 +77,7 @@ class Part:
         self.next_lenght = 8
         self.measure_counter = 0
         self.spacing = spacing
+        self.dot_flag = False
 
     def next_position(self):
         if len(self.notes) == 0:
@@ -88,6 +96,8 @@ class Part:
             return "full"
         else:
             self.notes.append(note)
+            if self.measure_counter == 0:
+                note.first = True
             self.measure_counter += note.lenght
             if self.measure_counter == 16:
                 self.measure_counter = 0
@@ -104,3 +114,37 @@ class Part:
                 if self.notes[i].position[0] < self.notes[i - 1].position[0]:
                     row += 1
                 self.notes[i].position[0] -= row * 20
+
+    def time_notation(self, note_n: int):
+        self.dot_flag = False
+        notation = []
+        note = self.notes[note_n]
+        x = note.position[0]
+        y = note.position[1]
+        previous = self.notes[note_n - 1]
+        if note.lenght > 8:
+            return notation
+        notation.append(((x + 11, y), (x + 11, y + 10)))
+        if note.lenght == 8:
+            return notation
+        if note_n != 0 and previous.lenght < 8 and not note.first:
+            notation.append(((x + 11, previous.position[1]), (x + 11, y + 10)))
+        if note.lenght == 4:
+            if note_n != 0 or note.first or previous.lenght > 4:
+                self.dot_flag = True
+                notation.append(((x + 12, y + 4), (x + 18, y + 8)))
+                return notation
+        notation.append(((x + 15, y), (x + 15, y + 10)))
+        if note_n != 0 and previous.lenght < 3 and not note.first:
+            notation.append(((x + 15, y - 10), (x + 15, y + 10)))
+        if note.lenght == 1: #SPEC
+            notation.append(((x + 13, y + 5), (x + 24, y + 7)))
+        return notation
+
+    def part_time_notations(self):
+        notations = []
+        for note_n in range(len(self.notes)):
+            notations.append(self.time_notation(note_n))
+            if self.dot_flag == True:
+                notations[-1] = notations[-1][:-1]
+        return notations

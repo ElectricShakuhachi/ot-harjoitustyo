@@ -49,14 +49,18 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 
 - Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
 
-- Käyttäjä voi eksportata nuotin pdf ja png-muotoihin
+- Käyttäjä voi eksportata nuotin tulostettavissa olevaksi tiedostoksi (pdf / png tms.)
     -tallentaessa nuottiin tallentuu myös merkintä siitä, että nuotti on generoitu kyseisellä sovelluksella
+
+- Käyttäjä voi tallentaa nuotin svg-muotoon jatkomuokkausta varten muissa ohjelmistoissa
 
 - Käyttäjä voi kuunnella  / tallentaa nuotista MIDI-muotoisena tuotetun ääniraidan
 
 ## Jatkokehitysideoita
 
 Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
+
+- Napit on järjestelty paremmin niin että UI ei täyty napeista, eli dropdown -menuilla ym.
 
 - Käyttäjä voi avata uuteen ikkunaan ohjesivun, jossa löytyy sormitusten ja länsimaisen asteikon äänten vastaavuudet shakuhachin ääniin
 
@@ -65,8 +69,6 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 - Käyttäjä voi konvertoida jollakin muulla avoimen lähdekoodin ohjelmistolla tuotettua länsimaista notaatiota ohjelmaan shakuhachinotaatioksi
 
 - Jos näkymän pienentää niin pieneksi että koko nuotti ei näyt, siihen ilmestyy palkit navigoimista varten
-
-- Käyttäjä voi tallentaa nuotin svg-muotoon jatkomuokkausta varten muissa ohjelmistoissa siten että nuotin sisältämät tiedot tallentuvat piirtoina joita voi muokata cad-ohjelmistoissa
 
 - Käyttäjä voi konfiguroida haluamansa nuottien koon ja niiden välien pituuden
 
