@@ -30,14 +30,11 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 - Käyttäjä voi kirjoittaa yksiäänisten kappaleiden lisäksi myös moniäänisiä kappaleita, kirjoitettavana olevan äänen voi vaihtaa napeista
     TEHTY
 
-- Käyttäjä voi lisätä moniääniseen kappaleeseen ääniä maksimissaan 8 erityisellä napilla, jolla voi lisätä ääniä, äänien napit (Part1, Part2) jne ilmestyvät vasta äänen lisäyksen tapahduttua
+- Käyttäjä voi lisätä moniääniseen kappaleeseen ääniä maksimissaan 4 erityisellä napilla, jolla voi lisätä ääniä, äänien napit (Part1, Part2) jne ilmestyvät vasta äänen lisäyksen tapahduttua
+    TEHTY
 
 - Uutta ääntä luodessa ohjelma siirtää jo kirjoitettuja ääniä ja leventää pystyviivojen välejä siten, että äänien määrästä huolimatta ne on keskitetty tasaisesti pystyviivojen väliin
-
-- Käyttäjä voi valita nuotissa jo olevan nuotin klikkaamalla sitä, jolloin se indikoidaan nuotin muuttumisella harmaaksi
-  - jos jokin nuotti on jo valittuna, se muuttuu takaisin mustaksi, eli valittuna voi olla yksi nuotti kerrallaan
-
-- Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun.
+    TEHTY
 
 - Käyttäjä voi tallentaa nuotin ohjelman käyttämään .shaku tiedostomuotoon (johon tieto tallentuu json-muotoisena)
     TEHTY
@@ -50,11 +47,17 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 - Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
 
 - Käyttäjä voi eksportata nuotin tulostettavissa olevaksi tiedostoksi (pdf / png tms.)
-    -tallentaessa nuottiin tallentuu myös merkintä siitä, että nuotti on generoitu kyseisellä sovelluksella
+    TEHTY
+
+- Käyttäjä voi kuunnella / tallentaa nuotista MIDI-muotoisena tuotetun ääniraidan esikuuntelua varten
+    TEHTY (tarvitsee vielä debuggausta segmentaatiovirheen takia)
+
+- Käyttäjä voi valita nuotissa jo olevan nuotin klikkaamalla sitä, jolloin se indikoidaan nuotin muuttumisella harmaaksi
+  - jos jokin nuotti on jo valittuna, se muuttuu takaisin mustaksi, eli valittuna voi olla yksi nuotti kerrallaan
+
+- Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun.
 
 - Käyttäjä voi tallentaa nuotin svg-muotoon jatkomuokkausta varten muissa ohjelmistoissa
-
-- Käyttäjä voi kuunnella  / tallentaa nuotista MIDI-muotoisena tuotetun ääniraidan
 
 ## Jatkokehitysideoita
 
@@ -68,17 +71,11 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 
 - Käyttäjä voi konvertoida jollakin muulla avoimen lähdekoodin ohjelmistolla tuotettua länsimaista notaatiota ohjelmaan shakuhachinotaatioksi
 
-- Jos näkymän pienentää niin pieneksi että koko nuotti ei näyt, siihen ilmestyy palkit navigoimista varten
-
-- Käyttäjä voi konfiguroida haluamansa nuottien koon ja niiden välien pituuden
+- Käyttäjä voi konfiguroida haluamansa nuottien koon, fontin ja niiden välien pituuden
 
 - Käyttäjän luomat konfiguraatiot tallentuavat erilliselle konfigurointitiedostolle, joka ladataan tämän käyttistäessä ohjelmaa
 
 - Nuottisivun täytyttyä avautuu muokkausnäkymään uusi nuottisivu, ja edelliset sivut tallentuvat välilehdiksi, joiden muokkaukseen voi palata
-
-- Käyttäjä voi vaihtaa nuotinnustyylin eri japanilaisten shakuhachi-koulukuntien nuotinnustyylien välillä
-
-- Käyttäjä voi vaihtaa nuottien fonttia
 
 - Käyttäjä voi tehdä tekstuaalisia merkintöjä nuottiin (kirjoittaa tekstiä, piirtää hiirellä jne)
 
@@ -87,3 +84,5 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 - MIDI-ääniraidan generointi ottaa huomioon äänenkorkeuksien ja -pituuksien lisäksi shakuhachille tyypilliset soittotekniikat kuten mikrointervallit, vibraaton, crescendon, hälyäänet ja muita dynaamisia yksityiskohtia
 
 - Käyttäjä voi peruuttaa viimeisimmän muutoksen painamalla ohjelman ui:ssa olevaa peruutusnappia tai ctrl+z (ei koske tallentamista tai tiedoston aukaisemista)
+
+- Käyttäjä voi sovelluksen UI:ssa suoraan konfiguroida ohjelmaan käytettäväksi uudenlaisia nuotteja (koska shakuhachi-nuotinnusjärjestelmiä on olemassa monia, voi olla tarve nuottimerkinnälle, jota ohjelma ei tarjoa)
