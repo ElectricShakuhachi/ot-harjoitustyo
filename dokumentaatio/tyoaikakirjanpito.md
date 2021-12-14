@@ -8,4 +8,7 @@
 | 01.12. | 2    | Dokumentaation päivitystä - tällä hetkellä edellä todellisuutta |
 | 06.12. | 4    | Tallennus- ja moniäänisyystoiminnallisuuksien toteutusta |
 | 07.12. | 4    | Debuggausta, refaktorointia, testien luontia |
-| yht    | 20     | |
+| 08.12. | 3    | MIDI -toiminnallisuuksien luontia |
+| 13.12. | 5    | Debuggausta, refaktorointia, pdf-toiminnallisuuden luonti  |
+| 14.12. | 2    | Ikonin suunnittelu |
+| yht    | 32   | |
