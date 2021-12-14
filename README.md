@@ -47,3 +47,7 @@ Testikattavuusraportin generoiminen hmtlcov -hakemistoon:
  ```bash
 poetry run invoke coverage-report
 ```
+
+## Julkaistut versiot:
+
+- [v0.2.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.2.0-alpha)
