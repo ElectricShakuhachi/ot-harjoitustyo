@@ -18,5 +18,3 @@ def coverage(ctx):
 @task(coverage)
 def coverage_report(ctx):
     ctx.run("coverage html")
-
-#There's a quick workaround here to make test run correctly to find png files -> should update to a better way of doing this
