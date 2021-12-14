@@ -8,7 +8,7 @@ Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin
 Sovelluksen nuottinäkymä on vain esikatselu, tallentaessa tekstien ja nuottien fontti tallentuu kauniimmin.
 Valmista nuottia pdf:ksi eksportoitaessa voi valita, haluaako lopulliseen nuottiin tahtiruudukon, vai ei.
 
-## Yhteenveto shakuhachi-musiikkia tuntemattomilla
+## Yhteenveto shakuhachi-musiikkia tuntemattomille
 
 Shakuhachi-musiikin notaatiossa käytetään japanilaisia katakana-merkkejä. Nuotit kirjoitetaan ylhäältä alas, ja rivit oikealta vasemmalle, eli nuotinnus aloitetaan
 paperin oikeasta yläreunasta
