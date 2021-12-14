@@ -121,7 +121,8 @@ class Part:
         note = self.notes[note_n]
         x = note.position[0]
         y = note.position[1]
-        previous = self.notes[note_n - 1]
+        if note_n > 0:
+            previous = self.notes[note_n - 1]
         if note.lenght > 8:
             return notation
         notation.append(((x + 11, y), (x + 11, y + 10)))

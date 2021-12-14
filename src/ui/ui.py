@@ -65,15 +65,17 @@ class UI:
         for notebutton in self.controls.notebuttons:
             self.pngs[notebutton.text] = PhotoImage(file=os.path.join(dirname.parent.parent, "./graphics/" + notebutton.text + ".png"))
 
-    def draw_time_notation(self, note):
+    def draw_time_notation(self, note_n=-1):
         part = self.active_part
-        for line in part.time_notation(len(part.notes) - 1):
+        if note_n == -1:
+            note_n = len(self.active_part.notes) - 1
+        for line in part.time_notation(note_n):
             self.sheet.create_line(line[0][0], line[0][1], line[1][0], line[1][1], fill="black", width=2)
 
     def draw_note(self, note: Note):
         #self.sheet.create_image(note.position[0], note.position[1], anchor=constants.NW, image=self.pngs[note.text])
         self.sheet.create_text(note.position[0]-2, note.position[1]-3, anchor=constants.NW, text=note.text, font=("有澤太楷書 11"))
-        self.draw_time_notation(note)
+        self.draw_time_notation()
 
     def add_note(self, note: Note):
         status = self.active_part.add_note(note)
@@ -82,6 +84,14 @@ class UI:
         else:
             self.draw_note(note)
 
+    def draw_all_time_notations(self):
+        store = self.active_part
+        for part in self.music.parts.values():
+            self.active_part = part
+            for i in range(len(part.notes)):
+                self.draw_time_notation(i)
+        self.active_part = store
+
     def draw_all_notes(self):
         self.sheet.delete('all')
         self.create_grid()
@@ -89,6 +99,7 @@ class UI:
             self.active_part = part
             for note in part.notes:
                 self.draw_note(note)
+        self.draw_all_time_notations()
         self.draw_texts()
 
     def draw_texts(self):
