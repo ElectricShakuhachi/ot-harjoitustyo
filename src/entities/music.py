@@ -107,6 +107,7 @@ class Part:
         self.spacing += spacing
         row = 0
         if self.spacing == 2:
+            self.start_x += 10
             for note in self.notes:
                 note.position[0] += 10 
         else:

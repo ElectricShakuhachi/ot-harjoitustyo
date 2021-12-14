@@ -91,3 +91,5 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 - Käyttäjä voi peruuttaa viimeisimmän muutoksen painamalla ohjelman ui:ssa olevaa peruutusnappia tai ctrl+z (ei koske tallentamista tai tiedoston aukaisemista)
 
 - Käyttäjä voi sovelluksen UI:ssa suoraan konfiguroida ohjelmaan käytettäväksi uudenlaisia nuotteja (koska shakuhachi-nuotinnusjärjestelmiä on olemassa monia, voi olla tarve nuottimerkinnälle, jota ohjelma ei tarjoa)
+
+- Käyttäjä voi poistaa osan, jolloin siihen kirjoitetut nuotit häviävät ja muut osat keskitetään uudelleen. 
