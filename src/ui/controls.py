@@ -197,5 +197,9 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
         elif self.button_type == "upload":
             filemanager = FileManager()
             data = self.ui.music.convert_to_json()
-            if not filemanager.upload_to_aws_s3(data, name=self.ui.music.get_name()):
+            name = self.ui.music.get_name()
+            if not name or name == "":
+                ShakuMessage("No Name")
+                return
+            if not filemanager.upload_to_aws_s3(data, name=name):
                 ShakuMessage("No Access")
