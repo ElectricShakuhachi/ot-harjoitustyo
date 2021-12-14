@@ -13,11 +13,7 @@ def test(ctx):
 
 @task
 def coverage(ctx):
-    os.chdir('./src')
-    ctx.run("coverage run --branch -m pytest")
-    os.remove("../.coverage")
-    shutil.move(".coverage", "..")
-    os.chdir('..')
+    ctx.run("coverage run --branch -m pytest src")
 
 @task(coverage)
 def coverage_report(ctx):

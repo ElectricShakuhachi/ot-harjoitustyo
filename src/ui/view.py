@@ -16,7 +16,6 @@ class View:
         self.create_grid()
         self.active_part = self.music.parts[1]
         self.controls = Controls(self, "Tozan")
-        #self.note_pngs = self.load_pngs()
         self.name = ""
         self.composer = ""
         self.messages = []
@@ -56,12 +55,6 @@ class View:
     def clear_grid(self):
         for line in self.grid:
             self.sheet.delete(line)
-
-    def load_pngs(self): #keeping this until I make sure uni computer runs this project with jap fonts
-        dirname = Path(__file__)
-        self.pngs = {}
-        for notebutton in self.controls.notebuttons:
-            self.pngs[notebutton.text] = PhotoImage(file=os.path.join(dirname.parent.parent, "./graphics/" + notebutton.text + ".png"))
 
     def draw_time_notation(self, note_n=-1):
         part = self.active_part
