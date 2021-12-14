@@ -14,6 +14,8 @@ Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmisto
 
 - [Testaus](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/testaus.md)
 
+- [Käyttöohje](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
+
 ## Asennus
 
 1. Kloonaa sovellus githubista:

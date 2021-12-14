@@ -1,21 +1,21 @@
 from tkinter import constants, Frame, Canvas, PhotoImage
 from entities.music import Music, Note
-from entities.controls import Controls
+from ui.controls import Controls
 from ui.messages import ShakuMessage
 from pathlib import Path
 import os
 
-class UI: 
+class View: 
     def __init__(self, window):
         self.window = window
-        self.window.geometry("800x1000")
+        self.window.geometry("840x1000")
         self.generate_frames()
         self.create_sheet()
         self.music = Music()
         self.music.add_part(1)
         self.create_grid()
         self.active_part = self.music.parts[1]
-        self.controls = Controls(self, "Kinko")
+        self.controls = Controls(self, "Tozan")
         #self.note_pngs = self.load_pngs()
         self.name = ""
         self.composer = ""
@@ -57,7 +57,7 @@ class UI:
         for line in self.grid:
             self.sheet.delete(line)
 
-    def load_pngs(self):
+    def load_pngs(self): #keeping this until I make sure uni computer runs this project with jap fonts
         dirname = Path(__file__)
         self.pngs = {}
         for notebutton in self.controls.notebuttons:
@@ -120,4 +120,3 @@ class UI:
         composer = self.controls.textboxes["composername"].get()
         self.music.set_composer(composer)
         self.draw_texts()
-

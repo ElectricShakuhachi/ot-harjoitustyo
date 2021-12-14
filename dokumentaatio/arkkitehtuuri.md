@@ -28,6 +28,12 @@ Päänäkymän lisäksi käyttöliittymään luodaan tarvittaessa varoitusvieste
 
 ## Sovelluslogiikka
 
+## Sekvenssikaavioita
+
+### Uuden osan luominen nuottiin instrumenttia varten.
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/packages.jpg" width="420">
+
 ## Tietojen pysyväistallennus
 
 data -pakkaus vastaa sovelluksessa tuotetun mallinnuksen tallentamisesta ja lataamisesta. Tieto tallennetaan .shaku -tiedostomuotoon. Tiedostoa ladattaessa käynnissä olevan ohjelman mallinnusta muokataan tiedoston sisältämän datan mukaiseksi.

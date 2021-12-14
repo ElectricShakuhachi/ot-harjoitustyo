@@ -1,5 +1,5 @@
 from entities.music import Note, Music
-from tkinter import Button, Entry, constants
+from tkinter import Button, Entry, constants, Frame, ttk, Label
 from files.filing import FileManager
 from entities.midi_creator import MidiCreator
 from entities.midi_player import MidiPlayer
@@ -14,6 +14,8 @@ class Controls:
         self.octave_buttons = []
         self.textboxes = {}
         self.textboxbuttons = {}
+        self.separators = {}
+        self.button_labels = []
         self.textboxes["musicname"] = (Entry(self.ui.top_frame1))
         self.textboxes["composername"] = (Entry(self.ui.top_frame2))
         self.textboxbuttons["namebutton"] = (Button(self.ui.top_frame1, text="Add Name", command=lambda: self.ui.add_name()))
@@ -22,32 +24,75 @@ class Controls:
             label.pack(side = constants.LEFT)
         for box in self.textboxes.values():
             box.pack(side = constants.RIGHT)
+        
+        self.octave_frame = Frame(self.ui.right_frame)
+        self.octave_frame.pack(side=constants.TOP)
+        self.button_labels.append(ButtonLabel(self.octave_frame, "Octave"))
+        self.octave_buttons.append(ShakuButton("Otsu", 0, self.ui, "octave", self, self.octave_frame))
+        self.octave_buttons.append(ShakuButton("Kan", 1, self.ui, "octave", self, self.octave_frame))
+        self.octave_buttons.append(ShakuButton("Daikan", 2, self.ui, "octave", self, self.octave_frame))
+        self.separators["octave"] = (ButtonSeparator(self.octave_frame))
 
-        self.octave_buttons.append(ShakuButton("Otsu", 0, self.ui, "octave", self))
-        self.octave_buttons.append(ShakuButton("Kan", 1, self.ui, "octave", self))
-        self.octave_buttons.append(ShakuButton("Daikan", 2, self.ui, "octave", self))
-        if mode == "Kinko":
+        self.notes_frame = Frame(self.ui.right_frame)
+        self.notes_frame.pack(side=constants.TOP)
+        self.button_labels.append(ButtonLabel(self.notes_frame, "Notes"))
+        if mode == "Tozan":
             otsu_note_texts = ["ロ", "ツ", "レ", "チ", "ハ", "ヒ"]
         pitches = [2, 5, 7, 9, 12, 14]
-        for i in range(len(otsu_note_texts)):
-            self.notebuttons.append(ShakuButton(otsu_note_texts[i], pitches[i], self.ui, "note", self))
+        self.note_frame1 = Frame(self.notes_frame)
+        self.note_frame1.pack(side=constants.TOP)
+        for i in range(3):
+            button = ShakuButton(otsu_note_texts[i], pitches[i], self.ui, "note", self, self.note_frame1)
+            self.notebuttons.append(button)
+            button.button.pack(side=constants.LEFT)
+        self.note_frame2 = Frame(self.notes_frame)
+        self.note_frame2.pack(side=constants.TOP)
+        for i in range(3, 6):
+            button = ShakuButton(otsu_note_texts[i], pitches[i], self.ui, "note", self, self.note_frame2)
+            self.notebuttons.append(button)
+            button.button.pack(side=constants.LEFT)
         lenghts = {2: "16th", 4: "8th", 8: "4th", 16: "half"}
         # support for 32ths currently disabled -> not commonly necessary in this form of notation -> however could be dealt with and added later
         # 1: "32th"
         # whole also disabled -> usable only when there's a feature to change measure grid
         # 32: "half"
+        self.separators["notes"] = (ButtonSeparator(self.notes_frame))
+
+        self.durations_frame = Frame(self.ui.right_frame)
+        self.durations_frame.pack(side=constants.TOP)
+        self.button_labels.append(ButtonLabel(self.durations_frame, "Durations"))
         for key, value in lenghts.items():
-            self.lenghtbuttons[key] = ShakuButton(value, key, self.ui, "lenght", self)
-        for i in range(1, 5):
-            self.partbuttons.append(ShakuButton(f"Part {i}", i, self.ui, "part", self))
-        self.exp_midi_button = ShakuButton("export MIDI", 0, self.ui, "exportmidi", self)
-        self.exp_sheet_button = ShakuButton("export sheet", 0, self.ui, "export_sheet", self)
-        self.play_midi_button = ShakuButton("play", 0, self.ui, "play", self)
-        self.savebutton = ShakuButton("save", 0, self.ui, "save", self)
-        self.loadbutton = ShakuButton("load", 0, self.ui, "load", self)
+            self.lenghtbuttons[key] = ShakuButton(value, key, self.ui, "lenght", self, self.durations_frame)
+        self.separators["durations"] = (ButtonSeparator(self.durations_frame))
+
+        self.parts_frame = Frame(self.ui.right_frame)
+        self.parts_frame.pack(side=constants.TOP)
+        self.button_labels.append(ButtonLabel(self.parts_frame, "Parts"))
+        self.addpartbutton = ShakuButton("Add Part", None, self.ui, "addpart", self, self.parts_frame)
+        self.partbuttons.append(ShakuButton(f"Part {1}", 1, self.ui, "part", self, self.parts_frame))
+        self.separators["parts"] = (ButtonSeparator(self.parts_frame))
+
+        self.file_frame = Frame(self.ui.right_frame)
+        self.file_frame.pack(side=constants.TOP)
+        self.button_labels.append(ButtonLabel(self.file_frame, "File"))
+        self.exp_midi_button = ShakuButton("export MIDI", 0, self.ui, "exportmidi", self, self.file_frame)
+        self.exp_sheet_button = ShakuButton("export sheet", 0, self.ui, "export_sheet", self, self.file_frame)
+        self.play_midi_button = ShakuButton("play", 0, self.ui, "play", self, self.file_frame)
+        self.savebutton = ShakuButton("save", 0, self.ui, "save", self, self.file_frame)
+        self.loadbutton = ShakuButton("load", 0, self.ui, "load", self, self.file_frame)
+
+class ButtonSeparator:
+    def __init__(self, frame, pady=10):
+        self.line = ttk.Separator(frame, orient="horizontal")
+        self.line.pack(fill="x", pady=pady)
+
+class ButtonLabel:
+    def __init__(self, frame, text, pady=0):
+        self.label = Label(frame, text=text)
+        self.label.pack()
 
 class ShakuButton: #refactor into subclasses of buttons instead of checking for each type
-    def __init__(self, text: str, data: int, ui, button_type: str, owner: Controls):
+    def __init__(self, text: str, data: int, ui, button_type: str, owner: Controls, frame):
         self.ui = ui
         self.owner = owner
         self.text = text
@@ -58,8 +103,9 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
             self.lenght = data
         elif button_type == "part":
             self.part = data            
-        self.button = Button(self.ui.right_frame, text=self.text, command=self.press)
-        self.button.pack(side=constants.TOP)
+        self.button = Button(frame, text=self.text, command=self.press)
+        if button_type != "note":
+            self.button.pack(side=constants.TOP)
         if button_type == "exportmidi" or button_type == "play":
             self.creator = MidiCreator()
         if button_type == "play":
@@ -76,6 +122,21 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
             for b in self.owner.lenghtbuttons.values():
                 if b.text != self.text:
                     b.button.config(relief=constants.RAISED)
+
+        elif self.button_type == "addpart":
+            if len(self.ui.music.parts) == 4:
+                return
+            else:
+                self.owner.file_frame.pack_forget()
+                i = len(self.ui.music.parts) + 1
+                self.owner.separators["parts"].line.destroy()
+                new_button = ShakuButton(f"Part {i}", i, self.ui, "part", self.owner, self.owner.parts_frame)
+                self.owner.partbuttons.append(new_button)
+                self.owner.separators["parts"] = ButtonSeparator(self.owner.parts_frame)
+                self.owner.file_frame.pack(side=constants.TOP)
+                new_button.press()#refactor -> there's no reason for press() to create the part since it's always done heren 
+                if len(self.ui.music.parts) == 4:
+                    self.button.config(state="disabled")
 
         elif self.button_type == "part":
             self.button.config(relief=constants.SUNKEN)

@@ -1,6 +1,6 @@
 import unittest
 from tkinter import Tk, Canvas
-from ui.ui import UI 
+from ui.view import UI 
 
 class TestUI(unittest.TestCase):
     def setUp(self):
