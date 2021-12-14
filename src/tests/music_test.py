@@ -1,5 +1,5 @@
 import unittest
-from entities.music import Music, Note
+from entities.music import Music, Part, Note
 
 class TestMusic(unittest.TestCase):
     def setUp(self):
@@ -38,3 +38,14 @@ class TestMusic(unittest.TestCase):
     def test_add_part_creates_new_part(self):
         self.music.add_part(1)
         self.assertEqual(len(self.music.parts), 1)
+
+class TestPart(unittest.TestCase):
+    def setUP(self):
+        part = Part(516)
+
+    def test_first_part_start_x_is_516_at_creation(self):
+        self.music.add_part(1)
+        self.assertEqual(self.music.parts[1].start_x, 516)
+
+    def test_first_part_everything_moves_10_right(self):
+        pass

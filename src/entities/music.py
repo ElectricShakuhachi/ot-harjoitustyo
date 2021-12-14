@@ -70,7 +70,7 @@ class Music:
         return parts
 
 class Part:
-    def __init__(self, start_x, spacing=4):
+    def __init__(self, start_x, spacing=2):
         self.notes = []
         self.start_x = start_x
         self.start_y = 80
