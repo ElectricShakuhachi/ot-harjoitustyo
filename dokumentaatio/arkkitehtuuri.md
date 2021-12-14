@@ -32,7 +32,7 @@ Päänäkymän lisäksi käyttöliittymään luodaan tarvittaessa varoitusvieste
 
 ### Uuden osan luominen nuottiin instrumenttia varten.
 
-<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/packages.jpg" width="420">
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/sequence_add_part.jpg" width="420">
 
 ## Tietojen pysyväistallennus
 
