@@ -128,17 +128,16 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
         elif self.button_type == "addpart":
             if len(self.ui.music.parts) == 4:
                 return
-            else:
-                self.owner.file_frame.pack_forget()
-                i = len(self.ui.music.parts) + 1
-                self.owner.separators["parts"].line.destroy()
-                new_button = ShakuButton(f"Part {i}", i, self.ui, "part", self.owner, self.owner.parts_frame)
-                self.owner.partbuttons.append(new_button)
-                self.owner.separators["parts"] = ButtonSeparator(self.owner.parts_frame)
-                self.owner.file_frame.pack(side=constants.TOP)
-                new_button.press()#refactor -> there's no reason for press() to create the part since it's always done heren 
-                if len(self.ui.music.parts) == 4:
-                    self.button.config(state="disabled")
+            self.owner.file_frame.pack_forget()
+            i = len(self.ui.music.parts) + 1
+            self.owner.separators["parts"].line.destroy()
+            new_button = ShakuButton(f"Part {i}", i, self.ui, "part", self.owner, self.owner.parts_frame)
+            self.owner.partbuttons.append(new_button)
+            self.owner.separators["parts"] = ButtonSeparator(self.owner.parts_frame)
+            self.owner.file_frame.pack(side=constants.TOP)
+            new_button.press()#refactor -> there's no reason for press() to create the part since it's always done heren 
+            if len(self.ui.music.parts) == 4:
+                self.button.config(state="disabled")
 
         elif self.button_type == "part":
             self.button.config(relief=constants.SUNKEN)
