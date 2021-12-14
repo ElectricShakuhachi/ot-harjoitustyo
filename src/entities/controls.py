@@ -1,4 +1,4 @@
-from entities.music import Note
+from entities.music import Note, Music
 from tkinter import Button, Entry, constants
 from files.filing import FileManager
 from entities.midi_creator import MidiCreator
@@ -11,7 +11,6 @@ class Controls:
         self.lenghtbuttons = {}
         self.notebuttons = []
         self.partbuttons = []
-        self.filemanager = FileManager(self.ui.music, self.ui)
         self.octave_buttons = []
         self.textboxes = {}
         self.textboxbuttons = {}
@@ -70,12 +69,14 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
         if self.button_type == "note":
             note = Note(self.text, self.pitch, self.ui.active_part.next_position(), self.ui.active_part.next_lenght)
             self.ui.add_note(note)
+
         elif self.button_type == "lenght":
             self.ui.active_part.next_lenght = self.lenght
             self.button.config(relief=constants.SUNKEN)
             for b in self.owner.lenghtbuttons.values():
                 if b.text != self.text:
                     b.button.config(relief=constants.RAISED)
+
         elif self.button_type == "part":
             self.button.config(relief=constants.SUNKEN)
             for b in self.owner.partbuttons:
@@ -86,24 +87,46 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
                 self.ui.draw_all_notes()
             self.ui.active_part = self.ui.music.parts[self.part]
             self.owner.lenghtbuttons[8].press()
+            
         elif self.button_type == "exportmidi":
             for part in self.ui.music.parts.values():
                 self.creator.create_track(part)
             self.creator.write_file()
+
         elif self.button_type == "play":
             for part in self.ui.music.parts.values():
                 self.creator.create_track(part)
             self.creator.write_file()
             self.player.play(len(self.ui.music.parts))
+
         elif self.button_type == "save":
-            self.owner.filemanager.save()
+            filemanager = FileManager()
+            data = self.ui.music.convert_to_json()
+            filemanager.save_shaku(data)
+
         elif self.button_type == "load":
-            self.owner.filemanager.load()
+            filemanager = FileManager()
+            music = self.ui.music = Music()
+            self.ui.sheet.delete('all')
+            data = filemanager.load()
+            for part_n, part_data in data['parts'].items():
+                music.add_part(int(part_n))
+                self.ui.active_part = music.parts[int(part_n)]
+                for note in part_data:
+                    self.ui.add_note(Note(note['text'], int(note['pitch']), note['position'], int(note['lenght'])))
+            self.ui.create_grid()
+            music.set_name(data['name'])
+            music.set_composer(data['composer'])
+            self.ui.draw_texts()
+
         elif self.button_type == "octave":
             self.button.config(relief=constants.SUNKEN)
             for b in self.owner.octave_buttons:
                 if b.text != self.text:
                     b.button.config(relief=constants.RAISED)
+
         elif self.button_type == "export_sheet":
-            self.image_creator = ImageCreator()
-            self.image_creator.create_image(self.ui.music)
+            filemanager = FileManager()
+            image_creator = ImageCreator()
+            image = image_creator.create_image(self.ui.music)
+            filemanager.save_pdf(image)

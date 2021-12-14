@@ -5,8 +5,6 @@ from ui.messages import ShakuMessage
 from pathlib import Path
 import os
 
-#the current UI responsibilites need to be refactored so that the non-UI responsibilities of it are for the new music class, 
-# current music class changing into part class, which are owned by music class
 class UI: 
     def __init__(self, window):
         self.window = window
@@ -106,7 +104,6 @@ class UI:
         self.erase_texts()
         self.name = self.sheet.create_text(20, 20, text=self.music.get_name(), fill="black", anchor=constants.NW, font=("Helvetica 16"))
         self.composer = self.sheet.create_text(600, 20, text=self.music.get_composer(), fill="black", anchor=constants.NE, font=("有澤太楷書 16"))
-        self.sheet.postscript()
 
     def erase_texts(self):
         if self.name != "":

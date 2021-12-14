@@ -29,7 +29,9 @@ class MidiCreator:
 
     def write_file(self):
         file = MIDIFile(len(self.tracks))
+        
         for track in range(len(self.tracks)):
+            file.addProgramChange(track, self.tracks[track].channel, 0, 73)
             file.addTempo(track, self.time, self.tempo)
             for num, pitch in enumerate(self.tracks[track].notes):
                 file.addNote(track, self.tracks[track].channel, pitch, self.time, self.tracks[track].lenghts[num], self.volume)
