@@ -1,5 +1,8 @@
+import boto3
+from botocore.exceptions import NoCredentialsError
 import json
 from tkinter import filedialog
+import os
 
 class FileManager:
     def save_shaku(self, data):
@@ -14,3 +17,13 @@ class FileManager:
     def save_pdf(self, image):
         with filedialog.asksaveasfile(mode='wb', defaultextension=".pdf") as file:
             image.save(file, format="pdf")
+
+    def upload_to_aws_s3(self, data, name):
+        try:
+            client = boto3.client('s3')
+            bucket = "shakunotator"
+            body=json.dumps(data)
+            client.put_object(Body=body, Bucket=bucket, Key=name)
+            return True
+        except NoCredentialsError:
+            return False

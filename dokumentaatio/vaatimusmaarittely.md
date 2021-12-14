@@ -42,22 +42,27 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 - Käyttäjä voi ladata nuotin ohjelman .shaku -tiedostosta muokattavaksi
     TEHTY
 
-- Käyttäjä voi lisätä nuottiin myös taukoja
-
-- Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
-
 - Käyttäjä voi eksportata nuotin tulostettavissa olevaksi tiedostoksi (pdf / png tms.)
     TEHTY
 
+- Jos käyttäjä on asentanut tietokoneelleen AWS Cli:n ja konfiguroinut siihen Shakunotator -bucket:ia (ohjelman yhteiskäyttöä varten luotu s3 -säilö) varten tarvittavat kredentiaalit, hän voi uploadata nuotin s3:seen
+    TEHTY
+
+- Jos käyttäjällä ei ole tarvittavaa AWS Cli -konfiguraatiota, upload-napin painallus aiheuttaa ilmoituksen, että sen käyttö vaatii AWS-kredentiaaleja
+
 - Käyttäjä voi kuunnella / tallentaa nuotista MIDI-muotoisena tuotetun ääniraidan esikuuntelua varten
     TEHTY (tarvitsee vielä debuggausta segmentaatiovirheen takia)
+
+- Käyttäjä voi lisätä nuottiin myös taukoja
+
+- Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
 
 - Käyttäjä voi valita nuotissa jo olevan nuotin klikkaamalla sitä, jolloin se indikoidaan nuotin muuttumisella harmaaksi
   - jos jokin nuotti on jo valittuna, se muuttuu takaisin mustaksi, eli valittuna voi olla yksi nuotti kerrallaan
 
 - Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun.
 
-- Käyttäjä voi tallentaa nuotin svg-muotoon jatkomuokkausta varten muissa ohjelmistoissa
+- Käyttäjä voi tallentaa nuotin svg-muotoon
 
 ## Jatkokehitysideoita
 

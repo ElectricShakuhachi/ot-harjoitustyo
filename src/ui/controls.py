@@ -4,6 +4,7 @@ from files.filing import FileManager
 from entities.midi_creator import MidiCreator
 from entities.midi_player import MidiPlayer
 from entities.image_creator import ImageCreator
+from ui.messages import ShakuMessage
 
 class Controls:
     def __init__(self, ui, mode):
@@ -80,6 +81,7 @@ class Controls:
         self.play_midi_button = ShakuButton("play", 0, self.ui, "play", self, self.file_frame)
         self.savebutton = ShakuButton("save", 0, self.ui, "save", self, self.file_frame)
         self.loadbutton = ShakuButton("load", 0, self.ui, "load", self, self.file_frame)
+        self.uploadbutton = ShakuButton("upload", 0, self.ui, "upload", self, self.file_frame)
 
 class ButtonSeparator:
     def __init__(self, frame, pady=10):
@@ -191,3 +193,9 @@ class ShakuButton: #refactor into subclasses of buttons instead of checking for 
             image_creator = ImageCreator()
             image = image_creator.create_image(self.ui.music)
             filemanager.save_pdf(image)
+
+        elif self.button_type == "upload":
+            filemanager = FileManager()
+            data = self.ui.music.convert_to_json()
+            if not filemanager.upload_to_aws_s3(data, name=self.ui.music.get_name()):
+                ShakuMessage("No Access")
