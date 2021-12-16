@@ -1,0 +1,251 @@
+{
+    "name": "",
+    "composer": "",
+    "parts": {
+        "1": [
+            {
+                "text": "\u30ed",
+                "pitch": 2,
+                "lenght": 8,
+                "position": [
+                    516,
+                    80
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 8,
+                "position": [
+                    516,
+                    128
+                ]
+            },
+            {
+                "text": "\u30ed",
+                "pitch": 2,
+                "lenght": 8,
+                "position": [
+                    516,
+                    190
+                ]
+            },
+            {
+                "text": "\u30ed",
+                "pitch": 2,
+                "lenght": 4,
+                "position": [
+                    516,
+                    238
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 4,
+                "position": [
+                    516,
+                    262
+                ]
+            },
+            {
+                "text": "\u30ed",
+                "pitch": 2,
+                "lenght": 8,
+                "position": [
+                    516,
+                    300
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 8,
+                "position": [
+                    516,
+                    348
+                ]
+            },
+            {
+                "text": "\u30ec",
+                "pitch": 7,
+                "lenght": 8,
+                "position": [
+                    516,
+                    410
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 8,
+                "position": [
+                    516,
+                    458
+                ]
+            },
+            {
+                "text": "\u30ed",
+                "pitch": 2,
+                "lenght": 16,
+                "position": [
+                    516,
+                    520
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 16,
+                "position": [
+                    516,
+                    630
+                ]
+            },
+            {
+                "text": "\u30ec",
+                "pitch": 7,
+                "lenght": 4,
+                "position": [
+                    516,
+                    740
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 4,
+                "position": [
+                    516,
+                    764
+                ]
+            },
+            {
+                "text": "\u30ec",
+                "pitch": 7,
+                "lenght": 4,
+                "position": [
+                    516,
+                    788
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 4,
+                "position": [
+                    516,
+                    812
+                ]
+            },
+            {
+                "text": "\u30cf",
+                "pitch": 12,
+                "lenght": 8,
+                "position": [
+                    476,
+                    80
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 8,
+                "position": [
+                    476,
+                    128
+                ]
+            },
+            {
+                "text": "\u30d2",
+                "pitch": 14,
+                "lenght": 2,
+                "position": [
+                    476,
+                    190
+                ]
+            },
+            {
+                "text": "\u30cf",
+                "pitch": 12,
+                "lenght": 2,
+                "position": [
+                    476,
+                    202
+                ]
+            },
+            {
+                "text": "\u30d2",
+                "pitch": 14,
+                "lenght": 2,
+                "position": [
+                    476,
+                    214
+                ]
+            },
+            {
+                "text": "\u30cf",
+                "pitch": 12,
+                "lenght": 2,
+                "position": [
+                    476,
+                    226
+                ]
+            },
+            {
+                "text": "\u30d2",
+                "pitch": 14,
+                "lenght": 2,
+                "position": [
+                    476,
+                    238
+                ]
+            },
+            {
+                "text": "\u30cf",
+                "pitch": 12,
+                "lenght": 2,
+                "position": [
+                    476,
+                    250
+                ]
+            },
+            {
+                "text": "\u30d2",
+                "pitch": 14,
+                "lenght": 2,
+                "position": [
+                    476,
+                    262
+                ]
+            },
+            {
+                "text": "\u30cf",
+                "pitch": 12,
+                "lenght": 2,
+                "position": [
+                    476,
+                    274
+                ]
+            },
+            {
+                "text": "\u30c1",
+                "pitch": 9,
+                "lenght": 16,
+                "position": [
+                    476,
+                    300
+                ]
+            },
+            {
+                "text": "\u30c4",
+                "pitch": 5,
+                "lenght": 16,
+                "position": [
+                    476,
+                    410
+                ]
+            }
+        ]
+    }
+}

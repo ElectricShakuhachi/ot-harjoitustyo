@@ -78,6 +78,7 @@ class Part:
         self.measure_counter = 0
         self.spacing = spacing
         self.dot_flag = False
+        self.min_x = 55
 
     def next_position(self):
         if len(self.notes) == 0:
@@ -92,7 +93,7 @@ class Part:
         return next
 
     def add_note(self, note: Note):
-        if note.position[0] < 30:
+        if note.position[0] < self.min_x:
             return "full"
         else:
             self.notes.append(note)

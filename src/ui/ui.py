@@ -1,11 +1,9 @@
-from tkinter import constants, Frame, Canvas, PhotoImage
+from tkinter import constants, Frame, Canvas
 from entities.music import Music, Note
-from ui.controls import Controls
+from ui.buttons import Buttons
 from ui.messages import ShakuMessage
-from pathlib import Path
-import os
 
-class View: 
+class UI: 
     def __init__(self, window):
         self.window = window
         self.window.geometry("840x1000")
@@ -15,7 +13,7 @@ class View:
         self.music.add_part(1)
         self.create_grid()
         self.active_part = self.music.parts[1]
-        self.controls = Controls(self, "Tozan")
+        self.controls = Buttons(self, "Tozan")
         self.name = ""
         self.composer = ""
         self.messages = []

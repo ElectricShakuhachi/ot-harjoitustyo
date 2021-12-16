@@ -34,7 +34,7 @@ class MidiCreator:
             file.addProgramChange(track, self.tracks[track].channel, 0, 73)
             file.addTempo(track, self.time, self.tempo)
             for num, pitch in enumerate(self.tracks[track].notes):
-                file.addNote(track, self.tracks[track].channel, pitch, self.time, self.tracks[track].lenghts[num], self.volume)
+                file.addNote(track, self.tracks[track].channel, pitch, self.time, self.tracks[track].lenghts[num] / 8, self.volume)
                 self.time += (self.tracks[track].lenghts[num]) / 8
             self.time = 0
         with open("music.mid", "wb") as f:
