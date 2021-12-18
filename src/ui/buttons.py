@@ -7,7 +7,7 @@ from entities.image_creator import ImageCreator
 from entities.svg_creator import SvgCreator
 from ui.messages import ShakuMessage
 
-class Buttons:
+class Buttons: # it's weird that possible pitches and their names are defined here -> should be somewhere else
     def __init__(self, ui, mode):
         self.ui = ui
         self.lenghtbuttons = {}
@@ -64,19 +64,25 @@ class Buttons:
         # 32: "half"
         self.separators["notes"] = (ButtonSeparator(self.notes_frame))
 
+        self.break_frame = Frame(self.ui.right_frame)
+        self.break_frame.pack(side=constants.TOP)
+        self.break_button = NoteButton("Break", -1, self.ui, self, self.break_frame)
+        self.break_button.button.pack(side=constants.TOP)
+        self.separators["breaks"] = ButtonSeparator(self.break_frame)
+
         self.durations_frame = Frame(self.ui.right_frame)
         self.durations_frame.pack(side=constants.TOP)
         self.button_labels.append(Label(self.durations_frame, text="Durations"))
         for key, value in lenghts.items():
             self.lenghtbuttons[key] = LenghtButton(value, key, self.ui, self, self.durations_frame)
-        self.separators["durations"] = (ButtonSeparator(self.durations_frame))
+        self.separators["durations"] = ButtonSeparator(self.durations_frame)
 
         self.parts_frame = Frame(self.ui.right_frame)
         self.parts_frame.pack(side=constants.TOP)
         self.button_labels.append(Label(self.parts_frame, text="Parts"))
         self.addpartbutton = AddPartButton("Add Part", self.ui, self, self.parts_frame)
         self.partbuttons[1] = (PartButton(f"Part {1}", 1, self.ui, self, self.parts_frame))
-        self.separators["parts"] = (ButtonSeparator(self.parts_frame))
+        self.separators["parts"] = ButtonSeparator(self.parts_frame)
 
         self.export_frame = Frame(self.ui.right_frame)
         self.export_frame.pack(side=constants.TOP)
@@ -87,7 +93,7 @@ class Buttons:
         self.grid_option_choice = BooleanVar()
         self.sheet_grid_option = Checkbutton(self.export_frame, text="Include grid", variable=self.grid_option_choice, onvalue=True, offvalue=False)
         self.sheet_grid_option.pack()
-        self.separators["exports"] = (ButtonSeparator(self.export_frame))
+        self.separators["exports"] = ButtonSeparator(self.export_frame)
 
         self.file_frame = Frame(self.ui.right_frame)
         self.file_frame.pack(side=constants.TOP)
@@ -95,7 +101,7 @@ class Buttons:
         self.savebutton = SaveButton("save", self.ui, self, self.file_frame)
         self.loadbutton = LoadButton("load", self.ui, self, self.file_frame)
         self.uploadbutton = UploadButton("upload", self.ui, self, self.file_frame)
-        self.separators["exports"] = (ButtonSeparator(self.file_frame))
+        self.separators["exports"] = ButtonSeparator(self.file_frame)
 
         self.play_frame = Frame(self.ui.right_frame)
         self.play_frame.pack(side=constants.TOP)

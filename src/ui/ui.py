@@ -64,8 +64,19 @@ class UI:
             self.time_notations.append(self.sheet.create_line(line[0][0], line[0][1], line[1][0], line[1][1], fill="black", width=2))
 
     def draw_note(self, note: Note):
-        self.sheet.create_text(note.position[0]-2, note.position[1]-3, anchor=constants.NW, text=note.text, font=("有澤太楷書 11"))
-        self.draw_time_notation()
+        if note.pitch == -1:
+            if note.lenght == 16:
+                break_text = "。。"
+            elif note.lenght == 8:
+                break_text = "。"
+            elif note.lenght == 4:
+                break_text = "、"
+            elif note.lenght == 2:
+                break_text = "、、"
+            self.sheet.create_text(note.position[0]-2, note.position[1]-3, anchor=constants.NW, text=break_text, font=("有澤太楷書 11"))
+        else:
+            self.sheet.create_text(note.position[0]-2, note.position[1]-3, anchor=constants.NW, text=note.text, font=("有澤太楷書 11"))
+            self.draw_time_notation()
 
     def add_note(self, note: Note):
         status = self.active_part.add_note(note)

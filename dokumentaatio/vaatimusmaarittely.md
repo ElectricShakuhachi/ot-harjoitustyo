@@ -42,18 +42,23 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 - Käyttäjä voi ladata nuotin ohjelman .shaku -tiedostosta muokattavaksi
     TEHTY
 
-- Käyttäjä voi eksportata nuotin tulostettavissa olevaksi tiedostoksi (pdf / png tms.)
+- Käyttäjä voi eksportata nuotin pdf-muotoon
+    TEHTY
+
+- Käyttäjä voi eskportata nuotin svg-muotoon
     TEHTY
 
 - Jos käyttäjä on asentanut tietokoneelleen AWS Cli:n ja konfiguroinut siihen Shakunotator -bucket:ia (ohjelman yhteiskäyttöä varten luotu s3 -säilö) varten tarvittavat kredentiaalit, hän voi uploadata nuotin s3:seen
     TEHTY
 
 - Jos käyttäjällä ei ole tarvittavaa AWS Cli -konfiguraatiota, upload-napin painallus aiheuttaa ilmoituksen, että sen käyttö vaatii AWS-kredentiaaleja
+    TEHTY
 
 - Käyttäjä voi kuunnella / tallentaa nuotista MIDI-muotoisena tuotetun ääniraidan esikuuntelua varten
     TEHTY (tarvitsee vielä debuggausta segmentaatiovirheen takia)
 
 - Käyttäjä voi lisätä nuottiin myös taukoja
+    TEHTY
 
 - Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
 
@@ -62,7 +67,6 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 
 - Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun.
 
-- Käyttäjä voi tallentaa nuotin svg-muotoon
 
 ## Jatkokehitysideoita
 
@@ -99,3 +103,5 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 - Käyttäjä voi vaihtaa ui:n kielen ainakin joko suomeksi, englanniksi tai japaniksi
 
 - Ohjelmisto tunnistaa tietokoneen oletuskielen ja näyttää ui:n oletuksena sillä kielellä, mikäli kieli on ohjelmassa saatavilla
+
+- Käyttäjä voi määrittää jokaiselle osalle eri äänialaisen shakuhachin

@@ -7,6 +7,7 @@ class MidiTrack:
         self.notes = []
         self.lenghts = []
         self.notemap = {}
+        self.notemap[-1] = 0
         for i in range(0, 39):
             self.notemap[i] = i + ro_pitch
 
@@ -34,7 +35,8 @@ class MidiCreator:
             file.addProgramChange(track, self.tracks[track].channel, 0, 73)
             file.addTempo(track, self.time, self.tempo)
             for num, pitch in enumerate(self.tracks[track].notes):
-                file.addNote(track, self.tracks[track].channel, pitch, self.time, self.tracks[track].lenghts[num] / 8, self.volume)
+                volume = 0 if pitch == -1 else self.volume
+                file.addNote(track, self.tracks[track].channel, pitch, self.time, self.tracks[track].lenghts[num] / 8, volume)
                 self.time += (self.tracks[track].lenghts[num]) / 8
             self.time = 0
         with open("music.mid", "wb") as f:

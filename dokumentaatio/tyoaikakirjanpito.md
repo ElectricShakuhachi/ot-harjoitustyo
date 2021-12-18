@@ -11,8 +11,8 @@
 | 08.12. | 3    | MIDI -toiminnallisuuksien luontia |
 | 13.12. | 5    | Debuggausta, refaktorointia, pdf-toiminnallisuuden luonti  |
 | 14.12. | 2    | Ikonin suunnittelu |
-| 15.12. | 6    |  |
-| 16.12. | 3    |  |
-| 17.12. | 5    |  |
-| 18.12. | 3    |  |
-| yht    | 32   |  |
+| 15.12. | 6    | Debuggausta ja AWS-repositorio -toiminnallisuuden luonti |
+| 16.12. | 3    | Debuggausta |
+| 17.12. | 5    | Debuggausta ja svg-toiminnallisuuden luonti |
+| 18.12. | 3    | Debuggausta |
+| yht    | 49   |  |
