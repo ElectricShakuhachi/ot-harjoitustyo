@@ -1,9 +1,10 @@
 from entities.music import Note, Music
-from tkinter import Button, Entry, constants, Frame, ttk, Label
+from tkinter import Button, Entry, constants, Frame, ttk, Label, Checkbutton, BooleanVar
 from files.filing import FileManager
 from entities.midi_creator import MidiCreator
 from entities.midi_player import MidiPlayer
 from entities.image_creator import ImageCreator
+from entities.svg_creator import SvgCreator
 from ui.messages import ShakuMessage
 
 class Buttons:
@@ -73,19 +74,37 @@ class Buttons:
         self.parts_frame = Frame(self.ui.right_frame)
         self.parts_frame.pack(side=constants.TOP)
         self.button_labels.append(Label(self.parts_frame, text="Parts"))
-        self.addpartbutton = AddPartButton("Add Part", None, self.ui, self, self.parts_frame)
+        self.addpartbutton = AddPartButton("Add Part", self.ui, self, self.parts_frame)
         self.partbuttons[1] = (PartButton(f"Part {1}", 1, self.ui, self, self.parts_frame))
         self.separators["parts"] = (ButtonSeparator(self.parts_frame))
+
+        self.export_frame = Frame(self.ui.right_frame)
+        self.export_frame.pack(side=constants.TOP)
+        self.button_labels.append(Label(self.export_frame, text="Export"))
+        self.exp_midi_button = ExportMidiButton("export MIDI", self.ui, self, self.export_frame)
+        self.exp_sheet_button = ExportPdfButton("export PDF", self.ui, self, self.export_frame)
+        self.exp_svg_button = ExportSvgButton("export SVG", self.ui, self, self.export_frame)
+        self.grid_option_choice = BooleanVar()
+        self.sheet_grid_option = Checkbutton(self.export_frame, text="Include grid", variable=self.grid_option_choice, onvalue=True, offvalue=False)
+        self.sheet_grid_option.pack()
+        self.separators["exports"] = (ButtonSeparator(self.export_frame))
 
         self.file_frame = Frame(self.ui.right_frame)
         self.file_frame.pack(side=constants.TOP)
         self.button_labels.append(Label(self.file_frame, text="File"))
-        self.exp_midi_button = ExportMidiButton("export MIDI", self.ui, self, self.file_frame)
-        self.exp_sheet_button = ExportSheetButton("export sheet", self.ui, self, self.file_frame)
-        self.play_midi_button = PlayButton("play", self.ui, self, self.file_frame)
         self.savebutton = SaveButton("save", self.ui, self, self.file_frame)
         self.loadbutton = LoadButton("load", self.ui, self, self.file_frame)
         self.uploadbutton = UploadButton("upload", self.ui, self, self.file_frame)
+        self.separators["exports"] = (ButtonSeparator(self.file_frame))
+
+        self.play_frame = Frame(self.ui.right_frame)
+        self.play_frame.pack(side=constants.TOP)
+        self.button_labels.append(Label(self.play_frame, text="Play"))
+        self.play_midi_button = PlayButton("play", self.ui, self, self.play_frame)
+
+#there is a bunch of repetitive code in above init function 
+# -> instead export creating of a frame to a function and call that for each frame
+
 
 class ButtonSeparator:
     def __init__(self, frame, pady=10):
@@ -138,25 +157,26 @@ class LenghtButton(ShakuButton):
                 b.button.config(state="normal", relief=constants.RAISED)
 
 class AddPartButton(ShakuButton):
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, ui, owner, frame):
         super().__init__(text, ui, owner)
-        self.part = data
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)
 
-    def press(self):
+    def press(self, pressed_on_load=False):
         if len(self.ui.music.parts) == 4:
             return
         self.owner.file_frame.pack_forget()
         i = len(self.ui.music.parts) + 1
         self.owner.separators["parts"].line.destroy()
-        new_button = PartButton(f"Part {i}", i, self.ui, self.owner, self.owner.parts_frame)
-        self.owner.partbuttons[i] = new_button
+        new_button = None
+        if self.ui.music.add_part(i, loading=pressed_on_load):
+            new_button = PartButton(f"Part {i}", i, self.ui, self.owner, self.owner.parts_frame)
+            self.owner.partbuttons[i] = new_button
         self.owner.separators["parts"] = ButtonSeparator(self.owner.parts_frame)
         self.owner.file_frame.pack(side=constants.TOP)
-        self.ui.music.add_part(i)
         self.ui.draw_all_notes()
-        new_button.press()
+        if new_button:
+            new_button.press()
         if len(self.ui.music.parts) == 4:
             self.button.config(state="disabled")
         return new_button
@@ -188,7 +208,7 @@ class ExportMidiButton(ShakuButton):
             self.creator.create_track(part)
         self.creator.write_file()
 
-class ExportSheetButton(ShakuButton):
+class ExportPdfButton(ShakuButton):
     def __init__(self, text, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
@@ -197,8 +217,20 @@ class ExportSheetButton(ShakuButton):
     def press(self):
         filemanager = FileManager()
         image_creator = ImageCreator()
-        image = image_creator.create_image(self.ui.music)
+        image = image_creator.create_image(self.ui.music, self.owner.grid_option_choice.get())
         filemanager.save_pdf(image)
+
+class ExportSvgButton(ShakuButton):
+    def __init__(self, text, ui, owner, frame):
+        super().__init__(text, ui, owner)
+        self.button = Button(frame, text=self.text, command=self.press)
+        self.button.pack(side=constants.TOP)
+
+    def press(self):
+        filemanager = FileManager()
+        svg_creator = SvgCreator()
+        svg = svg_creator.create_svg(self.ui.music, self.owner.grid_option_choice.get())
+        filemanager.save_svg(svg)
 
 class PlayButton(ShakuButton):
     def __init__(self, text, ui, owner, frame):
@@ -233,11 +265,16 @@ class LoadButton(ShakuButton):
 
     def press(self):
         filemanager = FileManager()
+        data = filemanager.load()
+        if data == None:
+            return
         music = self.ui.music = Music()
         self.ui.sheet.delete('all')
-        data = filemanager.load()
+        for i in self.owner.partbuttons.values():
+            i.button.destroy()
+        self.owner.partbuttons = {}
         for part_data in data['parts'].values():
-            self.owner.addpartbutton.press()
+            self.owner.addpartbutton.press(pressed_on_load=True)
             for note in part_data:
                 self.ui.add_note(Note(note['text'], int(note['pitch']), note['position'], int(note['lenght'])))
         self.ui.create_grid()

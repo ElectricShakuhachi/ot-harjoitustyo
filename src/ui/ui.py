@@ -17,8 +17,8 @@ class UI:
         self.name = ""
         self.composer = ""
         self.messages = []
-        self.temp_dot = None
         self.edit_note = None
+        self.time_notations = []
 
     def generate_frames(self):
         self.frame = Frame(self.window)
@@ -42,7 +42,7 @@ class UI:
         self.sheet.pack(side = constants.LEFT)
         self.grid = []
 
-    def create_grid(self, measure_lenght=2):
+    def create_grid(self, measure_lenght=2):#if you start using this measure lenght thing -> remember to also edit it for image class...
         spacing = max(2, self.music.parts[1].spacing)
         self.clear_grid()
         for x in range(543, 62, -20 * spacing):
@@ -58,11 +58,12 @@ class UI:
         part = self.active_part
         if note_n == -1:
             note_n = len(self.active_part.notes) - 1
+        if self.active_part.notes[note_n - 1].dotted:
+            self.sheet.delete(self.time_notations[-1])
         for line in part.time_notation(note_n):
-            self.sheet.create_line(line[0][0], line[0][1], line[1][0], line[1][1], fill="black", width=2)
+            self.time_notations.append(self.sheet.create_line(line[0][0], line[0][1], line[1][0], line[1][1], fill="black", width=2))
 
     def draw_note(self, note: Note):
-        #self.sheet.create_image(note.position[0], note.position[1], anchor=constants.NW, image=self.pngs[note.text])
         self.sheet.create_text(note.position[0]-2, note.position[1]-3, anchor=constants.NW, text=note.text, font=("有澤太楷書 11"))
         self.draw_time_notation()
 
@@ -74,6 +75,8 @@ class UI:
             self.draw_note(note)
 
     def draw_all_time_notations(self):
+        for i in self.time_notations:
+            self.sheet.delete(i)
         store = self.active_part
         for part in self.music.parts.values():
             self.active_part = part

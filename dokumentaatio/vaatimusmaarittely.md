@@ -92,4 +92,10 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 
 - Käyttäjä voi sovelluksen UI:ssa suoraan konfiguroida ohjelmaan käytettäväksi uudenlaisia nuotteja (koska shakuhachi-nuotinnusjärjestelmiä on olemassa monia, voi olla tarve nuottimerkinnälle, jota ohjelma ei tarjoa)
 
-- Käyttäjä voi poistaa osan, jolloin siihen kirjoitetut nuotit häviävät ja muut osat keskitetään uudelleen. 
+- Käyttäjä voi poistaa osan, jolloin siihen kirjoitetut nuotit häviävät ja muut osat keskitetään uudelleen.
+
+- Käyttäjä voi luoda nuotin joko pysty- tai vaaka-asennossa (portrait / landscape)
+
+- Käyttäjä voi vaihtaa ui:n kielen ainakin joko suomeksi, englanniksi tai japaniksi
+
+- Ohjelmisto tunnistaa tietokoneen oletuskielen ja näyttää ui:n oletuksena sillä kielellä, mikäli kieli on ohjelmassa saatavilla

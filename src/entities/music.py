@@ -7,6 +7,7 @@ class Note:
         self.lenght = lenght
         self.position = position
         self.first = first
+        self.dotted = False
 
 class Music:
     def __init__(self):
@@ -14,18 +15,27 @@ class Music:
         self._name = ""
         self._composer = ""
 
-    def add_part(self, part_id):
+    def add_part(self, part_id, loading=False):
+        if len(self.parts) == 3:
+            for part in self.parts.values():
+                if part.rows() > 6:
+                    return False
+        if len(self.parts) == 2:
+            for part in self.parts.values():
+                if part.rows() > 8:
+                    return False
         first_part_x = 516
         if part_id == 1:
             start_x = first_part_x
         else:
             start_x = (first_part_x + 10) - (part_id - 1) * 20
-        self.change_spacing(1)
-        self.parts[part_id] = Part(start_x, len(self.parts) + 1)
+        self.change_spacing(1, loading=loading)
+        self.parts[part_id] = Part(part_id, start_x, len(self.parts) + 1)
+        return True
 
-    def change_spacing(self, spacing):
+    def change_spacing(self, spacing, loading=False):
         for part in self.parts.values():
-            part.change_spacing(spacing)
+            part.change_spacing(spacing, loading=loading)
 
     def set_name(self, name):
         self._name = name
@@ -70,15 +80,17 @@ class Music:
         return parts
 
 class Part:
-    def __init__(self, start_x, spacing=2):
+    def __init__(self, part_id, start_x, spacing=2):
+        self.part_no = part_id
         self.notes = []
         self.start_x = start_x
         self.start_y = 80
         self.next_lenght = 8
         self.measure_counter = 0
         self.spacing = spacing
-        self.dot_flag = False
         self.min_x = 55
+        self.dot_flag = None #probably unused now!
+        self._rows = 0
 
     def next_position(self):
         if len(self.notes) == 0:
@@ -93,6 +105,8 @@ class Part:
         return next
 
     def add_note(self, note: Note):
+        if len(self.notes) == 0 or self.notes[-1].position[0] > note.position[0]:
+            self._rows += 1
         if note.position[0] < self.min_x:
             return "full"
         else:
@@ -104,21 +118,27 @@ class Part:
                 self.measure_counter = 0
             return "ok"
 
-    def change_spacing(self, spacing):
+    def rows(self):
+        return self._rows
+
+    def change_spacing(self, spacing, loading=False):
         self.spacing += spacing
-        row = 0
-        if self.spacing == 2:
+        if loading:
+            return
+        if self.start_x == 516:
             self.start_x += 10
             for note in self.notes:
                 note.position[0] += 10 
         else:
+            row = 0
+            count = 0
             for i in range(1, len(self.notes)):
-                if self.notes[i].position[0] < self.notes[i - 1].position[0]:
+                count += 1
+                if self.notes[i].position[0] < self.notes[i - 1].position[0] + row * 20:
                     row += 1
                 self.notes[i].position[0] -= row * 20
 
     def time_notation(self, note_n: int):
-        self.dot_flag = False
         notation = []
         note = self.notes[note_n]
         x = note.position[0]
@@ -133,14 +153,14 @@ class Part:
         if note_n != 0 and previous.lenght < 8 and not note.first:
             notation.append(((x + 11, previous.position[1]), (x + 11, y + 10)))
         if note.lenght == 4:
-            if note_n != 0 or note.first or previous.lenght > 4:
-                self.dot_flag = True
+            if note_n == 0 or note.first or previous.lenght > 4:
+                note.dotted = True
                 notation.append(((x + 12, y + 4), (x + 18, y + 8)))
-                return notation
+            return notation
         notation.append(((x + 15, y), (x + 15, y + 10)))
         if note_n != 0 and previous.lenght < 3 and not note.first:
             notation.append(((x + 15, y - 10), (x + 15, y + 10)))
-        if note.lenght == 1: #SPEC
+        if note.lenght == 1: #SPECIAL CASE -> NOT IN USE CURRENTLY
             notation.append(((x + 13, y + 5), (x + 24, y + 7)))
         return notation
 
@@ -148,6 +168,7 @@ class Part:
         notations = []
         for note_n in range(len(self.notes)):
             notations.append(self.time_notation(note_n))
-            if self.dot_flag == True:
-                notations[-1] = notations[-1][:-1]
+            if self.notes[note_n].lenght == 4 and self.notes[note_n - 1].dotted:
+                print(f"removing dot {notations[-2][-1]}")
+                notations[-2] = notations[-2][:-1]
         return notations

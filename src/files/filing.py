@@ -2,7 +2,8 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 import json
 from tkinter import filedialog
-import svgwrite
+from entities.svg_creator import SvgCreator
+from svgwrite import Drawing
 
 class FileManager:
     def save_shaku(self, data):
@@ -18,9 +19,9 @@ class FileManager:
         with filedialog.asksaveasfile(mode='wb', defaultextension=".pdf") as file:
             image.save(file, format="pdf")
 
-    def save_svg(self, music):
-        with filedialog.asksaveasfile(mode='wb', defaultextension=".svg") as file:
-            pass
+    def save_svg(self, svg):
+        with filedialog.asksaveasfile(mode='w', defaultextension=".svg") as file:
+            svg.write(file, indent=2, pretty=False)
 
     def upload_to_aws_s3(self, data, name):
         try:
