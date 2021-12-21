@@ -11,18 +11,18 @@ class Note:
 
 class Music:
     def __init__(self):
-        self.parts = {}
         self._name = ""
         self._composer = ""
+        self.parts = {}
 
     def add_part(self, part_id, loading=False):
         if len(self.parts) == 3:
             for part in self.parts.values():
-                if part.rows() > 6:
+                if part.rows > 6:
                     return False
         if len(self.parts) == 2:
             for part in self.parts.values():
-                if part.rows() > 8:
+                if part.rows > 8:
                     return False
         first_part_x = 516
         if part_id == 1:
@@ -58,20 +58,36 @@ class Music:
         self._composer = ""
 
     def convert_to_json(self):
-        data = {}
-        data['name'] = self._name
-        data['composer'] = self._composer
-        data['parts'] = {}
+        data = {
+            "name": self._name,
+            "composer": self._composer,
+            "parts": {}
+        }
         for part_n, part_data in self.get_parts().items():
-            data['parts'][part_n] = []
+            data['parts'][part_n] = {
+                "part_no": part_data.part_no,
+                "start_x": part_data.start_x,
+                "measure_counter": part_data.measure_counter,
+                "spacing": part_data.spacing,
+                "rows": part_data.rows,
+                "notes": []
+            }
             for note in part_data.notes:
-                data['parts'][part_n].append({
-                    'text': note.text,
-                    'pitch': note.pitch,
-                    'lenght': note.lenght,
-                    'position': note.position
+                data["parts"][part_n]["notes"].append({
+                    "text": note.text,
+                    "pitch": note.pitch,
+                    "lenght": note.lenght,
+                    "position": note.position
                 })
         return data
+
+    def load_json(self, data):
+        for part_id, part_data in data['parts'].items():
+            part = self.parts[int(part_id)] = Part(part_data["part_no"], part_data["start_x"], part_data["spacing"])
+            part.measure_counter = part_data["measure_counter"]
+            part.rows = part_data["rows"]
+            for note in part_data["notes"]:
+                part.notes.append(Note(note["text"], int(note["pitch"]), note["position"], int(note["lenght"])))
 
     def extract_time_notation(self):
         parts = []
@@ -84,17 +100,13 @@ class Part:
         self.part_no = part_id
         self.notes = []
         self.start_x = start_x
-        self.start_y = 80
-        self.next_lenght = 8
         self.measure_counter = 0
         self.spacing = spacing
-        self.min_x = 55
-        self.dot_flag = None #probably unused now!
-        self._rows = 0
+        self.rows = 0
 
     def next_position(self):
         if len(self.notes) == 0:
-            return [self.start_x, self.start_y]
+            return [self.start_x, 80]
         next = copy(self.notes[-1].position)
         next[1] += self.notes[-1].lenght * 6
         if self.measure_counter == 0:
@@ -106,8 +118,8 @@ class Part:
 
     def add_note(self, note: Note):
         if len(self.notes) == 0 or self.notes[-1].position[0] > note.position[0]:
-            self._rows += 1
-        if note.position[0] < self.min_x:
+            self.rows += 1
+        if note.position[0] < 55:
             return "full"
         else:
             self.notes.append(note)
@@ -117,9 +129,6 @@ class Part:
             if self.measure_counter == 16:
                 self.measure_counter = 0
             return "ok"
-
-    def rows(self):
-        return self._rows
 
     def change_spacing(self, spacing, loading=False):
         self.spacing += spacing
@@ -169,6 +178,5 @@ class Part:
         for note_n in range(len(self.notes)):
             notations.append(self.time_notation(note_n))
             if self.notes[note_n].lenght == 4 and self.notes[note_n - 1].dotted:
-                print(f"removing dot {notations[-2][-1]}")
                 notations[-2] = notations[-2][:-1]
         return notations

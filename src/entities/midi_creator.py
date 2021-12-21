@@ -28,7 +28,7 @@ class MidiCreator:
         track.fill(part)
         self.tracks.append(track)
 
-    def write_file(self):
+    def generate_midi(self):
         file = MIDIFile(len(self.tracks))
         
         for track in range(len(self.tracks)):
@@ -39,5 +39,5 @@ class MidiCreator:
                 file.addNote(track, self.tracks[track].channel, pitch, self.time, self.tracks[track].lenghts[num] / 8, volume)
                 self.time += (self.tracks[track].lenghts[num]) / 8
             self.time = 0
-        with open("music.mid", "wb") as f:
-            file.writeFile(f)
+        return file
+

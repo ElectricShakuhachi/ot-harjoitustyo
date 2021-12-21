@@ -23,6 +23,14 @@ class FileManager:
         with filedialog.asksaveasfile(mode='w', defaultextension=".svg") as file:
             svg.write(file, indent=2, pretty=False)
 
+    def save_midi(self, midi, name=None):
+        if name:
+            with open(name, "wb") as file:
+                midi.writeFile(file)
+        else:
+            with filedialog.asksaveasfile(mode="wb", defaultextension=".mid") as file:
+                midi.writeFile(file)
+
     def upload_to_aws_s3(self, data, name):
         try:
             client = boto3.client('s3')

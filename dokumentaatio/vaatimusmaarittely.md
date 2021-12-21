@@ -67,6 +67,9 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 
 - Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun.
 
+- Käyttäjä voi eksportata nuotin MusicXML -muotoon
+
+- Käyttäjä voi importata MusicXML -tiedoston
 
 ## Jatkokehitysideoita
 

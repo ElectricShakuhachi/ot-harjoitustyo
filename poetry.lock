@@ -139,6 +139,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "midi2audio"
+version = "0.1.1"
+description = "Easy to use MIDI to audio or playback via FluidSynth"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "midiutil"
 version = "1.2.1"
 description = "A pure python library for creating multi-track MIDI files"
@@ -335,7 +343,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "bfbfbc8b6a01f437839091ab74084d156d994b3a1eec19c85b3c8f1b19864c3e"
+content-hash = "7aa0dd2fa34629cecdb2ed9f79f55cabe9e20493c6bd23a034e90dd6ebdcd5d7"
 
 [metadata.files]
 astroid = [
@@ -455,6 +463,10 @@ lazy-object-proxy = [
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
+]
+midi2audio = [
+    {file = "midi2audio-0.1.1-py2.py3-none-any.whl", hash = "sha256:762a2df3806d373f7f89962f22ecc6d3cb49f82ae4212fab560a479cbb6c9c08"},
+    {file = "midi2audio-0.1.1.tar.gz", hash = "sha256:b26590388e1f62753096b075b877e2529ff62faad00c07811ac8111a73e4a78a"},
 ]
 midiutil = [
     {file = "MIDIUtil-1.2.1.tar.gz", hash = "sha256:79fa983bd1efc60785f68a8fe78fa8f45b8d7ec5898bf7cb7f3f7f3336d6a90a"},

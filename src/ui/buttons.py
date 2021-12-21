@@ -6,18 +6,91 @@ from entities.midi_player import MidiPlayer
 from entities.image_creator import ImageCreator
 from entities.svg_creator import SvgCreator
 from ui.messages import ShakuMessage
+import entities.shaku_constants as consts
 
 class Buttons: # it's weird that possible pitches and their names are defined here -> should be somewhere else
     def __init__(self, ui, mode):
         self.ui = ui
-        self.lenghtbuttons = {}
-        self.notebuttons = []
-        self.partbuttons = {}
-        self.octave_buttons = []
+        self.mode = mode
+        self.buttons = {}
+        self.frames = {}
+        self.buttons_by_frame = {}
         self.textboxes = {}
         self.textboxbuttons = {}
         self.separators = {}
-        self.button_labels = []
+        self.labels = []
+        self.chosen_lenght = 8
+        self._create_default_buttons()
+
+    def _create_default_buttons(self):
+        self._create_naming_frame()
+        self._create_octave_buttons()
+        self._create_note_buttons()
+        self._create_break_buttons()
+        self._create_lenght_buttons()
+        self._create_part_buttons()
+        self._create_export_buttons()
+        self._create_file_buttons()
+        self._create_play_buttons()
+
+    def _create_octave_buttons(self):
+        buttons = []
+        for id, octave in enumerate(["Otsu", "Kan", "Daikan"]):
+            buttons.append({'text': octave, 'data': id, "button_class": OctaveButton})
+        self._generate_button_frame("Octave", buttons)
+
+    def _create_note_buttons(self):
+        note_texts = consts.NOTES[self.mode]
+        pitches = consts.PITCHES[self.mode]
+        buttons = []
+        for i in range(len(note_texts)):
+            buttons.append({'text': note_texts[i], 'data': pitches[i],"button_class": NoteButton})
+        self._generate_button_frame("Note", buttons[:3], separator=False)
+        self._generate_button_frame("Note2", buttons[3:], label=False, separator=False)
+        self.separators["exports"] = ButtonSeparator(self.ui.right_frame)
+
+    def _create_break_buttons(self):
+        buttons = [{"text": "Break", "data": -1, "button_class": NoteButton}]
+        self._generate_button_frame("Break", buttons)
+
+    def _create_lenght_buttons(self):
+        buttons = []
+        for data, text in consts.LENGHTS.items():
+            buttons.append({"text": text, "data": data, "button_class": LenghtButton})
+        self._generate_button_frame("Duration", buttons)
+
+    def _create_part_buttons(self):
+        buttons = [
+            {"text": "Add Part", "data": None, "button_class": AddPartButton},
+            {"text": "Part 1", "data": 1, "button_class": PartButton}
+        ]
+        self._generate_button_frame("Parts", buttons)
+
+    def _create_export_buttons(self):
+        buttons = [
+            {"text": "export MIDI", "data": None, "button_class": ExportMidiButton},
+            {"text": "export PDF", "data": None, "button_class": ExportPdfButton},
+            {"text": "export SVG", "data": None, "button_class": ExportSvgButton}
+        ]
+        self._generate_button_frame("Export", buttons, separator=False)
+        self.grid_option_choice = BooleanVar()
+        self.sheet_grid_option = Checkbutton(self.ui.right_frame, text="Include grid", variable=self.grid_option_choice, onvalue=True, offvalue=False)
+        self.sheet_grid_option.pack()
+        self.separators["exports"] = ButtonSeparator(self.ui.right_frame)
+
+    def _create_file_buttons(self):
+        buttons = [
+            {"text": "save", "data": None, "button_class": SaveButton},
+            {"text": "load", "data": None, "button_class": LoadButton},
+            {"text": "upload", "data": None, "button_class": UploadButton}
+        ]
+        self._generate_button_frame("File", buttons)
+
+    def _create_play_buttons(self):
+        buttons = [{"text": "Play", "data": None, "button_class": PlayButton}]
+        self._generate_button_frame("Play", buttons, separator=False)
+
+    def _create_naming_frame(self):
         self.textboxes["musicname"] = (Entry(self.ui.top_frame1))
         self.textboxes["composername"] = (Entry(self.ui.top_frame2))
         self.textboxbuttons["namebutton"] = (Button(self.ui.top_frame1, text="Add Name", command=lambda: self.ui.add_name()))
@@ -26,91 +99,24 @@ class Buttons: # it's weird that possible pitches and their names are defined he
             label.pack(side = constants.LEFT)
         for box in self.textboxes.values():
             box.pack(side = constants.RIGHT)
-        
-        self.octave_frame = Frame(self.ui.right_frame)
-        self.octave_frame.pack(side=constants.TOP)
-        self.button_labels.append(Label(self.octave_frame, text="Octave"))
-        self.octave_buttons.append(OctaveButton("Otsu", 0, self.ui, self, self.octave_frame))
-        self.octave_buttons.append(OctaveButton("Kan", 1, self.ui, self, self.octave_frame))
-        self.octave_buttons.append(OctaveButton("Daikan", 2, self.ui, self, self.octave_frame))
-        self.separators["octave"] = (ButtonSeparator(self.octave_frame))
 
-        self.notes_frame = Frame(self.ui.right_frame)
-        self.notes_frame.pack(side=constants.TOP)
-        self.button_labels.append(Label(self.notes_frame, text="Notes"))
-        if mode in ["Tozan", "Ueda"]:
-            otsu_note_texts = ["ロ", "ツ", "レ", "チ", "ハ", "ヒ"]
-        elif mode == "Kinko":
-            otsu_note_texts = ["ロ", "ツ", "レ", "チ", "リ", "イ"]
-        else:
-            raise Exception("Designated school of shakuhachi notation not available, or no school designated")
-        pitches = [2, 5, 7, 9, 12, 14]
-        self.note_frame1 = Frame(self.notes_frame)
-        self.note_frame1.pack(side=constants.TOP)
-        for i in range(3):
-            button = NoteButton(otsu_note_texts[i], pitches[i], self.ui, self, self.note_frame1)
-            self.notebuttons.append(button)
-            button.button.pack(side=constants.LEFT)
-        self.note_frame2 = Frame(self.notes_frame)
-        self.note_frame2.pack(side=constants.TOP)
-        for i in range(3, 6):
-            button = NoteButton(otsu_note_texts[i], pitches[i], self.ui, self, self.note_frame2)
-            self.notebuttons.append(button)
-            button.button.pack(side=constants.LEFT)
-        lenghts = {2: "16th", 4: "8th", 8: "4th", 16: "half"}
-        # support for 32ths currently disabled -> not commonly necessary in this form of notation -> however could be dealt with and added later
-        # 1: "32th"
-        # whole also disabled -> usable only when there's a feature to change measure grid
-        # 32: "half"
-        self.separators["notes"] = (ButtonSeparator(self.notes_frame))
-
-        self.break_frame = Frame(self.ui.right_frame)
-        self.break_frame.pack(side=constants.TOP)
-        self.break_button = NoteButton("Break", -1, self.ui, self, self.break_frame)
-        self.break_button.button.pack(side=constants.TOP)
-        self.separators["breaks"] = ButtonSeparator(self.break_frame)
-
-        self.durations_frame = Frame(self.ui.right_frame)
-        self.durations_frame.pack(side=constants.TOP)
-        self.button_labels.append(Label(self.durations_frame, text="Durations"))
-        for key, value in lenghts.items():
-            self.lenghtbuttons[key] = LenghtButton(value, key, self.ui, self, self.durations_frame)
-        self.separators["durations"] = ButtonSeparator(self.durations_frame)
-
-        self.parts_frame = Frame(self.ui.right_frame)
-        self.parts_frame.pack(side=constants.TOP)
-        self.button_labels.append(Label(self.parts_frame, text="Parts"))
-        self.addpartbutton = AddPartButton("Add Part", self.ui, self, self.parts_frame)
-        self.partbuttons[1] = (PartButton(f"Part {1}", 1, self.ui, self, self.parts_frame))
-        self.separators["parts"] = ButtonSeparator(self.parts_frame)
-
-        self.export_frame = Frame(self.ui.right_frame)
-        self.export_frame.pack(side=constants.TOP)
-        self.button_labels.append(Label(self.export_frame, text="Export"))
-        self.exp_midi_button = ExportMidiButton("export MIDI", self.ui, self, self.export_frame)
-        self.exp_sheet_button = ExportPdfButton("export PDF", self.ui, self, self.export_frame)
-        self.exp_svg_button = ExportSvgButton("export SVG", self.ui, self, self.export_frame)
-        self.grid_option_choice = BooleanVar()
-        self.sheet_grid_option = Checkbutton(self.export_frame, text="Include grid", variable=self.grid_option_choice, onvalue=True, offvalue=False)
-        self.sheet_grid_option.pack()
-        self.separators["exports"] = ButtonSeparator(self.export_frame)
-
-        self.file_frame = Frame(self.ui.right_frame)
-        self.file_frame.pack(side=constants.TOP)
-        self.button_labels.append(Label(self.file_frame, text="File"))
-        self.savebutton = SaveButton("save", self.ui, self, self.file_frame)
-        self.loadbutton = LoadButton("load", self.ui, self, self.file_frame)
-        self.uploadbutton = UploadButton("upload", self.ui, self, self.file_frame)
-        self.separators["exports"] = ButtonSeparator(self.file_frame)
-
-        self.play_frame = Frame(self.ui.right_frame)
-        self.play_frame.pack(side=constants.TOP)
-        self.button_labels.append(Label(self.play_frame, text="Play"))
-        self.play_midi_button = PlayButton("play", self.ui, self, self.play_frame)
-
-#there is a bunch of repetitive code in above init function 
-# -> instead export creating of a frame to a function and call that for each frame
-
+    def _generate_button_frame(self, text: str, buttoninfo, label=True, separator=True):
+        frame = self.frames[text] = Frame(self.ui.right_frame)
+        frame.pack(side=constants.TOP)
+        self.frames[text] = frame
+        if label:
+            self.labels.append(Label(frame, text=text))
+        self.buttons_by_frame[text] = []
+        for button_spec in buttoninfo:
+            button = button_spec['button_class'](button_spec['text'], button_spec['data'], self.ui, self, frame)
+            if "Note" in text:
+                button.button.pack(side=constants.LEFT)
+            else:
+                button.button.pack(side=constants.TOP)
+            self.buttons[button_spec['text']] = button
+            self.buttons_by_frame[text].append(button)
+        if separator:
+            self.separators[text] = ButtonSeparator(frame)
 
 class ButtonSeparator:
     def __init__(self, frame, pady=10):
@@ -129,12 +135,11 @@ class OctaveButton(ShakuButton):
         self.button = Button(frame, text=self.text, command=self.press)
         if self.text == "Otsu":
             self.button.config(relief=constants.SUNKEN, state="disabled")
-        self.button.pack(side=constants.TOP)
         self.octaves_up = data
 
     def press(self):
         self.button.config(relief=constants.SUNKEN, state="disabled")
-        for b in self.owner.octave_buttons:
+        for b in self.owner.buttons_by_frame["Octave"]:
             if b.text != self.text:
                 b.button.config(relief=constants.RAISED, state="normal")
 
@@ -145,7 +150,7 @@ class NoteButton(ShakuButton):
         self.button = Button(frame, text=self.text, command=self.press)
 
     def press(self):
-        note = Note(self.text, self.pitch, self.ui.active_part.next_position(), self.ui.active_part.next_lenght)
+        note = Note(self.text, self.pitch, self.ui.active_part.next_position(), self.owner.chosen_lenght) #do we need this active_part to exist -> or part choosing handled by buttons class?
         self.ui.add_note(note)
 
 class LenghtButton(ShakuButton):
@@ -153,69 +158,69 @@ class LenghtButton(ShakuButton):
         super().__init__(text, ui, owner)
         self.lenght = data
         self.button = Button(frame, text=self.text, command=self.press)
-        self.button.pack(side=constants.TOP)
 
     def press(self):
-        self.ui.active_part.next_lenght = self.lenght
+        self.owner.chosen_lenght = self.lenght
         self.button.config(state="disabled", relief=constants.SUNKEN)
-        for b in self.owner.lenghtbuttons.values():
+        for b in self.owner.buttons_by_frame["Duration"]:
             if b.text != self.text:
                 b.button.config(state="normal", relief=constants.RAISED)
 
 class AddPartButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
-        self.button.pack(side=constants.TOP)
 
-    def press(self, pressed_on_load=False):
-        if len(self.ui.music.parts) == 4:
-            return
-        self.owner.file_frame.pack_forget()
+    def press(self):
+        self.owner.frames["File"].pack_forget()
+        self.owner.frames["Play"].pack_forget()
         i = len(self.ui.music.parts) + 1
-        self.owner.separators["parts"].line.destroy()
-        new_button = None
-        if self.ui.music.add_part(i, loading=pressed_on_load):
-            new_button = PartButton(f"Part {i}", i, self.ui, self.owner, self.owner.parts_frame)
-            self.owner.partbuttons[i] = new_button
-        self.owner.separators["parts"] = ButtonSeparator(self.owner.parts_frame)
-        self.owner.file_frame.pack(side=constants.TOP)
+        self.owner.separators["Parts"].line.pack_forget()
+        if self.ui.music.add_part(i):
+            new_button = PartButton(f"Part {i}", i, self.ui, self.owner, self.owner.frames["Parts"])
+            self.owner.buttons_by_frame["Parts"].append(new_button)
+            new_button.button.pack(side=constants.TOP)
+        else:
+            new_button = None
+        self.owner.separators["Parts"] = ButtonSeparator(self.owner.frames["Parts"])
+        self.owner.frames["File"].pack(side=constants.TOP)
+        self.owner.frames["Play"].pack(side=constants.TOP)
         self.ui.draw_all_notes()
         if new_button:
             new_button.press()
-        if len(self.ui.music.parts) == 4:
-            self.button.config(state="disabled")
-        return new_button
+        if len(self.ui.music.parts) > 3:
+            self.button.config(state="disabled", relief=constants.SUNKEN)
 
 class PartButton(ShakuButton):
     def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
-        self.button.pack(side=constants.TOP)
         self.part = data
 
     def press(self):
         self.button.config(state="disabled", relief=constants.SUNKEN)
-        for b in self.owner.partbuttons.values():
-            if b.text != self.text:
+        for b in self.owner.buttons_by_frame["Parts"]:
+            if b.text != self.text and b.text != "Add Part":
                 b.button.config(state="normal", relief=constants.RAISED)
         self.ui.active_part = self.ui.music.parts[self.part]
-        self.owner.lenghtbuttons[8].press()
+        self.owner.buttons["4th"].press()
 
 class ExportMidiButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)
         self.creator = MidiCreator()
+        self.filemanager = FileManager()
 
     def press(self):
         for part in self.ui.music.parts.values():
             self.creator.create_track(part)
-        self.creator.write_file()
+        midi = self.creator.generate_midi()
+        self.filemanager.save_midi(midi)
 
 class ExportPdfButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)
@@ -227,7 +232,7 @@ class ExportPdfButton(ShakuButton):
         filemanager.save_pdf(image)
 
 class ExportSvgButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)
@@ -239,21 +244,26 @@ class ExportSvgButton(ShakuButton):
         filemanager.save_svg(svg)
 
 class PlayButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)
-        self.creator = MidiCreator()
         self.player = MidiPlayer()
+        self.filemanager = FileManager()
+        self.id = 0
 
     def press(self):
+        self.id += 1
+        self.creator = MidiCreator()
         for part in self.ui.music.parts.values():
             self.creator.create_track(part)
-        self.creator.write_file()
-        self.player.play(len(self.ui.music.parts))
+        midi = self.creator.generate_midi()
+        name = "temp" + str(self.id) + ".mid"
+        self.filemanager.save_midi(midi, name)
+        self.player.play(len(self.ui.music.parts), name)
 
 class SaveButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)
@@ -264,7 +274,7 @@ class SaveButton(ShakuButton):
         filemanager.save_shaku(data)
 
 class LoadButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)
@@ -274,26 +284,14 @@ class LoadButton(ShakuButton):
         data = filemanager.load()
         if data == None:
             return
-        music = self.ui.music = Music()
-        self.ui.sheet.delete('all')
-        for i in self.owner.partbuttons.values():
-            i.button.destroy()
-        self.owner.partbuttons = {}
-        for part_data in data['parts'].values():
-            self.owner.addpartbutton.press(pressed_on_load=True)
-            for note in part_data:
-                self.ui.add_note(Note(note['text'], int(note['pitch']), note['position'], int(note['lenght'])))
-        self.ui.create_grid()
-        music.set_name(data['name'])
-        music.set_composer(data['composer'])
-        self.ui.draw_texts()
-        for i in self.owner.partbuttons.keys():
-            if i > len(self.ui.music.parts):
-                self.owner.partbuttons[i].button.destroy()
-        self.owner.lenghtbuttons[8].press()
+        self.ui.load_json(data)
+        for button in self.owner.buttons_by_frame["Parts"]:
+            if button.text != "Add Part" and str[button.part] not in data['parts'].keys():
+                button.button.destroy()
+        self.owner.buttons["Part 1"].press()
 
 class UploadButton(ShakuButton):
-    def __init__(self, text, ui, owner, frame):
+    def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner)
         self.button = Button(frame, text=self.text, command=self.press)
         self.button.pack(side=constants.TOP)

@@ -95,7 +95,7 @@ class UI:
                 self.draw_time_notation(i)
         self.active_part = store
 
-    def draw_all_notes(self):
+    def draw_all_notes(self): #should rename to something like draw_all
         self.sheet.delete('all')
         self.create_grid()
         for id, part in self.music.parts.items():
@@ -116,12 +116,23 @@ class UI:
         if self.composer != "":
             self.sheet.delete(self.composer)
 
-    def add_name(self):
-        name = self.controls.textboxes["musicname"].get()
+    def add_name(self, name=None):
+        if not name:
+            name = self.controls.textboxes["musicname"].get()
         self.music.set_name(name)
         self.draw_texts()
 
-    def add_composer(self):
-        composer = self.controls.textboxes["composername"].get()
+    def add_composer(self, composer=None):
+        if not composer:
+            composer = self.controls.textboxes["composername"].get()
         self.music.set_composer(composer)
         self.draw_texts()
+
+    def load_json(self, data):
+        self.music = Music()
+        self.music.load_json(data)
+        self.sheet.delete('all')
+        self.create_grid()
+        self.add_name(data['name'])
+        self.add_composer(data['composer'])
+        self.draw_all_notes()
