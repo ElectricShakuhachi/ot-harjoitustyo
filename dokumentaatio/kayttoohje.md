@@ -17,7 +17,7 @@ paperin oikeasta yläreunasta
 
 1. Nuotin ruudukon ruutu vastaa yhtä tahtia nuotissa, eli tiettyä kestoa ajassa. Oletuksena tämä kesto on kaksi tyypillisimmän pituista nuottia (ns. neljäsosanuotti), kuten tässä kuvassa:
 
-<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/1.jpg" width="60">
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/1.jpg" width="60">
 
 2. Nuotin pituudet ilmaistaan nuoteissa paitsi niiden etäisyytenä toisistaan pystysuunnassa, myös niiden vasemmalle puolelle piirtyvillä viivoilla.
     - Yksi pystyviiva = neljäsosanuotti
@@ -34,9 +34,9 @@ paperin oikeasta yläreunasta
 
 4. Alla esimerkki ohjelmalla toteutettua shakuhachi-nuottia vastaavasta länsimaisesta nuotista:
 
-<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/2.jpg" width="70">
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/2.jpg" width="70">
 
-<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/2-western.jpg" width="70">
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/2-western.jpg" width="70">
 
 Nuottien kesto merkitään nuottien viereen viiva- ja pistemerkeillä, lisäksi nuottien viereen tai alle voi tulla lisämerkintöjä liittyen erinäisiin nuotin sävelkorkeuteen ja
 soittotekniikkaan vaikuttaviin asioihin.
