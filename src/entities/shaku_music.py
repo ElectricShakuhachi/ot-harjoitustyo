@@ -1,22 +1,20 @@
-from copy import copy
-from typing_extensions import Self
 import config.shaku_constants as consts
 from entities.shaku_part import ShakuPart
 from entities.shaku_note import ShakuNote
 from entities.shaku_notation import ShakuNotation
 
 class ShakuMusic:
-    """Class depicting the entirety of all notation and markings on a page of Japanese sheet music for shakuhachi
-    
+    """Representation of notation and markings on a page of shakuhachi sheet music
+
     Attributes:
         name: Name of musical piece
         composer: Name of composer
-        parts: Dictionary mapping each part name to a ShakuPart -instance, which contains all notations for a single part on solo- or multipartite shakuhachi sheet music
+        parts: Dictionary mapping each part name to a ShakuPart -instance
         measure_lenght: lenght of each measure in the sheet music (1 unit = 2 quarter notes)
-        spacing: Spacing between each row of every part on sheet (1 unit = 20 px - or 80 px after scaling for export in ImageCreator instance)
+        spacing: Multiplier for spacing between each row of music per part
     """
     def __init__(self):
-        """Constructor, set's up placeholders for naming piece/composer, variables for positioning and a dictionary to contain musical parts"""
+        """Constructor, initializes class attributes"""
         self._name = ""
         self._composer = ""
         self._parts = {}
@@ -30,8 +28,8 @@ class ShakuMusic:
 
     @name.setter
     def name(self, name: str):
-        """Set composition name, return Error if composition name and composer will not fit well on sheet"""
-        if len(name) + len(self._composer) < 50: #check later how much fits -> remember to change other one too
+        """Set composition name"""
+        if len(name) + len(self._composer) < 50:
             self._name = name
         else:
             raise ValueError("Name & Composer combination too long")
@@ -43,7 +41,7 @@ class ShakuMusic:
 
     @composer.setter
     def composer(self, composer: str):
-        """Set composer name, return Error if composition name and composer will not fit well on sheet"""
+        """Set composer name"""
         if len(composer) + len(self._name) < 50:
             self._composer = composer
         else:
@@ -70,7 +68,7 @@ class ShakuMusic:
     def _maximum_rows_for_part_amount(self):
         next_section_size = consts.NOTE_ROW_SPACING * (self.spacing + 1)
         return (consts.GRID_X[1] - consts.GRID_X[0]) // next_section_size
-        
+
     def _max_rows(self):
         maximum = self._maximum_rows_for_part_amount()
         for part in self._parts.values():
@@ -79,7 +77,7 @@ class ShakuMusic:
         return False
 
     def add_part(self, part_id: int):
-        """Adds a new musical part into the composition, or returns False if there is no room on sheet to add the part
+        """Adds a new musical part into the composition if there is room
 
         Args:
             part_id: id for new part
@@ -108,8 +106,8 @@ class ShakuMusic:
         return start_x
 
     def _realign_parts(self):
-        for id, part in self.parts.items():
-            start_x = self._start_x_of_part(id)
+        for key, part in self.parts.items():
+            start_x = self._start_x_of_part(key)
             part.realign(self.spacing, start_x)
 
     def data_correct(self, data):
@@ -161,7 +159,8 @@ class ShakuMusic:
             for notation in part_data.notations:
                 data["parts"][part_n]["notations"].append({
                     "type": notation.type,
-                    "position": notation.position
+                    "position": notation.position,
+                    "note_id": notation.note_id
                 })
         return data
 
@@ -173,28 +172,29 @@ class ShakuMusic:
         """
         self.name = data["name"]
         self.composer = data["composer"]
-        self.spacing = data["spacing"]    
+        self.spacing = data["spacing"]
         for part_id, part_data in data['parts'].items():
-            part = self._parts[int(part_id)] = ShakuPart(part_data["part_no"], part_data["start_x"], part_data["spacing"])
+            part = self._parts[int(part_id)] = ShakuPart(
+                part_data["part_no"],
+                part_data["start_x"],
+                part_data["spacing"]
+                )
             part.measure_counter = part_data["measure_counter"]
             part.rows = part_data["rows"]
             part_data.notation_at_current_pos = part_data["notation_at_current_pos"]
             for note in part_data["notes"]:
-                recovered_note = ShakuNote(int(note["pitch"]), note["position"], int(note["lenght"]))
+                recovered_note = ShakuNote(
+                    int(note["pitch"]),
+                    note["position"],
+                    int(note["lenght"])
+                    )
                 recovered_note.first = note["first"]
                 recovered_note.dotted = note["dotted"]
                 part.notes.append(recovered_note)
             for notation in part_data["notations"]:
-                recovered_notation = ShakuNotation(notation["type"], notation["position"])
+                recovered_notation = ShakuNotation(
+                    notation["type"],
+                    notation["position"],
+                    notation["note_id"]
+                    )
                 part.notations.append(recovered_notation)
-
-    def extract_time_notation(self):# currently not in use I THink -> should be taken into use instead of going directly into parts
-        """Get all time notations for all parts
-
-        Returns:
-            (list of list of list of tuple of tuple): all time notations for all parts
-        """
-        parts = []
-        for part in self._parts.values():
-            parts.append(part.part_time_notations())
-        return parts

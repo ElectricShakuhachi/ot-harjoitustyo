@@ -1,4 +1,7 @@
+import os
 from tkinter import Button, Entry, constants, Frame, ttk, Label, Checkbutton, BooleanVar
+import pygame
+from PIL import Image, ImageTk
 from services.filing import FileManager
 from services.midi_creator import MidiCreator
 from services.music_player import MusicPlayer
@@ -6,11 +9,8 @@ from services.image_creator import ImageCreator
 from services.svg_creator import SvgCreator
 from ui.messages import ShakuMessage
 import config.shaku_constants as consts
-import pygame
 from entities.shaku_note import ShakuNote
 from entities.shaku_notation import ShakuNotation
-import os
-from PIL import Image, ImageTk
 
 class Buttons:
     def __init__(self, ui):
@@ -41,8 +41,8 @@ class Buttons:
 
     def _create_octave_buttons(self):
         buttons = []
-        for id, octave in enumerate(["Otsu", "Kan", "Daikan"]):
-            buttons.append({'text': octave, 'data': id, "button_class": OctaveButton})
+        for key, octave in enumerate(["Otsu", "Kan", "Daikan"]):
+            buttons.append({'text': octave, 'data': key, "button_class": OctaveButton})
         self._generate_button_frame("Octave", buttons, self.ui.frames["right"], separator=False)
         self.separators["Octave"] = ButtonSeparator(self.ui.frames["right"])
 
@@ -190,6 +190,9 @@ class ShakuButton:
         self.text = text
         self.button = Button(frame, text=self.text, font="Shakunotator",  command=self.press)
 
+    def press(self):
+        pass
+
 class OctaveButton(ShakuButton):
     def __init__(self, text, data, ui, owner, frame):
         super().__init__(text, ui, owner, frame)
@@ -220,8 +223,8 @@ class NoteButton(ShakuButton):
         self.pitch = data
         image = Image.open(consts.NOTES[self.pitch])
         scale =  consts.BUTTON_NOTE_SIZE / 1000
-        self.PILimg = image.resize([int(scale * s) for s in image.size])
-        self.image = ImageTk.PhotoImage(self.PILimg)
+        self.pil_img = image.resize([int(scale * s) for s in image.size])
+        self.image = ImageTk.PhotoImage(self.pil_img)
         self.button.config(image=self.image, width=consts.NOTE_BUTTON_SIZE, height=consts.NOTE_BUTTON_SIZE)
 
     def press(self):
@@ -241,9 +244,9 @@ class LenghtButton(ShakuButton):
     def press(self):
         self.owner.chosen_lenght = self.lenght
         self.button.config(state="disabled", relief=constants.SUNKEN)
-        for b in self.owner.buttons_by_frame["Duration"]:
-            if b.text != self.text:
-                b.button.config(state="normal", relief=constants.RAISED)
+        for button in self.owner.buttons_by_frame["Duration"]:
+            if button.text != self.text:
+                button.button.config(state="normal", relief=constants.RAISED)
         if self.lenght <= 2 or self.lenght >= 16:
             self.owner.buttons["Break"].button.config(state="disabled", relief=constants.SUNKEN)
         else:
@@ -260,7 +263,7 @@ class AddPartButton(ShakuButton):
         return new_button
 
     def press(self, loading_part=None):
-        if loading_part == None:
+        if loading_part is None:
             i = len(self.ui.music.parts) + 1
             if not self.ui.music.add_part(i):
                 self.ui.messages.append(ShakuMessage("No Part Room"))
@@ -281,9 +284,9 @@ class PartButton(ShakuButton):
 
     def press(self):
         self.button.config(state="disabled", relief=constants.SUNKEN)
-        for b in self.owner.buttons_by_frame["Parts"]:
-            if b.text != self.text and b.text != "Add Part":
-                b.button.config(state="normal", relief=constants.RAISED)
+        for button in self.owner.buttons_by_frame["Parts"]:
+            if button.text not in (self.text, "Add Part"):
+                button.button.config(state="normal", relief=constants.RAISED)
         self.ui.active_part = self.ui.music.parts[self.part]
         self.owner.buttons["4th"].press()
 
@@ -350,7 +353,7 @@ class LoadButton(ShakuButton):
         filemanager = FileManager()
         data = filemanager.load()
         self.ui.clear_messages()
-        if data == None:
+        if data is None:
             return
         if data == "JSON Error" or not self.ui.music.data_correct(data):
             self.ui.messages.append(ShakuMessage("Incorrect File"))

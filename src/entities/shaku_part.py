@@ -1,5 +1,5 @@
-import config.shaku_constants as consts
 from copy import copy
+import config.shaku_constants as consts
 from entities.shaku_note import ShakuNote
 from entities.shaku_notation import ShakuNotation
 
@@ -13,21 +13,21 @@ class ShakuPart:
         start_x: x-axis for positioning first note of the part
         measure_counter: value used in calculating note positioning with regards to musical measure
         spacing: value depicting how much x-axis room to leave between rows of notes
-        rows: count of rows used on musical sheet by the part -> used by parent ShakuMusic class for calculating when sheet is full
-        notation_at_current_pos: Boolean value, describing whether there is a notation the end of the part where next note will be inserted
+        rows: count of rows used on musical sheet by the part
+        notation_at_current_pos: True if there is a notation related to next note position
     """
     def __init__(self, part_id: int, start_x: int, spacing: int):
-        """Constructor, records part number, initializes and empty list to hold notes, and placeholder values to be used for notation placement calculations
+        """Constructor, intializes class attributes
 
         Args:
             part_id: number of part on musical notation sheet
             start_x: x-axis for positioning first note of the part
             spacing: value depicting how much x-axis room to leave between rows of notes
         """
-        self._part_no = part_id #part should not have knowledge of its number or even spacing REMOVE THESE COMMENTS IF NO TIME TO COMPLETE
-        self._notes = [] # -> note positions should instead be recorded relatively and music class should calculate final locations based on spacing.
+        self._part_no = part_id
+        self._notes = []
         self._notations = []
-        self._start_x = start_x  # in fact note positions ideally would not be even recorded on notes and every parent level would handle spacing them
+        self._start_x = start_x
         self._measure_counter = 0
         self._spacing = spacing
         self._rows = 0
@@ -35,14 +35,14 @@ class ShakuPart:
 
     @property
     def notation_at_current_pos(self):
-        """Get boolean containing whether there is a notation the end of the part where next note is to be inserted"""
+        """Get notation_at_current_pos"""
         return self._notation_at_current_pos
-    
+
     @notation_at_current_pos.setter
     def notation_at_current_pos(self, value: bool):
-        """Set boolean containing whether there is a notation the end of the part where next note is to be inserted"""
+        """Set notation_at_current_pos"""
         self._notation_at_current_pos = value
-    
+
     @property
     def notations(self):
         """Get misc notations on part"""
@@ -65,12 +65,12 @@ class ShakuPart:
 
     @property
     def measure_counter(self):
-        """Get measure_counter, integer variable used for checking whether a new note is going to be in the beginning of a measure"""
+        """Get measure_counter"""
         return self._measure_counter
 
     @measure_counter.setter
     def measure_counter(self, value: int):
-        """Get measure_counter, integer variable used for checking whether a new note is going to be in the beginning of a measure"""
+        """Get measure_counter"""
         self._measure_counter = value
 
     @property
@@ -100,7 +100,7 @@ class ShakuPart:
 
     @spacing.setter
     def spacing(self, spacing: int):
-        """Set the spacing, as in the amount of room on x-axis between lines of musical notes on part. Used when adding parts to music (excluding first 2 parts)
+        """Set the spacing == amount of room on x-axis between rows on part.
 
         Args:
             spacing: Value depicting how much to create space
@@ -110,7 +110,8 @@ class ShakuPart:
         row = 0
         if spacing > 2:
             for i in range(1, len(self.notes)):
-                if self.notes[i].position[0] < self.notes[i - 1].position[0] + row * change * consts.NOTE_ROW_SPACING:
+                previous = self.notes[i - 1].position[0] + row * change * consts.NOTE_ROW_SPACING
+                if self.notes[i].position[0] < previous:
                     row += 1
                 self.notes[i].position[0] -= row * change * consts.NOTE_ROW_SPACING
 
@@ -140,17 +141,17 @@ class ShakuPart:
         """
         if len(self.notes) == 0:
             return [self._start_x, 80]
-        next = copy(self.notes[-1].position)
-        next[1] += self.notes[-1].lenght * 6
+        next_pos = copy(self.notes[-1].position)
+        next_pos[1] += self.notes[-1].lenght * 6
         if self._measure_counter == 0:
-            next[1] += 14
-        if next[1] > 830:
-            next[1] = 80
-            next[0] -= self.spacing * consts.NOTE_ROW_SPACING
-        return next
+            next_pos[1] += 14
+        if next_pos[1] > 830:
+            next_pos[1] = 80
+            next_pos[0] -= self.spacing * consts.NOTE_ROW_SPACING
+        return next_pos
 
-    def append_misc_notation(self, type: str):
-        """Adds a non-pitch, non-duration shakuhachi sheet music notation next to the spot where next pitch note on part will be inserted
+    def append_misc_notation(self, notation_type: str):
+        """Adds a notation next to the position where next note will be
 
         Args:
             type: What type of notation will be inserted
@@ -161,7 +162,7 @@ class ShakuPart:
         position = self.next_position()
         position[0] = consts.NOTATION_APPENDIX_X_FROM_NOTE
         position[1] = consts.NOTATION_APPENDIX_Y_FROM_NOTE
-        notation = ShakuNotation(type, position, len(self.notes))
+        notation = ShakuNotation(notation_type, position, len(self.notes))
         self._notations.append(notation)
         self._notation_at_current_pos = True
 
@@ -172,30 +173,29 @@ class ShakuPart:
             note: a note instance depicting note to be added
 
         Returns:
-            Boolean value -> true if note was added, false if musical sheet cannot fit more notes for the part
+            True if note was added, False if no space for it
         """
         if len(self.notes) == 0 or self.notes[-1].position[0] > note.position[0]:
             self._rows += 1
         if note.position[0] < 55:
             return False
-        else:
-            self.notes.append(note)
-            if self._measure_counter == 0:
-                note.first = True
-            self._measure_counter += note.lenght
-            if self._measure_counter == consts.MEASURE_LENGHT * 8:
-                self._measure_counter = 0
-            self._notation_at_current_pos = False
-            return True
+        self.notes.append(note)
+        if self._measure_counter == 0:
+            note.first = True
+        self._measure_counter += note.lenght
+        if self._measure_counter == consts.MEASURE_LENGHT * 8:
+            self._measure_counter = 0
+        self._notation_at_current_pos = False
+        return True
 
     def time_notation(self, note_n: int):
-        """Generate Japanese shakuhachi sheet music note rhythm (duration) notation for a single note
+        """Generate rhythm notation for a single note
 
         Args:
             note_n: index of note on part's list of notes
 
         Returns:
-            list of ((x1, y2),(x2, y2)) -tuples or tuples depicting coordinate pairs for lines to be drawn to generate rhythm notation
+            Coordinates for rhytm notation
         """
         def_x = consts.NOTE_TO_RHYTM_SPACING
         def_x2 = consts.RHYTM_LINE2_TO_LINE1_SPACING + def_x
@@ -203,35 +203,50 @@ class ShakuPart:
         if self.notes[note_n].pitch < 0:
             return notation
         note = self.notes[note_n]
-        x = note.position[0]
-        y = note.position[1] + consts.RHTM_VERTICAL_LINE_START_TO_NOTE_Y
+        x_axis = note.position[0]
+        y_axis = note.position[1] + consts.RHTM_VERTICAL_LINE_START_TO_NOTE_Y
         if note_n > 0:
             previous = self.notes[note_n - 1]
         if note.lenght > 8:
             return notation
-        notation.append(((x + def_x, y), (x + def_x, y + consts.RHYTM_VERTICAL_LINE_LENGHT)))
+        notation.append(
+            ((x_axis + def_x, y_axis),
+            (x_axis + def_x, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
+            )
         if note.lenght == 8:
             return notation
         if note_n != 0 and previous.lenght < 8 and not note.first:
-            notation.append(((x + def_x, previous.position[1]), (x + def_x, y + consts.RHYTM_VERTICAL_LINE_LENGHT)))
+            notation.append(
+                ((x_axis + def_x, previous.position[1]),
+                (x_axis + def_x, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
+                )
         if note.lenght == 4:
             if note_n == 0 or note.first or previous.lenght > 4:
                 note.dotted = True
-                notation.append(((x + def_x - 1, y + 4), (x + def_x + 4, y + 8)))
+                notation.append(
+                    ((x_axis + def_x - 1, y_axis + 4),
+                    (x_axis + def_x + 4, y_axis + 8))
+                    )
             return notation
-        notation.append(((x + def_x2, y), (x + def_x2, y + consts.RHYTM_VERTICAL_LINE_LENGHT)))
+        notation.append(
+            ((x_axis + def_x2, y_axis),
+            (x_axis + def_x2, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
+            )
         if note_n != 0 and previous.lenght < 3 and not note.first:
-            notation.append(((x + def_x2, y - 10), (x + def_x2, y + consts.RHYTM_VERTICAL_LINE_LENGHT)))
+            notation.append(
+                ((x_axis + def_x2, y_axis - 10),
+                (x_axis + def_x2, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
+                )
         if note.lenght == 1: #SPECIAL CASE -> NOT IN USE CURRENTLY
-            notation.append(((def_x - 1, y + 4), (def_x + 6, y + 7)))
+            notation.append(((def_x - 1, y_axis + 4), (def_x + 6, y_axis + 7)))
             note.dotted = True
         return notation
 
     def part_time_notations(self):
-        """Generate Japanese shakuhachi sheet music note rhythm (duration) notation for all notes on part
+        """Generate note rhythm notation for all notes on part
 
         Returns:
-            (list of lists that each contain tuples of tuples) A depiction of all lines to be drawn for rhythms in part
+            A depiction of all lines to be drawn for rhythms in part
         """
         notations = []
         for note_n in range(len(self._notes)):
@@ -239,12 +254,3 @@ class ShakuPart:
             if self.notes[note_n].lenght == 4 and note_n > 0 and self.notes[note_n - 1].dotted:
                 notations[-2] = notations[-2][:-1]
         return notations
-
-    def add_misc_notation(self, type: str, position: list):
-        """Add a non-pitch, non-duration shakuhachi sheet music notation on part
-
-        Args:
-            type: type of notation to add
-            position: notation position as [x, y]
-        """
-        self.notations.append(ShakuNotation(type, position))

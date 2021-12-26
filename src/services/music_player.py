@@ -1,5 +1,5 @@
-import pygame
 import os
+import pygame
 import config.shaku_constants as consts
 from services.midi_creator import MidiCreator
 from services.conversions import MusicConverter
@@ -7,19 +7,19 @@ from services.filing import FileManager
 
 class MusicPlayer:
     """Class for playing music generated from Shakunotator Music -format
-    
+
     Attributes:
         filemanager: FileManager -instance for handling loading and saving files
         midi_creator: MidiCreator instance for generating MIDI -format music representation
     """
     def __init__(self):
-        """Constructor, sets up class instances necessary for music playback, and initializes pygame mixer"""
+        """Constructor, sets up class instances and inits pygame mixer"""
         self._filemanager = FileManager()
         self._midi_creator = MidiCreator(tempo=consts.PLAYBACK_TEMPO)
         pygame.mixer.init()
 
     def play(self, parts: list):
-        """Generates midi file, converts it to wav-format and uses to stream it for playback, fluidsynth installation necessary. After playback, removes temporary .mid and .wav files
+        """Plays inputted parts with fluidsynth
 
         Args:
             parts: List of musical score parts in Shakunotator's Part -instance format

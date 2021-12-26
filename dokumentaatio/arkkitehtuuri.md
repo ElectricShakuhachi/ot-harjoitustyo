@@ -4,7 +4,7 @@
 
 Ohjelman rakenne on MVC-arkkitehtuurin mukainen ja sen pakkausrakenne on seuraava
 
-<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/packages.jpg" width="420">
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/architecture.jpg" width="420">
 
 Pakkausten koodi vastaa seuraavia tarkoituksia:
 

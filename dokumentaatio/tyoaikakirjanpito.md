@@ -21,4 +21,6 @@
 | 22.12. | 10   | Refaktorointia luokkariippuvuuksien vähentämiseksi, docstringien tekoa ja testauksen laajentamista|
 | 23.12. | 3    | Docstringien luontia ja testauksen laajentamista  |
 | 24.12. | 5    | Docstringien luontia ja refaktorointia |
-| yht    | ??   |  |
+| 25.12. | 4    | Docstringien luontia ja refaktorointia |
+| 26.12. | 11   | Docstringien luontia, refaktorointia ja pylint-korjauksia |
+| yht    | 96   |  |

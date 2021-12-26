@@ -4,19 +4,19 @@ import config.shaku_constants as consts
 
 class MidiTrack:
     """Class instance represents track information to be written as a track to MIDI file
-    
+
     Attributes:
         channel: Channel to be used for track in MIDI file
         notes: Notes as integers that represent pitches in MIDI format
-        lenghts: Lenght of each note - indexes corresponding to relative notes in notes -attribute
-        notemap: Conversion table of where index is pitch format used by Music class in ShakuNotator and value is MIDI pitch
+        lenghts: Lenght of each note in notes
+        notemap: Pitch conversion table
     """
     def __init__(self, channel: int, ro_daimeri_pitch: int=60):
-        """Constructor, sets up pitch conversion table based on instrument base pitch and initializes empty lists
+        """Sets up pitch conversion table and initializes attributes
 
         Args:
             channel: Channel to be used in MIDI file for track
-            ro_pitch: Base pitch of Shakuhachi in MIDI format. Defaults to 62. (D-scale shakuhachi, 1.8 size)
+            ro_pitch: Base pitch of Shakuhachi in MIDI format. Defaults to 62.
         """
         self._channel = channel
         self._notes = []
@@ -42,10 +42,10 @@ class MidiTrack:
         return self._lenghts
 
     def fill(self, part: ShakuPart):
-        """Receives information of musical score part and pre-processes note information for MIDI conversion
+        """Pre-processes musical part information for MIDI conversion
 
         Args:
-            part: Instance of ShakuPart class containing necessary note information to be filled to track
+            part: ShakuPart instance with note information to be filled to track
         """
         for note in part.notes:
             self._notes.append(self._notemap[note.pitch])
@@ -53,14 +53,14 @@ class MidiTrack:
 
 class MidiCreator:
     """Class for generating MIDI -format audio representation from ShakuNotator's music format
-    
+
     Attributes:
         tempo: Tempo for MIDI file
         tracks: List of MidiTrack instances containing pitch and lenght data for each track
         volume: Volume for MIDI file
     """
     def __init__(self, tempo: int=consts.DEFAULT_TEMPO):
-        """Constructor, sets tempo, volume for MIDI file and initializes empty list to be filled with Track data
+        """Constructor, sets up attributes for writing midi data
 
         Args:
             tempo: Tempo for MIDI file. Defaults to 65.
@@ -74,7 +74,7 @@ class MidiCreator:
 
         Args:
             part: ShakuPart instance containing necessary note pitch and lenght data
-            ro_pitch: Base pitch of Shakuhachi in MIDI format. Defaults to 62. (D-scale shakuhachi, 1.8 size)
+            ro_pitch: Base pitch of Shakuhachi in MIDI format. Defaults to 62.
         """
         track = MidiTrack(len(self._tracks), ro_daimeri_pitch)
         track.fill(part)

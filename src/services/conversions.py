@@ -1,5 +1,5 @@
-import config.shaku_constants as consts
 from midi2audio import FluidSynth
+import config.shaku_constants as consts
 
 class MusicConverter:
     """Converts MIDI music representation to .wav audio -format"""
@@ -16,7 +16,7 @@ class MusicConverter:
 class ImageScaler:
     """Class for scaling items from app-internal sheet size to export sheet size"""
     def scale(self, item):
-        """Multiplies any int, or all list / tuple values (recursively) by the difference of configured sheet versus export sheet size
+        """Multiplies (recursively) by the difference of ui sheet versus export sheet size
 
         Args:
             item: value or values to be converted
@@ -30,7 +30,6 @@ class ImageScaler:
             for i in item:
                 result.append(self.scale(i))
             return tuple(result)
-        elif type(item) in [int, float]:
+        if type(item) in [int, float]:
             return item * multiplicator
-        else:
-            raise ValueError("Can only scale integers, floats, tuples and lists")
+        raise ValueError("Can only scale integers, floats, tuples and lists")

@@ -1,13 +1,13 @@
 from tkinter import constants, Frame, Canvas, Tk
+from PIL import Image, ImageTk
 from entities.shaku_music import ShakuMusic
 from entities.shaku_note import ShakuNote
 from entities.shaku_part import ShakuPart
 from entities.shaku_notation import ShakuNotation
 from ui.messages import ShakuMessage
 import config.shaku_constants as consts
-from PIL import Image, ImageTk
 
-class UI: 
+class UI:
     """Tkinter UI for Shakunotator
 
     Attributes:
@@ -77,9 +77,9 @@ class UI:
     def messages(self, newlist: list):
         """Set existing error / warning -messages (list of ShakuMessage instances)"""
         for value in newlist:
-            if type(value) != ShakuMessage:
+            if isinstance(value) != ShakuMessage:
                 raise ValueError("Only accepting ShakuMessage instances into UI messages")
-        self._messages = value
+        self._messages = newlist
 
     @property
     def active_part(self):
@@ -116,7 +116,7 @@ class UI:
         return sheet
 
     def _rgb_to_hex(self, rgb: tuple):
-        return "#%02x%02x%02x" % rgb  
+        return "#%02x%02x%02x" % rgb
 
     def _draw_grid_line(self, line: tuple):
         #print(f"Printing line {line}")
@@ -124,14 +124,14 @@ class UI:
 
     def _create_grid(self, measure_lenght=consts.MEASURE_LENGHT):
         spacing = self.music.spacing
-        x = list(consts.GRID_X)
-        y = list(consts.GRID_Y)
-        x[1] -= (x[1] - x[0]) % (consts.NOTE_ROW_SPACING * spacing)
+        x_axis = list(consts.GRID_X)
+        y_axis = list(consts.GRID_Y)
+        x_axis[1] -= (x_axis[1] - x_axis[0]) % (consts.NOTE_ROW_SPACING * spacing)
         grid = []
-        for temp_x in range(x[0], x[1] + 3, consts.NOTE_ROW_SPACING * spacing):
-            grid.append(self._draw_grid_line((temp_x, y[0], temp_x, y[1])))
-        for temp_y in range(y[0], y[1] + 1, consts.VERTICAL_SPACE_PER_FOURTH_NOTE * measure_lenght):
-            grid.append(self._draw_grid_line((x[0], temp_y, x[1], temp_y)))
+        for temp_x in range(x_axis[0], x_axis[1] + 3, consts.NOTE_ROW_SPACING * spacing):
+            grid.append(self._draw_grid_line((temp_x, y_axis[0], temp_x, y_axis[1])))
+        for temp_y in range(y_axis[0], y_axis[1] + 1, consts.VERTICAL_SPACE_PER_FOURTH_NOTE * measure_lenght):
+            grid.append(self._draw_grid_line((x_axis[0], temp_y, x_axis[1], temp_y)))
         return grid
 
     def _draw_image(self, image, position): # check if we still need these -2 and -3 => might be we remove in PDF, svg too and adjust in consts?
@@ -149,8 +149,8 @@ class UI:
             notation: Reference to ShakuNotation instance describing notation
         """
         image = self._notation_images[notation.type]
-        if len(part.notes) > notation._relative_note:
-            note_pos = part.notes[notation._relative_note].position
+        if len(part.notes) > notation.relative_note:
+            note_pos = part.notes[notation.relative_note].position
         else:
             note_pos = part.next_position()
         position = tuple(note_pos[i] + notation.position[i] for i in range(2))
@@ -160,7 +160,7 @@ class UI:
         """Add note into music model and draw it on sheet
 
         Args:
-            note: A Representation of a shakuhachi sheet music notation in the form of a ShakuNote instance 
+            note: A Representation of a shakuhachi sheet music notation in the form of a ShakuNote instance
 
         Returns:
             False if sheet was full, True if note was added
@@ -169,10 +169,9 @@ class UI:
         if status:
             self._draw_note(note)
             return True
-        else:
-            self._messages.append(ShakuMessage("Full Sheet"))
-            return False
-            
+        self._messages.append(ShakuMessage("Full Sheet"))
+        return False
+
     def _draw_all_time_notations(self):
         for line in self._time_notations:
             self._sheet.delete(line)
@@ -214,12 +213,14 @@ class UI:
         """Draw name and composer on sheet"""
         self._erase_texts()
         self._name = self._draw_text(consts.NAME_POSITION, self.music.name, constants.NE)
-        self._composer = self._draw_text(consts.COMPOSER_POSITION, self.music.composer, constants.NW)
+        composer_pos = consts.COMPOSER_POSITION
+        composer = self.music.composer
+        self._composer = self._draw_text(composer_pos, composer, constants.NW)
 
     def _erase_texts(self):
-        if self._name != None:
+        if self._name is not None:
             self._sheet.delete(self._name)
-        if self._composer != None:
+        if self._composer is not None:
             self._sheet.delete(self._composer)
 
     def load_json(self, data):
@@ -257,6 +258,6 @@ class UI:
         img = Image.open(image)
         if not resizing:
             resizing = consts.SHEET_NOTE_SIZE / 1000
-        self.PILimg = img.resize([int(resizing * size) for size in img.size])
-        image = ImageTk.PhotoImage(self.PILimg)
+        pil_img = img.resize([int(resizing * size) for size in img.size]) #need to be a class attr?
+        image = ImageTk.PhotoImage(pil_img)
         return image

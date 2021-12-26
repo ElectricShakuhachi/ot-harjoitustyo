@@ -2,11 +2,12 @@
 
 ## Sovelluksen tarkoitus
 
-Sovelluksella voi luoda japanilaiselle shakuhachi -bambuhuilulle tarkoitettuja nuotteja, joissa käytetään perinteistä japanilaista nuotinnusta.
+Sovelluksella voi luoda japanilaiselle shakuhachi -bambuhuilulle tarkoitettuja nuotteja, joissa käytetään perinteistä japanilaista nuotinnusta. Lisäksi sovelluks mahdollistaa nuottien jakamisen ja yhdessä editoinnin pilvipalveluun tallentamisen
+avulla.
 
 ## Käyttöliittymäluonnos
 
-Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla painikkeilla ja tekstikentillä tapahtuvat kaikki käyttäjän ja sovelluksen väliset interaktiot:
+Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla painikkeilla ja tekstikentillä tapahtuvat kaikki käyttäjän ja sovelluksen väliset interaktiot (lukuunottamatta erillisenä avautuvia viestejä ja tiedostojen tallentamiseen ja lataamiseen liittyviä ikkunoita)
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/v-1.jpg" width="420">
 

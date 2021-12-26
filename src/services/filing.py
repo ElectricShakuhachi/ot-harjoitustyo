@@ -1,8 +1,8 @@
-import boto3
-from botocore.exceptions import NoCredentialsError
 import json
 from json.decoder import JSONDecodeError
 from tkinter import filedialog
+import boto3
+from botocore.exceptions import NoCredentialsError
 from svgwrite import Drawing
 from PIL import Image
 from midiutil import MIDIFile
@@ -23,7 +23,7 @@ class FileManager:
             with filedialog.asksaveasfile(mode='w', defaultextension=".shaku") as file:
                 json.dump(data, file, indent=4)
             return True
-        except:
+        except AttributeError:
             return False
 
     def load(self):
@@ -54,7 +54,7 @@ class FileManager:
             with filedialog.asksaveasfile(mode='wb', defaultextension=".pdf") as file:
                 image.save(file, format="pdf")
             return True
-        except:
+        except AttributeError:
             return False
 
     def save_svg(self, svg: Drawing):
@@ -70,15 +70,15 @@ class FileManager:
             with filedialog.asksaveasfile(mode='w', defaultextension=".svg") as file:
                 svg.write(file, indent=2, pretty=False)
             return True
-        except:
+        except AttributeError:
             return False
 
     def save_midi(self, midi: MIDIFile, name: str=None):
-        """Promtps user with file dialog and exports file into .mid -format if file was specified, may also be initialized with filename for no prompt
+        """Exports file into .mid -format if file is specified
 
         Args:
             midi: MIDI -format data
-            name: Filename to be used (for example for automatic usage by playback). Defaults to None.
+            name: Filename to be used. Defaults to None.
 
         Returns:
             True if file was exported to MIDI, else False
@@ -87,13 +87,12 @@ class FileManager:
             with open(name, "wb") as file:
                 midi.writeFile(file)
             return True
-        else:
-            try:
-                with filedialog.asksaveasfile(mode="wb", defaultextension=".mid") as file:
-                    midi.writeFile(file)
-                return True
-            except:
-                return False
+        try:
+            with filedialog.asksaveasfile(mode="wb", defaultextension=".mid") as file:
+                midi.writeFile(file)
+            return True
+        except AttributeError:
+            return False
 
     def upload_to_aws_s3(self, data: dict, name: str):
         """Uploads .shaku -format (JSON) -data to AWS S3 -bucket

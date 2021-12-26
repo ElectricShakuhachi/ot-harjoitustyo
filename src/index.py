@@ -15,6 +15,6 @@ def clear_messages():
         if i.state == "active":
             i.window.destroy()
     window.destroy()
-    
+
 window.protocol("WM_DELETE_WINDOW", clear_messages)
 window.mainloop()

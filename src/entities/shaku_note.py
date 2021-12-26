@@ -2,9 +2,9 @@ class ShakuNote:
     """Representation of a musical note on shakuhachi sheet music
 
     Attributes:
-        pitch: note pitch on pentatonic scale, 0 representing the base note of the scale 
+        pitch: note pitch on pentatonic scale, 0 representing the base note of the scale
         position: [x, y] -list of two values corresponding to coordinates of note on sheet music
-        lenght: Relative duration of musical note depicted. Defaults to 8, which roughly speaking depicts a quarter note.
+        lenght: Relative duration of musical note depicted. Defaults to 8
         first: True if depicted note is the first note in its measure. Defaults to False.
         dotted: Boolean value used by parent class in rhythm notation generation
     """
@@ -14,7 +14,7 @@ class ShakuNote:
         Args:
             pitch: note pitch, 0 representing the base note of the scale, (1 unit == semitone)
             position: [x, y] -list of two values corresponding to coordinates of note on sheet music
-            lenght: Relative duration of musical note depicted. Defaults to 8, which roughly speaking depicts a quarter note.
+            lenght: Relative duration of musical note depicted. Defaults to 8
             first: True if depicted note is the first note in its measure. Defaults to False.
         """
         self._pitch = pitch
@@ -40,7 +40,7 @@ class ShakuNote:
 
     @position.setter
     def position(self, value):
-        self._position = tuple([int(i) for i in value])
+        self._position = tuple(int(i) for i in value)
 
     @property
     def first(self):
@@ -50,7 +50,7 @@ class ShakuNote:
     @first.setter
     def first(self, value: bool):
         """Set boolean describing if note is first"""
-        if type(value) == bool:
+        if isinstance(value) == bool:
             self._first = value
         else:
             raise ValueError("Cannot set note.first to non boolean value")
@@ -63,7 +63,7 @@ class ShakuNote:
     @dotted.setter
     def dotted(self, value: bool):
         """Set boolean describing if note is dotted"""
-        if type(value) == bool:
+        if isinstance(value) == bool:
             self._dotted = value
         else:
             raise ValueError("Cannot set note.dotted to non boolean value")
