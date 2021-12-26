@@ -13,11 +13,30 @@ Valmista nuottia pdf:ksi eksportoitaessa voi valita, haluaako lopulliseen nuotti
 Shakuhachi-musiikin notaatiossa käytetään pääosin japanilaisia katakana-merkkejä, sekä osalti vain notaatioon kehitettyjä merkintöjä, tärkeimpinä näistä tahtia kuvaavat viivoja katakana-merkkien vieressä. Nuotit kirjoitetaan ylhäältä alas, ja rivit oikealta vasemmalle, eli nuotinnus aloitetaan
 paperin oikeasta yläreunasta
 
-Tässä sovelluksessa kirjoitettava nuotinnus voidaan pääosin lukea näiden ohjeiden avulla:
+### Tässä sovelluksessa kirjoitettava nuotinnus voidaan pääosin lukea näiden ohjeiden avulla:
 
+1. Nuotin ruudukon ruutu vastaa yhtä tahtia nuotissa, eli tiettyä kestoa ajassa. Oletuksena tämä kesto on kaksi tyypillisimmän pituista nuottia (ns. neljäsosanuotti), kuten tässä kuvassa:
 
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/1.jpg" width="60">
 
+2. Nuotin pituudet ilmaistaan nuoteissa paitsi niiden etäisyytenä toisistaan pystysuunnassa, myös niiden vasemmalle puolelle piirtyvillä viivoilla.
+    - Yksi pystyviiva = neljäsosanuotti
+    - Ei lainkaan viivoja = puolinuotti (jonka pituus on kaksinkertainen neljäsosanuottiin verrattuna)
+    - Yksi pystyviiva, joka yhdistyy seuraavan nuotin viereiseen pystyviivaan = molemmat nuotit ovat kahdeksasosanuotteja (puolet neljäsosanuotin kestosta)
+    - Yksi pystyviiva, jonka lävistää pilkku = Yksinäinen kahdeksasosanuotti
+    - Kaksi pystyviivaa = Kuudestoistaosanuotti (neljä kertaa nopeampi kuin neljäsosanuotti)
 
+3. Nuotin sävelkorkeutta ilmaisee kaksi tekijää:
+    1. Rekisterimerkintä (merkki, joka piirtyy nuottijonon vierelle ja ilmaisee että siitä lähtien nuotit ovat sitä vastaavassa rekisterissä). Usein käytetään sanaa oktaavit - mutta tämä ei vastaa tarkkaan shakuhachimusiikin rekisterejä.
+        - tärkein pointti kuitenkin on siis ymmärtää, että valitsemalla oktaavin nuotista, siirtää sitä merkintää seuraavien nuottien korkeuden merkittävästi ylös- tai alaspäin
+    2. Nuottimerkki, joista jokainen viittaa johonkin tiettyyn nuottiin. Alla yksinertainen taulukko merkintöjen sävelkorkeuksien vastaavuudesta länsimaisessa asteikossa:
+    <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/tozan-western.jpg" width="360">
+
+4. Alla esimerkki ohjelmalla toteutettua shakuhachi-nuottia vastaavasta länsimaisesta nuotista:
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/2.jpg" width="70">
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/2-western.jpg" width="70">
 
 Nuottien kesto merkitään nuottien viereen viiva- ja pistemerkeillä, lisäksi nuottien viereen tai alle voi tulla lisämerkintöjä liittyen erinäisiin nuotin sävelkorkeuteen ja
 soittotekniikkaan vaikuttaviin asioihin.
