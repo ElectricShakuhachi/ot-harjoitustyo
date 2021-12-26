@@ -28,7 +28,7 @@ paperin oikeasta yläreunasta
 
 3. Nuotin sävelkorkeutta ilmaisee kaksi tekijää:
     1. Rekisterimerkintä (merkki, joka piirtyy nuottijonon vierelle ja ilmaisee että siitä lähtien nuotit ovat sitä vastaavassa rekisterissä). Usein käytetään sanaa oktaavit - mutta tämä ei vastaa tarkkaan shakuhachimusiikin rekisterejä.
-        - tärkein pointti kuitenkin on siis ymmärtää, että valitsemalla oktaavin nuotista, siirtää sitä merkintää seuraavien nuottien korkeuden merkittävästi ylös- tai alaspäin
+        - tärkein pointti kuitenkin on siis ymmärtää, että rekisterin valinta siirtää seuraavien nuottien korkeuden merkittävästi ylös- tai alaspäin
     2. Nuottimerkki, joista jokainen viittaa johonkin tiettyyn nuottiin. Alla yksinertainen taulukko merkintöjen sävelkorkeuksien vastaavuudesta länsimaisessa asteikossa:
     <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/tozan-western.jpg" width="640">
 
