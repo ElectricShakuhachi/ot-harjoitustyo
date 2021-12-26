@@ -29,6 +29,22 @@ git clone git@github.com:ElectricShakuhachi/ot-harjoitustyo.git shakuhachi_music
 poetry install
 ```
 
+3. Voidaksesi käyttää musiikin toisto-toiminnallisuutta ohjelmassa, asenna fluidsynth.
+Asennuksen tapa riippuu käyttöjärjestelmästä:
+
+- Ubuntu tai Debian:
+ ```bash
+sudo apt-get install fluidsynth
+```
+
+- Mac OS X (Homebrew:in avulla):
+ ```bash
+brew install fluidsynth
+```
+
+- Muille käyttöjärjestelmille:
+[Lue fluidsynthin dokumentaatiosta](https://github.com/FluidSynth/fluidsynth/wiki/Download)
+
 ## Komentorivitoiminnot
 
 Ohjelman käynnistäminen:
@@ -51,3 +67,5 @@ poetry run invoke coverage-report
 ## Julkaistut versiot:
 
 - [v0.2.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.2.0-alpha)
+
+- [v0.3.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.3.0-alpha)

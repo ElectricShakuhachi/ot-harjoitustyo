@@ -1,21 +1,33 @@
 from tkinter import Label, Tk
+import config.shaku_constants as consts
 
 class ShakuMessage:
     def __init__(self, message_type):
+        """Display a warning / error window
+
+        Args:
+            message_type: Type of message to display
+        """
         self.state = "active"
         self.window = Tk()
-        self.window.geometry("500x300")
         self.window.title("Warning: " + message_type)
-        if message_type == "Full Sheet":
-            msgtext = "  Sheet full, current version does not support multiple pages.\nSave sheet and create new one\nfor any additional pages."
-        if message_type == "No Access":
-            msgtext = "You have not configured credentials to the Shakunotator AWS Storage.\nIf necessary, please request access from admin."
-        if message_type == "No Name":
-            msgtext = "You have to add a name to your composition to upload."
-        self.message = Label(self.window, text=msgtext, pady=100)
+        messages = {
+            "Full Sheet": consts.MESSAGE_FULL_SHEET,
+            "No Part Room": consts.MESSAGE_PART_ROOM,
+            "No Access": consts.MESSAGE_NO_ACCESS_TO_AWS,
+            "No Name": consts.MESSAGE_NO_NAME_TO_AWS,
+            "Overwrite": consts.MESSAGE_OVERWRITE_ALERT,
+            "long_name_and_composer": consts.MESSAGE_LONG_NAME_COMPOSER,
+            "Incorrect File": consts.MESSAGE_INCORRECT_FILE
+        }
+        msgtext = messages[message_type]
+        pads=consts.MESSAGE_PADDING
+        self.message = Label(self.window, text=msgtext, padx=pads[0], pady=pads[1])
         self.message.pack()
         self.window.protocol("WM_DELETE_WINDOW", self.disactivate)
 
     def disactivate(self):
-        self.state = 'destroyed'
-        self.window.destroy()
+        """Destroy message window if it isn't already destroyed"""
+        if self.state != "destroyed":
+            self.state = "destroyed"
+            self.window.destroy()

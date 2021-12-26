@@ -54,26 +54,40 @@ Sovelluksesessa on yksi graafisen käyttöliittymän näkymä, jossa olevilla pa
 - Jos käyttäjällä ei ole tarvittavaa AWS Cli -konfiguraatiota, upload-napin painallus aiheuttaa ilmoituksen, että sen käyttö vaatii AWS-kredentiaaleja
     TEHTY
 
-- Käyttäjä voi kuunnella / tallentaa nuotista MIDI-muotoisena tuotetun ääniraidan esikuuntelua varten
-    TEHTY (tarvitsee vielä debuggausta segmentaatiovirheen takia)
+- Käyttäjä voi tallentaa nuotista MIDI-ääniraidan sellaisenaan, tai wav-muotoon konvertoituna
+    TEHTY
+
+- Käyttäjä voi soittaa ohjelmassa luomassaan kappaleesta esikuuntelun
+    TEHTY
+
+- Käyttäjä voi pysäyttää kuuntelun
+    TEHTY
 
 - Käyttäjä voi lisätä nuottiin myös taukoja
     TEHTY
 
-- Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin. Latauksen tekeminen tyhjentää vanhat tiedot nuotilta
+- Ladatessa tiedostoa ohjelma varoittaa, että kannattaa tallentaa, jos näkymällä on jo tehty muokkauksia nuottiin.
+    TEHTY
+
+## Jatkokehitysideoita
+
+Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
+
+- Nuottisivun täytyttyä avautuu muokkausnäkymään uusi nuottisivu, ja edelliset sivut tallentuvat välilehdiksi, joiden muokkaukseen voi palata. Tämän toiminallisuuden myötä poistuu tarve estää lisäämästä kappaleeseen osia, jos sivulle ei mahdu,
+vaan osia jatketaan automaattisesti uusille sivuille.
+
+- Käyttäjä voi poistaa nuotista osan ja nuottien välit konfiguroituvat jälleen lähemmäs toisiaan
 
 - Käyttäjä voi valita nuotissa jo olevan nuotin klikkaamalla sitä, jolloin se indikoidaan nuotin muuttumisella harmaaksi
   - jos jokin nuotti on jo valittuna, se muuttuu takaisin mustaksi, eli valittuna voi olla yksi nuotti kerrallaan
 
 - Mikäli jokin nuotti on valittuna, uuden nuotin lisääminen muuttaa kyseisen nuotin sen sijaan että nuotti ilmestyisi nuotin loppuun.
 
+- Mikäli jokin nuotti on valittuna ja klikkaa oktaavi-nappia, muuttuu oktaavi kyseisen nuotin osalta ja tarvittavat oktaavimerkit piirtyvät
+
 - Käyttäjä voi eksportata nuotin MusicXML -muotoon
 
-- Käyttäjä voi importata MusicXML -tiedoston
-
-## Jatkokehitysideoita
-
-Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
+- Käyttäjä voi importata MusicXML -tiedoston joka konvertoituu shakuhachinotaatioksi
 
 - Napit on järjestelty paremmin niin että UI ei täyty napeista, eli dropdown -menuilla ym.
 
@@ -81,13 +95,9 @@ Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seura
 
 - Käyttäjä voi vaihtaa shakuhachi-notaatiojärjestelmien välillä, jolloin jo kirjoitettu notaatio, sekä käytettävissä olevat napit muuttuvat valitun notaatiojärjestelmän mukaiseksi
 
-- Käyttäjä voi konvertoida jollakin muulla avoimen lähdekoodin ohjelmistolla tuotettua länsimaista notaatiota ohjelmaan shakuhachinotaatioksi
-
 - Käyttäjä voi konfiguroida haluamansa nuottien koon, fontin ja niiden välien pituuden
 
 - Käyttäjän luomat konfiguraatiot tallentuavat erilliselle konfigurointitiedostolle, joka ladataan tämän käyttistäessä ohjelmaa
-
-- Nuottisivun täytyttyä avautuu muokkausnäkymään uusi nuottisivu, ja edelliset sivut tallentuvat välilehdiksi, joiden muokkaukseen voi palata
 
 - Käyttäjä voi tehdä tekstuaalisia merkintöjä nuottiin (kirjoittaa tekstiä, piirtää hiirellä jne)
 

@@ -1,5 +1,5 @@
 import unittest
-from entities.music import Music, Part, Note
+from entities.shaku_music import Music, Part, Note
 
 class TestMusic(unittest.TestCase):
     def setUp(self):
