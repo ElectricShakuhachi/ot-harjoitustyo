@@ -2,31 +2,42 @@
 
 ## Rakenne
 
-Ohjelman rakenne on MVC-arkkitehtuurin mukainen ja sen pakkausrakenne on seuraava
+Ohjelman rakenne on löyhästi MVC arkkitehtuurimallin mukainen, ja sen rakenne on yksinkertaistetussa muodossa seuraava:
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/architecture.jpg" width="420">
 
+Tästä yksinkertaistetusta rakennekuvasta poiketen käyttäjärajapinnan luokat ovat suorassa yhteydessä palveluluokkiin, ja tarjoavat initialisoimansa ja konfiguroimansa yhteyden niihin Music-luokalle
+
 Pakkausten koodi vastaa seuraavia tarkoituksia:
 
-- controls = käyttäjäkomennot, sekä käyttöliittymän ne osat, joista ei vastaa view-pakkaus
-- model = tuotettavan tiedoston mallintaminen käyttäjäkomentojen pohjalta
-- view = mallinnuksen kuvaaminen näkymäksi käyttöliittymään
-- data = tiedostojen tallentaminen, lataaminen ja käsittely - lukuunottamatta konfiguraatiotiedostoja
-- configurations = konfiguraatiotiedostojen tallentamisesta, lataaminen ja käsittelystä
+- Buttons = käyttäjäkomennot, sekä käyttöliittymän ne osat, joista ei vastaa UI-pakkaus
+- Music / Part / Note = tuotettavan tiedoston mallintaminen käyttäjäkomentojen pohjalta
+- UI = mallinnuksen kuvaaminen näkymäksi käyttöliittymään
+- services = Useita luokkia, jotka vastaavat tiedon konvertoinnista, tallentamisesta ja lataamisesta 
+
+Lisäksi kaikki luokat hakevat konfiguraatiotietoja vakioita sisältävästä shaku_constants.py -tiedostosta
 
 ## Käyttöliittymä
 
-Käyttöliittymässä on yksi päänäkymä, joka koostuu sovelluksessa luotavaa nuottia kuvaavasta näkymästä, sekä käyttäjätoimintoja fasilitoivista komentonapeista ja tekstikentistä.
+Käyttöliittymässä on yksi päänäkymä, joka koostuu sovelluksessa luotavaa nuottia kuvaavasta näkymästä, sekä käyttäjätoimintoja fasilitoivista komentonapeista ja tekstikentistä. 
 
 ### Varoitusviestit
 
-Päänäkymän lisäksi käyttöliittymään luodaan tarvittaessa varoitusviestejä, jotka sisältävät komentonäppäimiä käyttäjää varten. Varoitusviestejä on kahdenlaisia:
-
-1. Näkymän täyttyessä ilmestyy varoitusviesti, joka ilmoittaa nuotin olevan täynnä ja kehoittaa käyttäjää tallentamaan. Viestin näkymä sisältää lisäksi napin, jolla voi tallentaa sivun ja aloittaa uuden tyhjän sivun muokkauksen
-
-2. Sovellusta sammuttaessa ilmestyy varoitusviesti, joka kysyy, haluaako käyttäjä tallentaa sivun. Viestin näkymä sisältää lisäksi napin, jolla voi tallentaa sivun, minkä jälkeen ohjelma sammuu.
+Päänäkymän lisäksi käyttöliittymään luodaan tarvittaessa varoitusviestejä, esimerkiksi jotta käyttäjä huomioisi tallentamattoman tiedon menetyksen ladatessaan ohjelmaan toista tiedostoa.
 
 ## Sovelluslogiikka
+
+Sovelluslogiikan keskiössä on shakuhachi-soittimen notaatiota mallintavat ShakuMusic, ShakuPart ja ShakuNote -luokat.
+ShakuMusic -luokan instanssi on pääasiallinen mallinnussäilö, jonka päätehtävänä on pitää kirjaa, kontrolloida ja muokata
+notaatiodataa, jonka yksityiskohdat mallinnetaan alemman tason Part ja Note -luokkiin.
+  ShakuPart -luokan kukin instanssi vastaa yhtä soitinta yksi- tai moniäänisessä shakuhachi-nuotissa. Tämän luokan päätehtävät
+ovat yksittäisten nuottien tietoja mallintavien Note -luokkien säilytys ja manipuolointi. Lisäksi ShakuPart -instanssi pitää
+kirjaa muista merkinnöistä, joita nuottiin voi lisätä (nykyisessä sovellusversiossa tämä tarkoittaa vain oktaavialaa, eli 
+suhteellista sävelkorkeutta ilmaisevia merkintöjä). Nämä lisämerkinnät tallennetaan ShakuPart -luokkaan ShakuNotation -instansseina.
+
+Mallinnusluokkien lisäksi ohjelmisto sisältää käyttäjärajapinnasta vastaavat luokat UI ja Buttons, joista UI vastaa ShakuMusic-luokan sisältämän tiedon piirtämisestä reaaliaikaiseen näkymään käyttäjälle, ja Buttons-luokka vastaa käyttäjän ja mallinnusluokkien interaktion fasilitoimisesta lähinnä erilaisten painikkeiden avulla. 
+
+Käyttäjärajapinnan luokat kommunikoivat myös 
 
 ## Sekvenssikaavioita
 
