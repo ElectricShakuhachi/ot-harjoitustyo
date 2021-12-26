@@ -6,13 +6,11 @@ Ohjelman rakenne on löyhästi MVC arkkitehtuurimallin mukainen, ja sen rakenne 
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/architecture.jpg" width="420">
 
-Tästä yksinkertaistetusta rakennekuvasta poiketen käyttäjärajapinnan luokat ovat suorassa yhteydessä palveluluokkiin, ja tarjoavat initialisoimansa ja konfiguroimansa yhteyden niihin Music-luokalle
-
 Pakkausten koodi vastaa seuraavia tarkoituksia:
 
-- Buttons = käyttäjäkomennot, sekä käyttöliittymän ne osat, joista ei vastaa UI-pakkaus
+- Buttons = Käyttäjäkomentojen välittäminen mallinnus-, käyttöliittymä- ja palveluluokille.
 - Music / Part / Note = tuotettavan tiedoston mallintaminen käyttäjäkomentojen pohjalta
-- UI = mallinnuksen kuvaaminen näkymäksi käyttöliittymään
+- UI = mallinnuksen kuvaaminen näkymäksi käyttöliittymään sekä koko käyttöliittymän hahmotus
 - services = Useita luokkia, jotka vastaavat tiedon konvertoinnista, tallentamisesta ja lataamisesta 
 
 Lisäksi kaikki luokat hakevat konfiguraatiotietoja vakioita sisältävästä shaku_constants.py -tiedostosta
@@ -35,9 +33,7 @@ ovat yksittäisten nuottien tietoja mallintavien Note -luokkien säilytys ja man
 kirjaa muista merkinnöistä, joita nuottiin voi lisätä (nykyisessä sovellusversiossa tämä tarkoittaa vain oktaavialaa, eli 
 suhteellista sävelkorkeutta ilmaisevia merkintöjä). Nämä lisämerkinnät tallennetaan ShakuPart -luokkaan ShakuNotation -instansseina.
 
-Mallinnusluokkien lisäksi ohjelmisto sisältää käyttäjärajapinnasta vastaavat luokat UI ja Buttons, joista UI vastaa ShakuMusic-luokan sisältämän tiedon piirtämisestä reaaliaikaiseen näkymään käyttäjälle, ja Buttons-luokka vastaa käyttäjän ja mallinnusluokkien interaktion fasilitoimisesta lähinnä erilaisten painikkeiden avulla. 
-
-Käyttäjärajapinnan luokat kommunikoivat myös 
+Mallinnusluokkien lisäksi ohjelmisto sisältää käyttäjärajapinnasta vastaavat luokat UI ja Buttons, joista UI vastaa ShakuMusic-luokan sisältämän tiedon piirtämisestä reaaliaikaiseen näkymään käyttäjälle, ja Buttons-luokka vastaa käyttäjän,mallinnus- ja palveluluokkien interaktion fasilitoimisesta lähinnä erilaisten painikkeiden avulla. 
 
 ## Sekvenssikaavioita
 
