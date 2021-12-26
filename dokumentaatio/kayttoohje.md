@@ -10,8 +10,14 @@ Valmista nuottia pdf:ksi eksportoitaessa voi valita, haluaako lopulliseen nuotti
 
 ## Yhteenveto shakuhachi-musiikkia tuntemattomille
 
-Shakuhachi-musiikin notaatiossa käytetään japanilaisia katakana-merkkejä. Nuotit kirjoitetaan ylhäältä alas, ja rivit oikealta vasemmalle, eli nuotinnus aloitetaan
+Shakuhachi-musiikin notaatiossa käytetään pääosin japanilaisia katakana-merkkejä, sekä osalti vain notaatioon kehitettyjä merkintöjä, tärkeimpinä näistä tahtia kuvaavat viivoja katakana-merkkien vieressä. Nuotit kirjoitetaan ylhäältä alas, ja rivit oikealta vasemmalle, eli nuotinnus aloitetaan
 paperin oikeasta yläreunasta
+
+Tässä sovelluksessa kirjoitettava nuotinnus voidaan pääosin lukea näiden ohjeiden avulla:
+
+
+
+
 
 Nuottien kesto merkitään nuottien viereen viiva- ja pistemerkeillä, lisäksi nuottien viereen tai alle voi tulla lisämerkintöjä liittyen erinäisiin nuotin sävelkorkeuteen ja
 soittotekniikkaan vaikuttaviin asioihin.

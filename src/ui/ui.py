@@ -77,7 +77,7 @@ class UI:
     def messages(self, newlist: list):
         """Set existing error / warning -messages (list of ShakuMessage instances)"""
         for value in newlist:
-            if isinstance(value) != ShakuMessage:
+            if isinstance(value, ShakuMessage):
                 raise ValueError("Only accepting ShakuMessage instances into UI messages")
         self._messages = newlist
 

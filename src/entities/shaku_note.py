@@ -50,7 +50,7 @@ class ShakuNote:
     @first.setter
     def first(self, value: bool):
         """Set boolean describing if note is first"""
-        if isinstance(value) == bool:
+        if isinstance(value, bool):
             self._first = value
         else:
             raise ValueError("Cannot set note.first to non boolean value")
@@ -63,7 +63,7 @@ class ShakuNote:
     @dotted.setter
     def dotted(self, value: bool):
         """Set boolean describing if note is dotted"""
-        if isinstance(value) == bool:
+        if isinstance(value, bool):
             self._dotted = value
         else:
             raise ValueError("Cannot set note.dotted to non boolean value")
