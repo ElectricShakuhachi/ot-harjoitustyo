@@ -28,7 +28,7 @@ paperin oikeasta yläreunasta
 
 3. Nuotin sävelkorkeutta ilmaisee kaksi tekijää:
     1. Rekisterimerkintä (merkki, joka piirtyy nuottijonon vierelle ja ilmaisee että siitä lähtien nuotit ovat sitä vastaavassa rekisterissä). Usein käytetään sanaa oktaavit - mutta tämä ei vastaa tarkkaan shakuhachimusiikin rekisterejä.
-        - tärkein pointti kuitenkin on siis ymmärtää, että rekisterin valinta siirtää seuraavien nuottien korkeuden merkittävästi ylös- tai alaspäin
+        - tärkein asia rekisteristä on ymmärtää, että rekisterin valinta siirtää seuraavien nuottien korkeuden merkittävästi ylös- tai alaspäin
     2. Nuottimerkki, joista jokainen viittaa johonkin tiettyyn nuottiin. Alla yksinertainen taulukko merkintöjen sävelkorkeuksien vastaavuudesta länsimaisessa asteikossa:
     <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/tozan-western.jpg" width="640">
 
@@ -38,10 +38,11 @@ paperin oikeasta yläreunasta
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/2-western.jpg" width="800">
 
-Nuottien kesto merkitään nuottien viereen viiva- ja pistemerkeillä, lisäksi nuottien viereen tai alle voi tulla lisämerkintöjä liittyen erinäisiin nuotin sävelkorkeuteen ja
-soittotekniikkaan vaikuttaviin asioihin.
-
 Tässä ohjelmassa on tarjottu toiminnallisuus sekä soolo- että moniäänisten kappaleiden nuotintamiseen. Moniääniset kappaleet ovat yhtyekappaleita, joissa jokaista ääntä soittaa
 eri soittaja. Moniäänisten kappaleiden notaatiossa eri äänet merkitään vierekkäin klusterina, joka jatkuu riveittäin, eli kunkin äänen soittaja soittaa siis klusterista omaa linjaansa, ja voi samalla seurata vierestä muiden äänien notaatiota osatakseen ajoittaa soittonsa oikein.
 
-Shakuhachi sinänsä on japanilainen päästä soitettava bambuhuilu. kts. lisää internetistä tarpeen mukaan.
+Esimerkki yhtyekappaleesta ja sitä vastaavasta länsimaisesta nuotista:
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/3.jpg" width="400">
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/3-western.jpg" width="700">
