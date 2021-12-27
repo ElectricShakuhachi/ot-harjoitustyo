@@ -86,6 +86,15 @@ class MidiCreator:
         Returns:
             MIDI -format music representation
         """
+        if len(self._tracks) == 0:
+            raise ValueError("No tracks to generate MIDI")
+        found = False
+        for track in self._tracks.values():
+            if len(track.notes) > 0:
+                found = True
+                break
+        if not found:
+            raise ValueError("No notes on any track to generate MIDI from")
         file = MIDIFile(len(self._tracks))
         time = 0
         for track_id, track in self._tracks.items():

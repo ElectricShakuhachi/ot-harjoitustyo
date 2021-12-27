@@ -120,6 +120,8 @@ class SvgCreator:
         Returns:
             Shakuhachi sheet music data in svg format
         """
+        if music is None:
+            raise TypeError("No music instance provided")
         self._svg = Drawing(size=(consts.EXPORT_SHEET_SIZE))
         if grid_included:
             self._create_grid(music.spacing)

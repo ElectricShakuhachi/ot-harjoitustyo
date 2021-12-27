@@ -60,7 +60,7 @@ class TestImageCreator(unittest.TestCase):
     def _values_measure_lenght(self):
         return range(12)
 
-    def _run(self, assertion_function):
+    def _run_assert_on_constant_mod_combos(self, assertion_function):
         func = self.creator._draw_grid_line
         for value1 in self._values_grid_x():
             for value2 in self._values_grid_y():
@@ -69,12 +69,24 @@ class TestImageCreator(unittest.TestCase):
                 for spacing in range(4):
                     for measure_lenght in self._values_measure_lenght():
                         self.creator.draw_grid(spacing, measure_lenght, func)
+                        assertion_function()
 
-    def test_draw_grid_doesnt_draw_beyond_limits(self):
-        pass
+    def test_draw_grid_doesnt_cause_errors_on_1_spacing(self):
+        measure = consts.MEASURE_LENGHT
+        func = self.creator._draw_grid_line
+        self.creator.draw_grid(1, measure, func)
 
-    def test_draw_grid_draws_correct_amount_x_axis_lines(self):
-        pass
+    def test_draw_grid_doesnt_cause_errors_on_2_spacing(self):
+        measure = consts.MEASURE_LENGHT
+        func = self.creator._draw_grid_line
+        self.creator.draw_grid(2, measure, func)
 
-    def test_draw_grid_draws_correct_amount_y_axis_lines(self):
-        pass
+    def test_draw_grid_doesnt_cause_errors_on_1_spacing(self):
+        measure = consts.MEASURE_LENGHT
+        func = self.creator._draw_grid_line
+        self.creator.draw_grid(3, measure, func)
+
+    def test_draw_grid_doesnt_cause_errors_on_2_spacing(self):
+        measure = consts.MEASURE_LENGHT
+        func = self.creator._draw_grid_line
+        self.creator.draw_grid(4, measure, func)
