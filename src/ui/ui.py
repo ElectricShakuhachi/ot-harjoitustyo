@@ -13,8 +13,6 @@ class UI:
     Attributes:
         frames: Subframes where UI parts are divided to
         messages: Error / Warning -messages displayed as Tkinter windows
-        note_notations: List of Tkinter Canvas objects : Shakuhachi musical pitch notes drawn on sheet
-        time_notations: List of Tkinter Canvas objects : Shakuhachi musical duration notations drawn on sheet
         music: ShakuMusic -instance - representation of Shakuhachi sheet music
         active_part: Musical part of shakuhachi notation which is under editing
         grid: Shakuhachi sheet musical measure grid
@@ -119,8 +117,11 @@ class UI:
         return "#%02x%02x%02x" % rgb
 
     def _draw_grid_line(self, line: tuple):
-        #print(f"Printing line {line}")
-        return self._sheet.create_line(line, fill=self._rgb_to_hex(consts.GRID_COLOR), width=consts.GRID_LINE_WIDHT)
+        return self._sheet.create_line(
+            line,
+            fill=self._rgb_to_hex(consts.GRID_COLOR),
+            width=consts.GRID_LINE_WIDHT
+            )
 
     def _create_grid(self, measure_lenght=consts.MEASURE_LENGHT):
         spacing = self.music.spacing
@@ -128,14 +129,19 @@ class UI:
         y_axis = list(consts.GRID_Y)
         x_axis[1] -= (x_axis[1] - x_axis[0]) % (consts.NOTE_ROW_SPACING * spacing)
         grid = []
-        for temp_x in range(x_axis[0], x_axis[1] + 3, consts.NOTE_ROW_SPACING * spacing):
+        increment = consts.NOTE_ROW_SPACING * spacing
+        for temp_x in range(x_axis[0], x_axis[1] + 3, increment):
             grid.append(self._draw_grid_line((temp_x, y_axis[0], temp_x, y_axis[1])))
-        for temp_y in range(y_axis[0], y_axis[1] + 1, consts.VERTICAL_SPACE_PER_FOURTH_NOTE * measure_lenght):
+        increment = consts.VERTICAL_SPACE_PER_FOURTH_NOTE * measure_lenght
+        for temp_y in range(y_axis[0], y_axis[1] + 1, increment):
             grid.append(self._draw_grid_line((x_axis[0], temp_y, x_axis[1], temp_y)))
         return grid
 
-    def _draw_image(self, image, position): # check if we still need these -2 and -3 => might be we remove in PDF, svg too and adjust in consts?
-        return self._sheet.create_image(position[0]-2, position[1]-3, anchor=constants.NW, image=image)
+    def _draw_image(self, image, position):
+        return self._sheet.create_image(
+            position[0]-2, position[1]-3,
+            anchor=constants.NW, image=image
+            )
 
     def _draw_note(self, note: ShakuNote):
         image = self._note_images[note.pitch]
@@ -160,7 +166,7 @@ class UI:
         """Add note into music model and draw it on sheet
 
         Args:
-            note: A Representation of a shakuhachi sheet music notation in the form of a ShakuNote instance
+            note: A Representation of a musical note
 
         Returns:
             False if sheet was full, True if note was added
@@ -261,6 +267,6 @@ class UI:
         img = Image.open(image)
         if not resizing:
             resizing = consts.SHEET_NOTE_SIZE / 1000
-        pil_img = img.resize([int(resizing * size) for size in img.size]) #need to be a class attr?
+        pil_img = img.resize([int(resizing * size) for size in img.size])
         image = ImageTk.PhotoImage(pil_img)
         return image

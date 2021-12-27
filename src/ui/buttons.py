@@ -1,4 +1,3 @@
-import os
 from tkinter import Button, Entry, constants, Frame, ttk, Label, Checkbutton, BooleanVar
 import pygame
 from PIL import Image, ImageTk
@@ -10,7 +9,6 @@ from services.svg_creator import SvgCreator
 from ui.messages import ShakuMessage
 import config.shaku_constants as consts
 from entities.shaku_note import ShakuNote
-from entities.shaku_notation import ShakuNotation
 
 class Buttons:
     """Container for user interface Buttons"""
@@ -227,10 +225,6 @@ class ShakuButton:
         self.text = text
         self.button = Button(frame, text=self.text, font="Shakunotator",  command=self.press)
 
-    def press(self):
-        """Dummy method to be overwritten by child class"""
-        pass
-
 class OctaveButton(ShakuButton):
     """Button for octave and its linked functionality
 
@@ -389,7 +383,6 @@ class PartButton(ShakuButton):
         ShakuButton: Button prototype
     """
     def __init__(self, text, data, ui, owner, frame):
-        super().__init__(text, ui, owner, frame)
         """Initialize button data and connections
 
         Args:
@@ -399,6 +392,7 @@ class PartButton(ShakuButton):
             owner: Container class
             frame: Tkinter frame to show button in
         """
+        super().__init__(text, ui, owner, frame)
         self.part = data
 
     def press(self):
