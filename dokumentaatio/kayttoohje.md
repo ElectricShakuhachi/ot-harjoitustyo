@@ -25,11 +25,11 @@ Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin
         - PDF nuotin tulostamista varten
         - SVG, jotta nuottia voisi muokata lisää vektorigrafiikka-ohjelmistoissa
         - MIDI, jotta nuotista voisi tallentaa musiikin soitettavissa olevaan muotoon
-            - HUOM vaatii fluidsynth -asennuksen, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/README.md)
+            - HUOM vaatii fluidsynth -asennuksen, kts. README
     8. Tallennus, lataus ja upload -etärepositorioon -napit
-        - HUOM etärepositorioon lataus vaatii kredentiaalit AWS S3 -repositorioon, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/README.md)
+        - HUOM etärepositorioon lataus vaatii kredentiaalit AWS S3 -repositorioon, kts. README
     9. Play/Stop -nappi sävellyksen esikuunteluun
-        - HUOM vaatii fluidsynth -asennuksen, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/README.md)
+        - HUOM vaatii fluidsynth -asennuksen, kts. README
 
 3. Säveltämisen aloittaminen
 
