@@ -66,6 +66,10 @@ Lisäksi etärepositorioon lataus vaatii kredentiaalit AWS S3 -repositorioon, kt
 
 Käyttämällä eksportointinappeja, voit tallentaa nuotin sisältämät tiedot PDF- tai SVG-muotoon. PDF-muoto on suositeltavampi nuotin tulostamista ym. käyttöä varten, mutta eksportoimalla SVG-muotoon saa tiedoston, jota voi muokata lisää vektorigrafiikkaohjelmistoissa. Lisäksi nuoteista generoidun MIDI-tiedoston voi eksportoida.
 
+- Play / Stop -napista
+
+Painamalla nappia voit kuunnella esikuuntelun kappaleesta, jota olet muokkaamassa. Jos lisäät ääniä toiston aikana, niitä ei soiteta. Voit pysäyttää toiston painamalla nappia uudelleen. Napin käyttämistä varten vaaditaan fluidsynth-asennus (kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo#readme))
+
 ## Yhteenveto shakuhachi-musiikkia tuntemattomille
 
 Shakuhachi-musiikin notaatiossa käytetään pääosin japanilaisia *katakana*-merkkejä, sekä osalti vain notaatioon kehitettyjä merkintöjä, tärkeimpinä näistä tahtia kuvaavat viivoja *katakana*-merkkien vieressä. Nuotit kirjoitetaan ylhäältä alas, ja rivit oikealta vasemmalle, eli nuotinnus aloitetaan
