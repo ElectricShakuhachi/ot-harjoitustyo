@@ -68,6 +68,14 @@ Testikattavuusraportin generoiminen hmtlcov -hakemistoon:
 poetry run invoke coverage-report
 ```
 
+Pylint
+
+Tiedoston .pylintrc määrittelemät tarkistukset voi suorittaa komennolla:
+
+```bash
+poetry run invoke lint
+```
+
 ## Julkaistut versiot:
 
 - [v0.2.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.2.0-alpha)
