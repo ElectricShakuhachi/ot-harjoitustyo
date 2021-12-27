@@ -181,7 +181,7 @@ class ShakuMusic:
                 )
             part.measure_counter = part_data["measure_counter"]
             part.rows = part_data["rows"]
-            part_data.notation_at_current_pos = part_data["notation_at_current_pos"]
+            part.notation_at_current_pos = part_data["notation_at_current_pos"]
             for note in part_data["notes"]:
                 recovered_note = ShakuNote(
                     int(note["pitch"]),

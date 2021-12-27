@@ -12,7 +12,7 @@ class UI:
 
     Attributes:
         frames: Subframes where UI parts are divided to
-        messages: Error / Warning -messages (list of ShakuMessage instances) displayed as Tkinter windows
+        messages: Error / Warning -messages displayed as Tkinter windows
         note_notations: List of Tkinter Canvas objects : Shakuhachi musical pitch notes drawn on sheet
         time_notations: List of Tkinter Canvas objects : Shakuhachi musical duration notations drawn on sheet
         music: ShakuMusic -instance - representation of Shakuhachi sheet music
@@ -179,7 +179,8 @@ class UI:
         for part in self.music.parts.values():
             for notation in part.part_time_notations():
                 for line in notation:
-                    self._time_notations.append(self._sheet.create_line(line[0][0], line[0][1], line[1][0], line[1][1], fill=self._rgb_to_hex(consts.NOTE_COLOR), width=2))
+                    fill = self._rgb_to_hex(consts.NOTE_COLOR)
+                    self._time_notations.append(self._sheet.create_line(line, fill=fill, width=2))
 
     def _draw_all_notes(self):
         for notation in self._note_notations:
@@ -207,7 +208,8 @@ class UI:
         self.draw_texts()
 
     def _draw_text(self, position, text, anchor):
-        return self._sheet.create_text(position, text=text, fill="black", anchor=anchor, font=(consts.TEXT_FONT + " " + str(consts.TEXT_FONT_SIZE)))
+        font = consts.TEXT_FONT + " " + str(consts.TEXT_FONT_SIZE)
+        return self._sheet.create_text(position, text=text, fill="black", anchor=anchor, font=font)
 
     def draw_texts(self):
         """Draw name and composer on sheet"""
