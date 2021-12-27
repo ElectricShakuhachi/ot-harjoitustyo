@@ -1,6 +1,6 @@
 # Shakuhachi Music Maker -käyttöohje
 
-Ohjelmiston loppukäyttäjien oletetaan tuntevan shakuhachimusiikkia ja sen notaatiota. Etenkin ohjelmistoon muutoin tutustuvalle tarjotaan tässä dokumentin lopussa lyhyt selitys siitä, millaista shakuhachi-musiikki ja sen notaatio on, ja miten se on ohjelmassa toteutettu.
+Ohjelmiston loppukäyttäjien oletetaan tuntevan shakuhachimusiikkia ja sen notaatiota. Ohjelmistoon muutoin tutustuvalle tarjotaan tässä dokumentin lopussa lyhyt selitys siitä, millaista shakuhachi-musiikki ja sen notaatio on, ja miten se on ohjelmassa toteutettu.
 
 ## Perusohjeet
 
