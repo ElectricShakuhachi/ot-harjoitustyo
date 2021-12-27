@@ -45,7 +45,7 @@ Huomioi, että jos nuotteja on paperilla jo paljon, ei välttämättä osien lis
 
 - Tauot:
 
-Valittu lisättävän nuotin pituus ei koske taukoja, joilla on vakiopituutensa
+Valittu lisättävän nuotin pituus ei koske taukoja, joilla on vakiopituutensa, eli pallon muotoinen tauko kestää neljäsosanuotin verran, pilkun muotoinen kestää kahdeksasosanuotin verran
 
 - Rekisterit:
 
