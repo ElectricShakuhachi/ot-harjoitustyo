@@ -1,4 +1,4 @@
-# Shakuhachi Music Maker
+# ShakuNotator - Shakuhachi Flute Sheet Music Maker
 
 Japanilaisen bambuhuilun - shakuhachin - musiikin perinteisen japanilaisen notaation kirjoittamiseen tarkoitettu sovellus.
 
