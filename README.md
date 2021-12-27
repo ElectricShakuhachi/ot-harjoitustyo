@@ -6,6 +6,8 @@ Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmisto
 
 ## Dokumentaatio
 
+- [Käyttöohje](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
+
 - [Vaatimusmäärittely](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
 - [Arkkitehtuuri](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
@@ -13,8 +15,6 @@ Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmisto
 - [Tyoaikakirjanpito](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
 
 - [Testaus](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/testaus.md)
-
-- [Käyttöohje](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
 
 ## Asennus
 
