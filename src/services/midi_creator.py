@@ -92,7 +92,7 @@ class MidiCreator:
             file.addProgramChange(track_id, track.channel, 0, consts.MIDI_INSTRUMENT_NUMBER)
             file.addTempo(track_id, time, self._tempo)
             for num, pitch in enumerate(track.notes):
-                volume = 0 if pitch == -1 else self._volume # pitch == -1 represents break
+                volume = 0 if pitch < 0 else self._volume # negative pitch represents break
                 file.addNote(track_id, track.channel, pitch, time, track.lenghts[num], volume)
                 time += (track.lenghts[num])
             time = 0

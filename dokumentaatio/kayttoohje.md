@@ -108,3 +108,9 @@ eri soittaja. Moniäänisten kappaleiden notaatiossa eri äänet merkitään vie
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/3.jpg" width="400">
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/3-western.jpg" width="700">
+
+8. Logo:
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/src/graphics/shakuicon.png" width="90">
+
+Shakunotator -ohjelmiston logo

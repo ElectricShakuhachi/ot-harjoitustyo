@@ -55,8 +55,8 @@ class Buttons:
 
     def _create_octave_buttons(self):
         buttons = []
-        for key, octave in enumerate(["Otsu", "Kan", "Daikan"]):
-            buttons.append({'text': octave, 'data': key, "button_class": OctaveButton})
+        for octave in ["Otsu", "Kan", "Daikan"]:
+            buttons.append({'text': octave, "button_class": OctaveButton})
         self._generate_button_frame(
             "Octave",
             buttons,
@@ -122,7 +122,7 @@ class Buttons:
 
     def _create_part_buttons(self):
         buttons = [
-            {"text": "Add Part", "data": None, "button_class": AddPartButton},
+            {"text": "Add Part", "button_class": AddPartButton},
         ]
         self._generate_button_frame(
             "Add Part",
@@ -135,9 +135,9 @@ class Buttons:
 
     def _create_export_buttons(self):
         buttons = [
-            {"text": "export MIDI", "data": None, "button_class": ExportMidiButton},
-            {"text": "export PDF", "data": None, "button_class": ExportPdfButton},
-            {"text": "export SVG", "data": None, "button_class": ExportSvgButton}
+            {"text": "export MIDI", "button_class": ExportMidiButton},
+            {"text": "export PDF", "button_class": ExportPdfButton},
+            {"text": "export SVG", "button_class": ExportSvgButton}
         ]
         self._generate_button_frame(
             "Export",
@@ -157,14 +157,14 @@ class Buttons:
 
     def _create_file_buttons(self):
         buttons = [
-            {"text": "save", "data": None, "button_class": SaveButton},
-            {"text": "load", "data": None, "button_class": LoadButton},
-            {"text": "upload", "data": None, "button_class": UploadButton}
+            {"text": "save", "button_class": SaveButton},
+            {"text": "load", "button_class": LoadButton},
+            {"text": "upload", "button_class": UploadButton}
         ]
         self._generate_button_frame("File", buttons, self.main_ui.frames["right"])
 
     def _create_play_buttons(self):
-        buttons = [{"text": "Play/Stop", "data": None, "button_class": PlayButton}]
+        buttons = [{"text": "Play/Stop", "button_class": PlayButton}]
         self._generate_button_frame("Play", buttons, self.main_ui.frames["right"], separator=False)
 
     def _create_naming_frame(self):
@@ -197,9 +197,17 @@ class Buttons:
         self.buttons_by_frame[text] = []
         if buttoninfo:
             for button_spec in buttoninfo:
-                button = button_spec['button_class'](
+                if 'data' in button_spec:
+                    button = button_spec['button_class'](
+                        button_spec['text'],
+                        button_spec['data'],
+                        self.main_ui,
+                        self,
+                        frame
+                        )
+                else:
+                    button = button_spec['button_class'](
                     button_spec['text'],
-                    button_spec['data'],
                     self.main_ui,
                     self,
                     frame
@@ -263,10 +271,10 @@ class ButtonSeparator:
         self.line = ttk.Separator(frame, orient="horizontal")
         self.line.pack(fill="x", pady=pady)
 
-class ShakuButton:
-    """Prototype for different types of buttons"""
-    def __init__(self, text: str, main_ui, owner: Buttons, frame):
-        """Construct prototype
+class OctaveButton():
+    """Button for octave and its linked functionality"""
+    def __init__(self, text, main_ui, owner, frame):
+        """Initialize button data and connections
 
         Args:
             text: Button text
@@ -278,24 +286,6 @@ class ShakuButton:
         self.owner = owner
         self.text = text
         self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
-
-class OctaveButton(ShakuButton):
-    """Button for octave and its linked functionality
-
-    Args:
-        ShakuButton: Button prototype
-    """
-    def __init__(self, text, data, ui, owner, frame):
-        """Initialize button data and connections
-
-        Args:
-            text: Button text
-            data: dummy attribute
-            ui: UI instance
-            owner: Container class
-            frame: Tkinter frame to show button in
-        """
-        super().__init__(text, ui, owner, frame)
         if self.text == "Otsu":
             self.button.config(relief=constants.SUNKEN, state="disabled")
         image = Image.open(consts.OCTAVES[self.text])
@@ -325,13 +315,10 @@ class OctaveButton(ShakuButton):
             self.main_ui.active_part.append_misc_notation(self.text)
             self.main_ui.update()
 
-class NoteButton(ShakuButton):
+class NoteButton():
     """Button used to add a musical note
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, data, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
@@ -341,7 +328,10 @@ class NoteButton(ShakuButton):
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
         self.pitch = data
         image = Image.open(consts.NOTES[self.pitch])
         scale =  consts.BUTTON_NOTE_SIZE / 1000
@@ -363,13 +353,10 @@ class NoteButton(ShakuButton):
         if self.main_ui.add_note(note):
             self.owner.saved = False
 
-class LenghtButton(ShakuButton):
+class LenghtButton():
     """Button for choosing a lenght for upcoming musical notes
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, data, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
@@ -379,7 +366,10 @@ class LenghtButton(ShakuButton):
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
         self.lenght = data
 
     def press(self):
@@ -394,23 +384,22 @@ class LenghtButton(ShakuButton):
         else:
             self.owner.buttons["Break"].button.config(state="normal", relief=constants.RAISED)
 
-class AddPartButton(ShakuButton):
+class AddPartButton():
     """Button for adding a part on ensemble sheet music
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
 
     def _add_part_button(self, part_id):
         new_button = PartButton(
@@ -444,13 +433,10 @@ class AddPartButton(ShakuButton):
         if len(self.main_ui.music.parts) > 3:
             self.button.config(state="disabled", relief=constants.SUNKEN)
 
-class PartButton(ShakuButton):
+class PartButton():
     """Button for choosing a part (ShakuPart) to edit
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, data, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
@@ -460,7 +446,10 @@ class PartButton(ShakuButton):
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
         self.part = data
 
     def press(self):
@@ -472,23 +461,22 @@ class PartButton(ShakuButton):
         self.main_ui.active_part = self.main_ui.music.parts[self.part]
         self.owner.buttons["4th"].press()
 
-class ExportMidiButton(ShakuButton):
+class ExportMidiButton():
     """Button for exporting music in midi form
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
         self.creator = MidiCreator()
         self.filemanager = FileManager()
 
@@ -499,73 +487,76 @@ class ExportMidiButton(ShakuButton):
         midi = self.creator.generate_midi()
         self.filemanager.save_midi(midi)
 
-class ExportPdfButton(ShakuButton):
+class ExportPdfButton():
     """Button for exporting sheet in pdf form
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
 
     def press(self):
         """Export currently edited music sheet to PDF -format file"""
         filemanager = FileManager()
         image_creator = ImageCreator()
-        image = image_creator.create_image(self.main_ui.music, self.owner.buttons["grid_option_choice"].get())
+        image = image_creator.create_image(
+            self.main_ui.music,
+            self.owner.buttons["grid_option_choice"].get()
+            )
         filemanager.save_pdf(image)
 
-class ExportSvgButton(ShakuButton):
+class ExportSvgButton():
     """Button for exporting sheet in svg form
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
 
     def press(self):
         """Export currently edited music sheet to SVG -format file"""
         filemanager = FileManager()
         svg_creator = SvgCreator()
-        svg = svg_creator.create_svg(self.main_ui.music, self.owner.buttons["grid_option_choice"].get())
+        svg = svg_creator.create_svg(
+            self.main_ui.music,
+            self.owner.buttons["grid_option_choice"].get()
+            )
         filemanager.save_svg(svg)
 
-class PlayButton(ShakuButton):
+class PlayButton():
     """Button for music playback
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
         self.player = MusicPlayer()
 
     def press(self):
@@ -575,23 +566,22 @@ class PlayButton(ShakuButton):
         else:
             self.player.play(self.main_ui.music.parts.values())
 
-class SaveButton(ShakuButton):
+class SaveButton():
     """Button for saving .shaku (JSON) -data
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
 
     def press(self):
         """Save currently edited music sheet to .shaku (JSON) -file"""
@@ -600,23 +590,22 @@ class SaveButton(ShakuButton):
         if filemanager.save_shaku(data):
             self.owner.saved = True
 
-class LoadButton(ShakuButton):
+class LoadButton():
     """Button for loading .shaku (JSON) -data
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
 
     def press(self):
         """Load a .shaku (JSON) -file to edit in software"""
@@ -639,23 +628,22 @@ class LoadButton(ShakuButton):
             self.owner.buttons["Add Part"].press(loading_part=int(part_id))
         self.owner.buttons_by_frame["Parts"][1].press()
 
-class UploadButton(ShakuButton):
+class UploadButton():
     """Button for uploading to AWS S3
-
-    Args:
-        ShakuButton: Button prototype
     """
-    def __init__(self, text, data, ui, owner, frame):
+    def __init__(self, text, main_ui, owner, frame):
         """Initialize button data and connections
 
         Args:
             text: Button text
-            data: dummy attribute
             ui: UI instance
             owner: Container class
             frame: Tkinter frame to show button in
         """
-        super().__init__(text, ui, owner, frame)
+        self.main_ui = main_ui
+        self.owner = owner
+        self.text = text
+        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
 
     def press(self):
         """Upload currently edited music sheet to .shaku (JSON) -file to AWS S3"""
