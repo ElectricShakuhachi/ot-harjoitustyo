@@ -113,4 +113,4 @@ eri soittaja. Moniäänisten kappaleiden notaatiossa eri äänet merkitään vie
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/src/graphics/shakuicon.png" width="90">
 
-Shakunotator -ohjelmiston logo
+Shakunotator -ohjelmiston logo viittaa shakuhachin historiaan liittyneiden [komuso-munkkien](https://en.wikipedia.org/wiki/Komus%C5%8D) päähineeseen.
