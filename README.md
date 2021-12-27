@@ -18,18 +18,18 @@ Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmisto
 
 ## Asennus
 
-1. Kloonaa sovellus githubista:
+### 1. Kloonaa sovellus githubista:
 
  ```bash
 git clone git@github.com:ElectricShakuhachi/ot-harjoitustyo.git shakunotator
 ```
 
-2. Asenna riippuvuudet komennolla:
+### 2. Asenna riippuvuudet komennolla:
  ```bash
 poetry install
 ```
 
-3. Voidaksesi käyttää musiikin toisto-toiminnallisuutta ohjelmassa, asenna fluidsynth.
+### 3. Voidaksesi käyttää musiikin toisto-toiminnallisuutta ohjelmassa, asenna fluidsynth.
 Asennuksen tapa riippuu käyttöjärjestelmästä:
 
 - Ubuntu tai Debian:
@@ -45,8 +45,9 @@ brew install fluidsynth
 - Muille käyttöjärjestelmille:
 [Lue fluidsynthin dokumentaatiosta](https://github.com/FluidSynth/fluidsynth/wiki/Download)
 
-4. Voidaksesi ladata Shakunotator -ohjelmalla yhteissäveltämiseen tarkoitettuun AWS S3 -etärepositorioon,
-pyydä kredentiaalit ohjelmiston kehittäjältä. Halutessasi voit myös käyttää jotakin muuta AWS S3 -repositoriota muuttamalla konfiguraatiotiedostossa "src/config/shaku_constants.py" vakio AWS_S3_BUCKET osoittamaan haluamasi repositorion (bucket) nimeen
+### 4. Voidaksesi ladata Shakunotator -ohjelmalla yhteissäveltämiseen tarkoitettuun AWS S3 -etärepositorioon, pyydä kredentiaalit ohjelmiston kehittäjältä. 
+
+Halutessasi voit myös käyttää jotakin muuta AWS S3 -repositoriota muuttamalla konfiguraatiotiedostossa "src/config/shaku_constants.py" vakio AWS_S3_BUCKET osoittamaan haluamasi repositorion (bucket) nimeen
     - AWS S3 -kredentiaalien käyttö vaatii [AWS Cli](https://aws.amazon.com/cli/):n asentamista ja kredentaalien konfigurointia siihen.
 
 ## Komentorivitoiminnot
