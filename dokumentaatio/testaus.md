@@ -20,6 +20,10 @@ Palveluluokkia (ImageScaler, MusicConverter, FileManager, ImageCreator, MidiCrea
 
 (TestImageScaler, TestMusicConverter, TestFileManager, TestImageCreator, TestMidiCreator, TestMidiTrack, TestMusicPlayer ja TestSvgCreator)
 
+### Vakioarvojen muutoksien huomioimisesta testauksessa
+
+Automaattisissa testeissä ei ole pääosin otettu huomioon vakioarvo-tiedoston arvojen muutoksia, etenkään sellaisiin arvoihin, joilla ohjelman käyttäminen järkevällä tavalla ei olisi mahdollista. Tämä johtuu siitä, että vakioarvoja sisältävän tiedoston käyttö sovelluksen konfigurointiin on väliaikainen ratkaisu, joka tullaan korvaamaan käyttäjäystävällisemmällä, sekä virhetiloja estävällä ratkaisulla tulevassa julkaisussa. Joten nykyisessäkin testauksessa on pyritty testaamaan arvoja, joiden syöttäminen sovelluksen konfiguraatioon tulee todennäköisesti olemaan tulevassakin versiossa mahdollista.
+
 ### Testikattavuus
 
 Käyttöliittymää lukuunottamatta testauksen haarautumakattavuus on
