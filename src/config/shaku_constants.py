@@ -1,6 +1,5 @@
 import os
 
-
 # Definitions for constants used in the ShakuNotator application
 
 
@@ -8,11 +7,7 @@ dirname = os.path.dirname(__file__)
 parent = os.path.dirname(dirname)
 
 
-
-
-
 # AUDIO OPTIONS :
-
 
 MIDI_INSTRUMENT_NUMBER = 73
 
@@ -26,10 +21,8 @@ DEFAULT_TEMPO = 65
 
 
 
-
 #VISUAL DETAILS :
 #(use rgb format for colors)
-
 
 GRID_COLOR = (0, 0, 0)
 
@@ -42,12 +35,12 @@ TEXT_COLOR = (0, 0, 0)
 NOTE_COLOR = (0, 0, 0)
 
 
+
 # POSITIONS, SIZES, SCALES :
 # The following constants pertaining to positioning / sizes on sheet are in scale used by UI preview
 #    -> scaled *4 in exported PDF/SVG
 # Sizes and scales are in some cases related to application functionality
 # so in case of any change test thoroughly.
-
 
 MAIN_WINDOW_SIZE = "860x1000" # format accepted by tkinter Tk.geometry
 
@@ -55,7 +48,7 @@ SHEET_SIZE = (620, 877) # 1/4 of export size
 
 EXPORT_SHEET_SIZE = (2480, 3508) # A4 paper
 
-NOTE_ROW_SPACING = 25
+NOTE_ROW_SPACING = 20
 
 GRID_LINE_WIDHT = 1
 
@@ -101,14 +94,11 @@ NOTE_BUTTON_SIZE = 30
 
 # FILING & UPLOAD OPTIONS :
 
-
-
 AWS_S3_BUCKET = "shakunotator"
 
 
-"""
-SHAKUHACHI MUSIC OPTIONS & DETAILS :
-"""
+
+# SHAKUHACHI MUSIC OPTIONS & DETAILS :
 
 NOTES = {}
 for i in range(-2, 13):
@@ -143,8 +133,8 @@ NOTE_TEXT_CODES = {-2: ".", -1: ",", 0: "Q", 1: "W", 2: "E", 3: "R",
 OCTAVE_TEXT_CODES = {"Otsu": "B", "Kan": "N", "Daikan": "M"}
 
 
-# ALERT / ERROR MESSAGES :
 
+# ALERT / ERROR MESSAGES :
 
 MESSAGE_PADDING = (50, 40)
 
