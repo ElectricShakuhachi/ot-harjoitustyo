@@ -12,7 +12,7 @@ Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin
 
 2. Käyttäjäympäristön osat:
 
-<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/parts.jpg" width="800">
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/parts.jpg" width="600">
 
     - 1. Sävellyksen nimen ja säveltäjän asettamisen tekstikentät ja painikkeet
     - 2. Rekisterin (oktaavin) valinta seuraavaksi kirjoitettaville nuoteille
