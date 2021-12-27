@@ -1,12 +1,38 @@
 # Shakuhachi Music Maker -käyttöohje
 
-Ohjelmiston loppukäyttäjien oletetaan tuntevan shakuhachimusiikkia. Ohjelmistoon muutoin tutustuvalle tarjotaan tässä dokumentin lopussa lyhyt selitys siitä, millaista shakuhachi-musiikki ja sen notaatio on.
+Ohjelmiston loppukäyttäjien oletetaan tuntevan shakuhachimusiikkia ja sen notaatiota. Etenkin ohjelmistoon muutoin tutustuvalle tarjotaan tässä dokumentin lopussa lyhyt selitys siitä, millaista shakuhachi-musiikki ja sen notaatio on, ja miten se on ohjelmassa toteutettu.
 
 ## Perusohjeet
 
-Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin piirtyy automaattisesti näkyviin ruudukko, jonka ruudut vastaavat tahteja.
-Sovelluksen nuottinäkymä on vain esikatselu, tallentaessa tekstien ja nuottien fontti tallentuu kauniimmin.
-Valmista nuottia pdf:ksi eksportoitaessa voi valita, haluaako lopulliseen nuottiin tahtiruudukon, vai ei.
+1. Sovelluksen käynnistyminen:
+
+Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin piirtyy automaattisesti näkyviin ruudukko, jonka ruudut vastaavat tahteja:
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/start.jpg" width="400">
+
+2. Käyttäjäympäristön osat:
+
+<img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/parts.jpg" width="800">
+
+    - 1. Sävellyksen nimen ja säveltäjän asettamisen tekstikentät ja painikkeet
+    - 2. Rekisterin (oktaavin) valinta seuraavaksi kirjoitettaville nuoteille
+    - 3. Nuottinäppäimet - nuottien lisääminen nuottiin
+    - 4. Taukonäppäimet - taukojen lisääminen nuottiin
+    - 5. Pituusnäppäimet - lisättävän nuotin keston valitseminen
+    - 6. Osien lisäys -nappi, sekä osanapit
+        - moniäänisten kappaleiden kirjoittamista varten
+    - 7. Eksportointinapit
+        - PDF nuotin tulostamista varten
+        - SVG, jotta nuottia voisi muokata lisää vektorigrafiikka-ohjelmistoissa
+        - MIDI, jotta nuotista voisi tallentaa musiikin soitettavissa olevaan muotoon
+            - HUOM vaatii fluidsynth -asennuksen, kts. README -tiedosto
+    - 8. Tallennus, lataus ja upload -etärepositorioon -napit
+    - 9. Play/Stop -nappi sävellyksen esikuunteluun
+        - HUOM vaatii fluidsynth -asennuksen, kts. README -tiedosto
+
+3. Säveltämisen aloittaminen
+
+
 
 ## Yhteenveto shakuhachi-musiikkia tuntemattomille
 
