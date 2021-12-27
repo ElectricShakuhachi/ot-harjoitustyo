@@ -14,22 +14,22 @@ Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/parts.jpg" width="600">
 
-    - 1. Sävellyksen nimen ja säveltäjän asettamisen tekstikentät ja painikkeet
-    - 2. Rekisterin (oktaavin) valinta seuraavaksi kirjoitettaville nuoteille
-    - 3. Nuottinäppäimet - nuottien lisääminen nuottiin
-    - 4. Taukonäppäimet - taukojen lisääminen nuottiin
-    - 5. Pituusnäppäimet - lisättävän nuotin keston valitseminen
-    - 6. Osien lisäys -nappi, sekä osanapit
+    1. Sävellyksen nimen ja säveltäjän asettamisen tekstikentät ja painikkeet
+    2. Rekisterin (oktaavin) valinta seuraavaksi kirjoitettaville nuoteille
+    3. Nuottinäppäimet - nuottien lisääminen nuottiin
+    4. Taukonäppäimet - taukojen lisääminen nuottiin
+    5. Pituusnäppäimet - lisättävän nuotin keston valitseminen
+    6. Osien lisäys -nappi, sekä osanapit
         - moniäänisten kappaleiden kirjoittamista varten
-    - 7. Eksportointinapit
+    7. Eksportointinapit
         - PDF nuotin tulostamista varten
         - SVG, jotta nuottia voisi muokata lisää vektorigrafiikka-ohjelmistoissa
         - MIDI, jotta nuotista voisi tallentaa musiikin soitettavissa olevaan muotoon
-            - HUOM vaatii fluidsynth -asennuksen, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo#readme)
-    - 8. Tallennus, lataus ja upload -etärepositorioon -napit
-        - HUOM etärepositorioon lataus vaatii kredentiaalit AWS S3 -repositorioon, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo#readme) 
-    - 9. Play/Stop -nappi sävellyksen esikuunteluun
-        - HUOM vaatii fluidsynth -asennuksen, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo#readme)
+            - HUOM vaatii fluidsynth -asennuksen, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/README.md)
+    8. Tallennus, lataus ja upload -etärepositorioon -napit
+        - HUOM etärepositorioon lataus vaatii kredentiaalit AWS S3 -repositorioon, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/README.md)
+    9. Play/Stop -nappi sävellyksen esikuunteluun
+        - HUOM vaatii fluidsynth -asennuksen, kts. [README](https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/README.md)
 
 3. Säveltämisen aloittaminen
 
