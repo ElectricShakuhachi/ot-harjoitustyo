@@ -6,7 +6,7 @@ Ohjelmiston loppukäyttäjien oletetaan tuntevan shakuhachimusiikkia ja sen nota
 
 1. Sovelluksen käynnistyminen:
 
-Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin piirtyy automaattisesti näkyviin ruudukko, jonka ruudut vastaavat tahteja:
+Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin piirtyy näkyviin ruudukko, jonka ruudut vastaavat tahteja:
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/start.jpg" width="400">
 
@@ -64,14 +64,14 @@ Käyttämällä eksportointinappeja, voit tallentaa nuotin sisältämät tiedot 
 
 ## Yhteenveto shakuhachi-musiikkia tuntemattomille
 
-Shakuhachi-musiikin notaatiossa käytetään pääosin japanilaisia katakana-merkkejä, sekä osalti vain notaatioon kehitettyjä merkintöjä, tärkeimpinä näistä tahtia kuvaavat viivoja katakana-merkkien vieressä. Nuotit kirjoitetaan ylhäältä alas, ja rivit oikealta vasemmalle, eli nuotinnus aloitetaan
+Shakuhachi-musiikin notaatiossa käytetään pääosin japanilaisia *katakana*-merkkejä, sekä osalti vain notaatioon kehitettyjä merkintöjä, tärkeimpinä näistä tahtia kuvaavat viivoja *katakana*-merkkien vieressä. Nuotit kirjoitetaan ylhäältä alas, ja rivit oikealta vasemmalle, eli nuotinnus aloitetaan
 paperin oikeasta yläreunasta
 
 ### Tässä sovelluksessa kirjoitettava nuotinnus voidaan pääosin lukea näiden ohjeiden avulla:
 
 1. Shakuhachi-nuotteja kirjoitetaan ylhäältä alas jonona japanilaisia merkkejä. Rivit vaihtuvat oikealta vasemmalle. 
 
-2. Shakuhachi-nuotissa voi olla tahti-ruudukko tai ei (ohjelmassa ruudukko on aina läsnä käyttöympäristössä, mutta nuotin voi eksportoida joko ruudukon kanssa tai ilman. Nuotin ruudukon ruutu vastaa yhtä tahtia nuotissa, eli tiettyä kestoa ajassa. Oletuksena tämä kesto on kaksi tyypillisimmän pituista nuottia (ns. neljäsosanuotti), kuten tässä kuvassa:
+2. Shakuhachi-nuotissa voi olla tahtiruudukko tai ei (ohjelmassa ruudukko on aina läsnä käyttöympäristössä, mutta nuotin voi eksportoida joko ruudukon kanssa tai ilman. Nuotin ruudukon ruutu vastaa yhtä tahtia nuotissa, eli tiettyä kestoa ajassa. Oletuksena tämä kesto on kaksi tyypillisimmän pituista nuottia (ns. neljäsosanuotti), kuten tässä kuvassa:
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/1.jpg" width="300">
 
