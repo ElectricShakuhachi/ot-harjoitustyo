@@ -18,6 +18,7 @@ Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin
     2. Rekisterin (oktaavin) valinta seuraavaksi kirjoitettaville nuoteille
     3. Nuottinäppäimet - nuottien lisääminen nuottiin
     4. Taukonäppäimet - taukojen lisääminen nuottiin
+        - huom, valittu nuotin pituus ei koske taukoja
     5. Pituusnäppäimet - lisättävän nuotin keston valitseminen
     6. Osien lisäys -nappi, sekä osanapit
         - moniäänisten kappaleiden kirjoittamista varten
@@ -42,10 +43,13 @@ Moniäänisiin kappaleihin voi lisätä osat joko heti aluksi, tai niitä voi li
 
 Huomioi, että jos nuotteja on paperilla jo paljon, ei välttämättä osien lisääminen enää ole mahdollista, koska nuotit eivät mahtuisi paperille. (Tässä sovelluksen versiossa ei ole toteutettu monisivuisten kappaleiden muokkaamista -> mutta se on tulossa tulevaan julkaisuun) Toisin sanoen monisivuiset kappaleet on tässä versiossa luotava sivu kerrallaan.
 
+- Tauot:
+
+Valittu lisättävän nuotin pituus ei koske taukoja, joilla on vakiopituutensa
+
 - Rekisterit:
 
 Valitessasi seuraavaksi kirjoitettaville äänille rekisterin rekisterinapeista, vaihtuu näkymässä automaattisesti lisättävissä olevien äänien lista, sillä jokainen rekisteri ei sisällä tarkalleen samoja mahdollisia nuottimerkintöjä.
-
 - Tallennus ja lataus:
 
 Save- ja Load -napeilla voit tallentaa ja ladata nuotteja .shaku -tiedostomuodossa. Load-nappia painaessa ohjelma tarkastaa ja ilmoittaa sinulle, jos olet tehnyt tallentamattomia muutoksia nuottiin. Voit peruuttaa silloin vielä latauksen menettämättä tietoja. 
@@ -82,13 +86,15 @@ paperin oikeasta yläreunasta
     - Yksi pystyviiva, jonka lävistää pilkku = Yksinäinen kahdeksasosanuotti
     - Kaksi pystyviivaa = Kuudestoistaosanuotti (neljä kertaa nopeampi kuin neljäsosanuotti)
 
-4. Nuotin sävelkorkeutta ilmaisee kaksi tekijää:
+4. Taukojen pituutta ei merkitä erikseen. Pallolta näyttävä tauko merkitsee neljäsosanuotin pituista taukoa, pilkulta näyttävä tauko merkitsee kahdeksasosanuotin pituista taukoa
+
+5. Nuotin sävelkorkeutta ilmaisee kaksi tekijää:
     1. Rekisterimerkintä (merkki, joka piirtyy nuottijonon vierelle ja ilmaisee että siitä lähtien nuotit ovat sitä vastaavassa rekisterissä). Usein käytetään sanaa oktaavit - mutta tämä ei vastaa tarkkaan shakuhachimusiikin rekisterejä.
         - tärkein asia rekisteristä on ymmärtää, että rekisterin valinta siirtää seuraavien nuottien korkeuden merkittävästi ylös- tai alaspäin
     2. Nuottimerkki, joista jokainen viittaa johonkin tiettyyn nuottiin. Alla yksinertainen taulukko merkintöjen sävelkorkeuksien vastaavuudesta länsimaisessa asteikossa:
     <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/tozan-western.jpg" width="640">
 
-5. Alla esimerkki ohjelmalla toteutettua shakuhachi-nuottia vastaavasta länsimaisesta nuotista:
+6. Alla esimerkki ohjelmalla toteutettua shakuhachi-nuottia vastaavasta länsimaisesta nuotista:
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/2.jpg" width="300">
 
@@ -97,7 +103,7 @@ paperin oikeasta yläreunasta
 Tässä ohjelmassa on tarjottu toiminnallisuus sekä soolo- että moniäänisten kappaleiden nuotintamiseen. Moniääniset kappaleet ovat yhtyekappaleita, joissa jokaista ääntä soittaa
 eri soittaja. Moniäänisten kappaleiden notaatiossa eri äänet merkitään vierekkäin klusterina, joka jatkuu riveittäin, eli kunkin äänen soittaja soittaa siis klusterista omaa linjaansa, ja voi samalla seurata vierestä muiden äänien notaatiota osatakseen ajoittaa soittonsa oikein.
 
-Esimerkki yhtyekappaleesta ja sitä vastaavasta länsimaisesta nuotista:
+7. Esimerkki yhtyekappaleesta ja sitä vastaavasta länsimaisesta nuotista:
 
 <img src="https://github.com/ElectricShakuhachi/ot-harjoitustyo/blob/master/dokumentaatio/kuvat/nuotit/3.jpg" width="400">
 

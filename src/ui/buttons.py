@@ -12,13 +12,13 @@ from entities.shaku_note import ShakuNote
 
 class Buttons:
     """Container for user interface Buttons"""
-    def __init__(self, ui):
+    def __init__(self, main_ui):
         """Construct class attributes and generate default buttons
 
         Args:
             ui: Main ui container instance
         """
-        self.main_ui = ui
+        self.main_ui = main_ui
         self.buttons = {}
         self.frames = {}
         self.buttons_by_frame = {}
@@ -57,7 +57,12 @@ class Buttons:
         buttons = []
         for key, octave in enumerate(["Otsu", "Kan", "Daikan"]):
             buttons.append({'text': octave, 'data': key, "button_class": OctaveButton})
-        self._generate_button_frame("Octave", buttons, self.main_ui.frames["right"], separator=False)
+        self._generate_button_frame(
+            "Octave",
+            buttons,
+            self.main_ui.frames["right"],
+            separator=False
+            )
         self.separators["Octave"] = ButtonSeparator(self.main_ui.frames["right"])
 
     def _create_note_buttons(self):
@@ -85,7 +90,7 @@ class Buttons:
         self._clear_note_buttons()
         notes = consts.NOTES
         buttons = {}
-        for key in notes.keys():
+        for key in notes:
             buttons[key] = {'text': f"Pitch {key}", 'data': key, "button_class": NoteButton}
         if octave == "Otsu":
             mini = 0
@@ -106,7 +111,8 @@ class Buttons:
         buttons = [{"text": "Break", "data": -1, "button_class": NoteButton},
         {"text": "Break", "data": -2, "button_class": NoteButton}
         ]
-        self._generate_button_frame("Break", buttons, self.main_ui.frames["right"])
+        self._generate_button_frame("Break", buttons, self.main_ui.frames["right"], separator=False)
+        self.separators["Break"] = ButtonSeparator(self.main_ui.frames["right"])
 
     def _create_lenght_buttons(self):
         buttons = []
@@ -118,7 +124,12 @@ class Buttons:
         buttons = [
             {"text": "Add Part", "data": None, "button_class": AddPartButton},
         ]
-        self._generate_button_frame("Add Part", buttons, self.main_ui.frames["right"], separator=False)
+        self._generate_button_frame(
+            "Add Part",
+            buttons,
+            self.main_ui.frames["right"],
+            separator=False
+            )
         self._generate_button_frame("Parts", None, self.main_ui.frames["right"], separator=False)
         self.separators["Parts"] = ButtonSeparator(self.main_ui.frames["right"])
 
@@ -128,10 +139,20 @@ class Buttons:
             {"text": "export PDF", "data": None, "button_class": ExportPdfButton},
             {"text": "export SVG", "data": None, "button_class": ExportSvgButton}
         ]
-        self._generate_button_frame("Export", buttons, self.main_ui.frames["right"], separator=False)
-        self.grid_option_choice = BooleanVar()
-        self.sheet_grid_option = Checkbutton(self.main_ui.frames["right"], text="Include grid", variable=self.grid_option_choice, onvalue=True, offvalue=False)
-        self.sheet_grid_option.pack()
+        self._generate_button_frame(
+            "Export",
+            buttons,
+            self.main_ui.frames["right"],
+            separator=False
+            )
+        self.buttons["grid_option_choice"] = BooleanVar()
+        self.buttons["sheet_grid_option"] = Checkbutton(
+            self.main_ui.frames["right"], text="Include grid",
+            variable=self.buttons["grid_option_choice"],
+            onvalue=True,
+            offvalue=False
+            )
+        self.buttons["sheet_grid_option"].pack()
         self.separators["Export"] = ButtonSeparator(self.main_ui.frames["right"])
 
     def _create_file_buttons(self):
@@ -149,14 +170,25 @@ class Buttons:
     def _create_naming_frame(self):
         self.textboxes["musicname"] = (Entry(self.main_ui.frames["top1"]))
         self.textboxes["composername"] = (Entry(self.main_ui.frames["top2"]))
-        self.textboxbuttons["namebutton"] = (Button(self.main_ui.frames["top1"], text="Add Name", command=lambda: self.add_name()))
-        self.textboxbuttons["composerbutton"] = (Button(self.main_ui.frames["top2"], text="Add Composer", command=lambda: self.add_composer()))
+        self.textboxbuttons["namebutton"] = (
+            Button(self.main_ui.frames["top1"], text="Add Name", command=self.add_name)
+            )
+        self.textboxbuttons["composerbutton"] = (
+            Button(self.main_ui.frames["top2"], text="Add Composer", command=self.add_composer)
+            )
         for label in self.textboxbuttons.values():
             label.pack(side = constants.LEFT)
         for box in self.textboxes.values():
             box.pack(side = constants.RIGHT)
 
-    def _generate_button_frame(self, text: str, buttoninfo, parent_frame, label=True, separator=True):
+    def _generate_button_frame(
+        self,
+        text: str,
+        buttoninfo,
+        parent_frame,
+        label=True,
+        separator=True
+        ):
         frame = self.frames[text] = Frame(parent_frame)
         frame.pack(side=constants.TOP)
         self.frames[text] = frame
@@ -165,8 +197,14 @@ class Buttons:
         self.buttons_by_frame[text] = []
         if buttoninfo:
             for button_spec in buttoninfo:
-                button = button_spec['button_class'](button_spec['text'], button_spec['data'], self.main_ui, self, frame)
-                if "Note" in text or text == "Parts" or text == "Octave":
+                button = button_spec['button_class'](
+                    button_spec['text'],
+                    button_spec['data'],
+                    self.main_ui,
+                    self,
+                    frame
+                    )
+                if "Note" in text or text in ("Parts", "Octave", "Break"):
                     button.button.pack(side=constants.LEFT)
                 else:
                     button.button.pack(side=constants.TOP)
@@ -264,7 +302,11 @@ class OctaveButton(ShakuButton):
         scale =  consts.BUTTON_NOTE_SIZE / 1000
         self.pil_img = image.resize([int(scale * s) for s in image.size])
         self.image = ImageTk.PhotoImage(self.pil_img)
-        self.button.config(image=self.image, width=consts.NOTE_BUTTON_SIZE, height=consts.NOTE_BUTTON_SIZE)
+        self.button.config(
+            image=self.image,
+            width=consts.NOTE_BUTTON_SIZE,
+            height=consts.NOTE_BUTTON_SIZE
+            )
 
     def press(self, auto_press=False):
         """Configs octave for upcoming notes
@@ -305,7 +347,11 @@ class NoteButton(ShakuButton):
         scale =  consts.BUTTON_NOTE_SIZE / 1000
         self.pil_img = image.resize([int(scale * s) for s in image.size])
         self.image = ImageTk.PhotoImage(self.pil_img)
-        self.button.config(image=self.image, width=consts.NOTE_BUTTON_SIZE, height=consts.NOTE_BUTTON_SIZE)
+        self.button.config(
+            image=self.image,
+            width=consts.NOTE_BUTTON_SIZE,
+            height=consts.NOTE_BUTTON_SIZE
+            )
 
     def press(self):
         """Adds a note on part currently under edition if not full"""
@@ -367,7 +413,13 @@ class AddPartButton(ShakuButton):
         super().__init__(text, ui, owner, frame)
 
     def _add_part_button(self, part_id):
-        new_button = PartButton(part_id, part_id, self.main_ui, self.owner, self.owner.frames["Parts"])
+        new_button = PartButton(
+            part_id,
+            part_id,
+            self.main_ui,
+            self.owner,
+            self.owner.frames["Parts"]
+            )
         self.owner.buttons_by_frame["Parts"].append(new_button)
         new_button.button.pack(side=constants.LEFT)
         return new_button
