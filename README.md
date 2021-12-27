@@ -79,8 +79,10 @@ poetry run invoke lint
 
 ## Julkaistut versiot:
 
-- [v0.2.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.2.0-alpha)
+- [v.0.2.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.2.0-alpha)
 
-- [v0.3.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.3.0-alpha)
+- [v.0.3.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.3.0-alpha)
 
-- [loppupalautus- v0.5.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.5.0-alpha)
+- [v.0.5.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.5.0-alpha)
+
+- [loppupalautus - v.0.6.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v.0.6.0-alpha)
