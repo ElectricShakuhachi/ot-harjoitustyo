@@ -154,7 +154,7 @@ class UI:
         Args:
             notation: Reference to ShakuNotation instance describing notation
         """
-        image = self._notation_images[notation.type]
+        image = self._notation_images[notation.notation_type]
         if len(part.notes) > notation.relative_note:
             note_pos = part.notes[notation.relative_note].position
         else:
