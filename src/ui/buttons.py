@@ -521,7 +521,7 @@ class ExportPdfButton(ShakuButton):
         """Export currently edited music sheet to PDF -format file"""
         filemanager = FileManager()
         image_creator = ImageCreator()
-        image = image_creator.create_image(self.main_ui.music, self.owner.grid_option_choice.get())
+        image = image_creator.create_image(self.main_ui.music, self.owner.buttons["grid_option_choice"].get())
         filemanager.save_pdf(image)
 
 class ExportSvgButton(ShakuButton):
@@ -546,7 +546,7 @@ class ExportSvgButton(ShakuButton):
         """Export currently edited music sheet to SVG -format file"""
         filemanager = FileManager()
         svg_creator = SvgCreator()
-        svg = svg_creator.create_svg(self.main_ui.music, self.owner.grid_option_choice.get())
+        svg = svg_creator.create_svg(self.main_ui.music, self.owner.buttons["grid_option_choice"].get())
         filemanager.save_svg(svg)
 
 class PlayButton(ShakuButton):
