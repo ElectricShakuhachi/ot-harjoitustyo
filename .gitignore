@@ -3,7 +3,7 @@ __pycache__
 htmlcov
 .vscode
 .coverage
-.shaku
-.pdf
-.mid
-.svg
+*.shaku
+*.pdf
+*.mid
+*.svg
