@@ -96,7 +96,7 @@ class TestShakuPart(unittest.TestCase):
         self.part.add_note(note)
         value = self.part.next_position()
         y_spacing = consts.NOTE_Y_SPACING
-        self.assertEqual(value, (100, 100 + lenght * y_spacing))
+        self.assertEqual(value, [100, 100 + lenght * y_spacing])
 
     def test_next_position_adds_measure_skip(self):
         note = ShakuNote(1, (100, 100), 8)
@@ -106,7 +106,7 @@ class TestShakuPart(unittest.TestCase):
         value = self.part.next_position()
         y_spacing = consts.NOTE_Y_SPACING
         measure_skip = consts.MEASURE_SKIP_LENGHT
-        self.assertEqual(value, (100, 100 + lenght * y_spacing + measure_skip))
+        self.assertEqual(value, [100, 100 + lenght * y_spacing + measure_skip])
 
     def test_next_position_decreases_x_for_new_line(self):
         max_y = consts.SHEET_SIZE[1] - 47

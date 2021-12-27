@@ -33,4 +33,3 @@ Sovellus on järjestelmätestattu asentamalla se käyttöohjeiden mukaisesti, se
 Ko. manuaalinen järjestelmätestaus on toteutettu seuraavilla käyttöjärjestelmillä:
 
 Ubuntu 20.04.3 (Gnome 3.36.8)
-

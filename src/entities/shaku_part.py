@@ -1,4 +1,3 @@
-from copy import copy
 import config.shaku_constants as consts
 from entities.shaku_note import ShakuNote
 from entities.shaku_notation import ShakuNotation
@@ -152,7 +151,7 @@ class ShakuPart:
         if next_pos[1] > max_note_y:
             next_pos[1] = y_start
             next_pos[0] -= self.spacing * consts.NOTE_ROW_SPACING
-        return tuple(next_pos)
+        return list(next_pos)
 
     def append_misc_notation(self, notation_type: str):
         """Adds a notation next to the position where next note will be
