@@ -82,4 +82,4 @@ poetry run invoke lint
 
 - [v0.3.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.3.0-alpha)
 
-- [loppujulkaisu - v0.5.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.5.0-alpha)
+- [loppupalautus- v0.5.0-alpha](https://github.com/ElectricShakuhachi/ot-harjoitustyo/releases/tag/v0.5.0-alpha)
