@@ -236,6 +236,7 @@ class UI:
         self._draw_all_notes()
 
     def clear_messages(self):
+        """Remove all existing message windows"""
         for message in self._messages:
             message.disactivate()
         self._messages = []
