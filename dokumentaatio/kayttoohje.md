@@ -31,9 +31,36 @@ Käynnistäessä avautuu automaattisesti muokattavaksi uusi nuottisivu. Nuottiin
     9. Play/Stop -nappi sävellyksen esikuunteluun
         - HUOM vaatii fluidsynth -asennuksen, kts. README
 
-3. Säveltämisen aloittaminen
+3. Sekalaisia ohjeita, jotka kannattaa lukea läpi:
 
+- Moniäänisyydestä:
 
+Yllä olevan käyttöympäristön osien luettelon avulla pääset hyvin alkuun - osat ovat melko helppo ymmärtää suoraan sen avulla.
+Moniäänisiin kappaleihin voi lisätä osat joko heti aluksi, tai niitä voi lisätä kesken säveltämisen missä vaiheessa hyvänsä - jo kirjoitetut osat keskittyvät uudelleen nuottiin sen mukaisesti. 
+
+- Yksi sivu kerrallaan:
+
+Huomioi, että jos nuotteja on paperilla jo paljon, ei välttämättä osien lisääminen enää ole mahdollista, koska nuotit eivät mahtuisi paperille. (Tässä sovelluksen versiossa ei ole toteutettu monisivuisten kappaleiden muokkaamista -> mutta se on tulossa tulevaan julkaisuun) Toisin sanoen monisivuiset kappaleet on tässä versiossa luotava sivu kerrallaan.
+
+- Rekisterit:
+
+Valitessasi seuraavaksi kirjoitettaville äänille rekisterin rekisterinapeista, vaihtuu näkymässä automaattisesti lisättävissä olevien äänien lista, sillä jokainen rekisteri ei sisällä tarkalleen samoja mahdollisia nuottimerkintöjä.
+
+- Tallennus ja lataus:
+
+Save- ja Load -napeilla voit tallentaa ja ladata nuotteja .shaku -tiedostomuodossa. Load-nappia painaessa ohjelma tarkastaa ja ilmoittaa sinulle, jos olet tehnyt tallentamattomia muutoksia nuottiin. Voit peruuttaa silloin vielä latauksen menettämättä tietoja. 
+
+HUOM! Ei ole taattua että tämänhetkisen ohjelman version tallentamat .shaku -tiedostot ovat luettavissa tulevilla ohjelman versioilla.
+
+- Tiedoston uploadaaminen etärepositorioon (internettiin)
+
+Painamalla upload-nappia voi ladata muokattavana olevan nuotin AWS S3 -repositorioon. Nuotille tulee olla merkittynä nimi, jotta lataus olisi mahdollista. Lisäksi nuotin pitää olla nimi, joka ei ole toisen nuotin nimenä jo repositoriossa. (Ylikirjoittaminen ei ole mahdollista, mutta ohjelma ei anna ladata nuottia mikäli nimi on kopio, ja siinä tapauksessa nimi on syytä vaihtaa, mikäli haluaa ladata nuotin repositorioon)
+
+Lisäksi etärepositorioon lataus vaatii kredentiaalit AWS S3 -repositorioon, kts. README
+
+- Eksportointi
+
+Käyttämällä eksportointinappeja, voit tallentaa nuotin sisältämät tiedot PDF- tai SVG-muotoon. PDF-muoto on suositeltavampi nuotin tulostamista ym. käyttöä varten, mutta eksportoimalla SVG-muotoon saa tiedoston, jota voi muokata lisää vektorigrafiikkaohjelmistoissa. Lisäksi nuoteista generoidun MIDI-tiedoston voi eksportoida.
 
 ## Yhteenveto shakuhachi-musiikkia tuntemattomille
 
