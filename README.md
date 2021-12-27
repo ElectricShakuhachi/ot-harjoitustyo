@@ -21,7 +21,7 @@ Sovellus on toteutettu Helsingin Yliopiston Tietojenkäsittelytieteen Ohjelmisto
 1. Kloonaa sovellus githubista:
 
  ```bash
-git clone git@github.com:ElectricShakuhachi/ot-harjoitustyo.git shakuhachi_music_maker
+git clone git@github.com:ElectricShakuhachi/ot-harjoitustyo.git shakunotator
 ```
 
 2. Asenna riippuvuudet komennolla:
