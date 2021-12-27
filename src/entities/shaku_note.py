@@ -8,7 +8,7 @@ class ShakuNote:
         first: True if depicted note is the first note in its measure. Defaults to False.
         dotted: Boolean value used by parent class in rhythm notation generation
     """
-    def __init__(self, pitch: int, position: list, lenght: int=8, first: bool=False):
+    def __init__(self, pitch: int, position: tuple, lenght: int=8, first: bool=False):
         """Constructor, sets up attributes depicting a musical note
 
         Args:

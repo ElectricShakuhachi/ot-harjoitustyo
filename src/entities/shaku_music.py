@@ -85,7 +85,7 @@ class ShakuMusic:
         Returns:
             True if part was added, False if there is no room to add part
         """
-        if self._max_rows():
+        if self._max_rows() or part_id in self.parts:
             return False
         self.spacing += 1
         start_x = self._start_x_of_part(part_id)

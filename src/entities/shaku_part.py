@@ -139,16 +139,20 @@ class ShakuPart:
         Returns:
             [x, y] - values depicting x and y -axis placing of next note to be added on part
         """
+        y_start = consts.PARTS_Y_START
+        measure_skip = consts.MEASURE_SKIP_LENGHT
+        y_spacing = consts.NOTE_Y_SPACING
+        max_note_y = consts.SHEET_SIZE[1] - 47
         if len(self.notes) == 0:
-            return [self._start_x, 80]
-        next_pos = copy(self.notes[-1].position)
-        next_pos[1] += self.notes[-1].lenght * 6
+            return [self._start_x, y_start]
+        next_pos = list(self.notes[-1].position)
+        next_pos[1] += self.notes[-1].lenght * y_spacing
         if self._measure_counter == 0:
-            next_pos[1] += 14
-        if next_pos[1] > 830:
-            next_pos[1] = 80
+            next_pos[1] += measure_skip
+        if next_pos[1] > max_note_y:
+            next_pos[1] = y_start
             next_pos[0] -= self.spacing * consts.NOTE_ROW_SPACING
-        return next_pos
+        return tuple(next_pos)
 
     def append_misc_notation(self, notation_type: str):
         """Adds a notation next to the position where next note will be
