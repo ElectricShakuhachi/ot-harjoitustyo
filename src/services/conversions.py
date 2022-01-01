@@ -13,7 +13,7 @@ class MusicConverter:
         synth = FluidSynth()
         synth.midi_to_audio(source, target)
 
-class ImageScaler:
+class GraphicsConverter:
     """Class for scaling items from app-internal sheet size to export sheet size"""
     def scale(self, item):
         """Multiplies (recursively) by the difference of ui sheet versus export sheet size
@@ -33,3 +33,6 @@ class ImageScaler:
         if type(item) in [int, float]:
             return item * multiplicator
         raise ValueError("Can only scale integers, floats, tuples and lists")
+
+    def rgb_to_hex(self, rgb: tuple):
+        return "#%02x%02x%02x" % rgb

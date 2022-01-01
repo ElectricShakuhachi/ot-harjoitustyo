@@ -1,4 +1,4 @@
-from tkinter import Button, Entry, constants, Frame, ttk, Label, Checkbutton, BooleanVar
+from tkinter import Button, Entry, constants, Frame, ttk, Label, Checkbutton, BooleanVar, Menu
 import pygame
 from PIL import Image, ImageTk
 from services.filing import FileManager
@@ -9,6 +9,7 @@ from services.svg_creator import SvgCreator
 from ui.messages import ShakuMessage
 import config.shaku_constants as consts
 from entities.shaku_note import ShakuNote
+from commands.commands import Commands
 
 class Buttons:
     """Container for user interface Buttons"""
@@ -31,6 +32,8 @@ class Buttons:
         self._octave = "Otsu"
         self._create_default_buttons()
         self.buttons["Add Part"].press()
+        self.commands = Commands(self.main_ui)
+        self._setup_menu(self.main_ui.window)
 
     @property
     def octave(self):
@@ -157,8 +160,6 @@ class Buttons:
 
     def _create_file_buttons(self):
         buttons = [
-            {"text": "save", "button_class": SaveButton},
-            {"text": "load", "button_class": LoadButton},
             {"text": "upload", "button_class": UploadButton}
         ]
         self._generate_button_frame("File", buttons, self.main_ui.frames["right"])
@@ -259,6 +260,81 @@ class Buttons:
         self.add_name(data['name'])
         self.add_composer(data['composer'])
 
+    def _load(self):
+        if not self.saved: # refactor later -> some of the framework already exists
+            self.main_ui.messages.append(ShakuMessage("Overwrite"))
+        data = self.commands.load()
+        if data is None:
+            return
+        self.load_json(data)
+        self.buttons["Add Part"].button.config(state="normal", relief=constants.RAISED)
+        for button in self.buttons_by_frame["Parts"]:
+            if button.text != "Add Part":
+                button.button.destroy()
+        self.buttons_by_frame["Parts"] = [self.buttons["Add Part"]]
+        for part_id in data["parts"].keys():
+            self.buttons["Add Part"].press(loading_part=int(part_id))
+        self.buttons_by_frame["Parts"][1].press()
+        self.saved = True
+
+    def _dummy_command(self):
+        pass
+
+    def _setup_menu(self, root):
+        menu = Menu(root)
+        file_menu = Menu(menu, tearoff=0)
+        file_menu.add_command(label="New", command=self._dummy_command)
+        file_menu.add_command(label="Open", command=self._load)
+        file_menu.add_command(label="Save", command=self.commands.save)
+        file_menu.add_command(label="Save As", command=self.commands.save_as)
+        file_menu.add_separator()
+        file_menu.add_command(label="Properties", command=self._dummy_command)
+        file_menu.add_separator()
+        file_menu.add_command(label="Export Sheet", command=self._dummy_command)
+        file_menu.add_command(label="Import", command=self._dummy_command)
+        file_menu.add_separator()
+        file_menu.add_command(label="Export Sound", command=self._dummy_command)
+        file_menu.add_separator()
+        file_menu.add_command(label="Upload", command=self._dummy_command)
+        file_menu.add_command(label="Download", command=self._dummy_command)
+        file_menu.add_separator()
+        file_menu.add_command(label="Quit", command=self._dummy_command)
+        menu.add_cascade(label="File", menu=file_menu)
+
+        edit_menu = Menu(menu, tearoff=0)
+        edit_menu.add_command(label="Undo", command=self._dummy_command)
+        edit_menu.add_command(label="Redo", command=self._dummy_command)
+        edit_menu.add_separator()
+        edit_menu.add_command(label="Cut", command=self._dummy_command)
+        edit_menu.add_command(label="Copy", command=self._dummy_command)
+        edit_menu.add_command(label="Paste", command=self._dummy_command)
+        edit_menu.add_separator()
+        edit_menu.add_command(label="Find/Replace", command=self._dummy_command)
+        menu.add_cascade(label="Edit", menu=edit_menu)
+
+        insert_menu = Menu(menu, tearoff=0)
+        insert_menu.add_command(label="Special notations", command=self._dummy_command)
+        insert_menu.add_command(label="Create custom notation", command=self._dummy_command)
+        insert_menu.add_command(label="Insert text", command=self._dummy_command)
+        menu.add_cascade(label="Insert", menu=insert_menu)
+
+        parts_menu = Menu(menu, tearoff=0)
+        parts_menu.add_command(label="Add part", command=self._dummy_command)
+        parts_menu.add_command(label="Configure parts", command=self._dummy_command)
+        menu.add_cascade(label="Parts", menu=parts_menu)
+
+        play_menu = Menu(menu, tearoff=0)
+        play_menu.add_command(label="Play / Stop", command=self._dummy_command)
+        play_menu.add_command(label="Playback options", command=self._dummy_command)
+        menu.add_cascade(label="Play", menu=play_menu)
+
+        help_menu = Menu(menu, tearoff=0)
+        help_menu.add_command(label="Guide", command=self._dummy_command)
+        help_menu.add_command(label="Fingering charts", command=self._dummy_command)
+        menu.add_cascade(label="Help", menu=help_menu)
+
+        root.config(menu=menu)
+
 class ButtonSeparator:
     """Horizontal line to separate buttons"""
     def __init__(self, frame, pady=10):
@@ -349,7 +425,8 @@ class NoteButton():
             lenght = abs(self.pitch) * 4
         else:
             lenght = self.owner.chosen_lenght
-        note = ShakuNote(self.pitch, self.main_ui.active_part.next_position(), lenght)
+        position = self.main_ui.active_part.next_position()
+        note = ShakuNote(self.pitch, position[:2], position[2], lenght)
         if self.main_ui.add_note(note):
             self.owner.saved = False
 
@@ -421,9 +498,7 @@ class AddPartButton():
         """
         if loading_part is None:
             i = len(self.main_ui.music.parts) + 1
-            if not self.main_ui.music.add_part(i):
-                self.main_ui.messages.append(ShakuMessage("No Part Room"))
-                return
+            self.main_ui.music.add_part(i)
             new_button = self._add_part_button(i)
         else:
             new_button = self._add_part_button(loading_part)
@@ -565,68 +640,6 @@ class PlayButton():
             pygame.mixer.music.stop()
         else:
             self.player.play(self.main_ui.music.parts.values())
-
-class SaveButton():
-    """Button for saving .shaku (JSON) -data
-    """
-    def __init__(self, text, main_ui, owner, frame):
-        """Initialize button data and connections
-
-        Args:
-            text: Button text
-            ui: UI instance
-            owner: Container class
-            frame: Tkinter frame to show button in
-        """
-        self.main_ui = main_ui
-        self.owner = owner
-        self.text = text
-        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
-
-    def press(self):
-        """Save currently edited music sheet to .shaku (JSON) -file"""
-        filemanager = FileManager()
-        data = self.main_ui.music.convert_to_json()
-        if filemanager.save_shaku(data):
-            self.owner.saved = True
-
-class LoadButton():
-    """Button for loading .shaku (JSON) -data
-    """
-    def __init__(self, text, main_ui, owner, frame):
-        """Initialize button data and connections
-
-        Args:
-            text: Button text
-            ui: UI instance
-            owner: Container class
-            frame: Tkinter frame to show button in
-        """
-        self.main_ui = main_ui
-        self.owner = owner
-        self.text = text
-        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
-
-    def press(self):
-        """Load a .shaku (JSON) -file to edit in software"""
-        if not self.owner.saved:
-            self.main_ui.messages.append(ShakuMessage("Overwrite"))
-        filemanager = FileManager()
-        data = filemanager.load()
-        self.main_ui.clear_messages()
-        if data is None:
-            return
-        if data == "JSON Error" or not self.main_ui.music.data_correct(data):
-            self.main_ui.messages.append(ShakuMessage("Incorrect File"))
-            return
-        self.owner.load_json(data)
-        for button in self.owner.buttons_by_frame["Parts"]:
-            if button.text != "Add Part":
-                button.button.destroy()
-        self.owner.buttons_by_frame["Parts"] = [self.owner.buttons["Add Part"]]
-        for part_id in data["parts"].keys():
-            self.owner.buttons["Add Part"].press(loading_part=int(part_id))
-        self.owner.buttons_by_frame["Parts"][1].press()
 
 class UploadButton():
     """Button for uploading to AWS S3

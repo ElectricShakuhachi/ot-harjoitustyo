@@ -22,7 +22,8 @@ class MidiTrack:
         self._notes = []
         self._lenghts = []
         self._notemap = {}
-        self._notemap[-1] = 0 # -1 represents break
+        self._notemap[-2] = 0
+        self._notemap[-1] = 0 # negatives represent breakss
         for i in range(0, 42):
             self._notemap[i] = i + ro_daimeri_pitch
 

@@ -112,6 +112,8 @@ class ShakuPart:
                 previous = self.notes[i - 1].position[0] + row * change * consts.NOTE_ROW_SPACING
                 if self.notes[i].position[0] < previous:
                     row += 1
+                if self.notes[i].page > self.notes[i - 1].page:
+                    row = 0
                 self.notes[i].position[0] -= row * change * consts.NOTE_ROW_SPACING
 
     def realign(self, spacing: int, start_x: int):
@@ -122,10 +124,19 @@ class ShakuPart:
             start_x: New x-axis alignment
         """
         self.spacing = spacing
+        row_increment = (self.spacing - 1) * consts.NOTE_ROW_SPACING
         change = start_x - self._start_x
         self._start_x = start_x
+        prev_over = 0
+        multiplier = 0
         for note in self.notes:
             note.position[0] += change
+            if note.position[0] < 55:
+                note.page += 1
+                if note.position[0] > prev_over:
+                    prev_over = note.position[0]
+                    multiplier += 1
+                note.position[0] = self.start_x - multiplier * row_increment
 
     def clear_pre_existing_notation(self):
         """Remove last notation if it is at end of the part where next note is to be inserted"""
@@ -143,15 +154,18 @@ class ShakuPart:
         y_spacing = consts.NOTE_Y_SPACING
         max_note_y = consts.SHEET_SIZE[1] - 47
         if len(self.notes) == 0:
-            return [self._start_x, y_start]
+            return [self._start_x, y_start, 1]
         next_pos = list(self.notes[-1].position)
+        next_pos.append(self.notes[-1].page)
         next_pos[1] += self.notes[-1].lenght * y_spacing
         if self._measure_counter == 0:
             next_pos[1] += measure_skip
         if next_pos[1] > max_note_y:
             next_pos[1] = y_start
             next_pos[0] -= self.spacing * consts.NOTE_ROW_SPACING
-        return list(next_pos)
+        if next_pos[0] < 55:
+            next_pos = [self._start_x, y_start, self.notes[-1].page + 1]
+        return next_pos
 
     def append_misc_notation(self, notation_type: str):
         """Adds a notation next to the position where next note will be
@@ -180,7 +194,7 @@ class ShakuPart:
         """
         if len(self.notes) == 0 or self.notes[-1].position[0] > note.position[0]:
             self._rows += 1
-        if note.position[0] < 55:
+        if note.position[0] < 55: # should not be needed after page addition done
             return False
         self.notes.append(note)
         if self._measure_counter == 0:
@@ -191,7 +205,7 @@ class ShakuPart:
         self._notation_at_current_pos = False
         return True
 
-    def time_notation(self, note_n: int):
+    def time_notation(self, note_n: int): #SERIOUSLY - refactor this again
         """Generate rhythm notation for a single note
 
         Args:
@@ -202,48 +216,45 @@ class ShakuPart:
         """
         def_x = consts.NOTE_TO_RHYTM_SPACING
         def_x2 = consts.RHYTM_LINE2_TO_LINE1_SPACING + def_x
-        notation = []
-        if self.notes[note_n].pitch < 0:
-            return notation
-        note = self.notes[note_n]
-        x_axis = note.position[0]
-        y_axis = note.position[1] + consts.RHTM_VERTICAL_LINE_START_TO_NOTE_Y
-        if note_n > 0:
-            previous = self.notes[note_n - 1]
-        if note.lenght > 8:
-            return notation
-        notation.append(
-            ((x_axis + def_x, y_axis),
-            (x_axis + def_x, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
-            )
-        if note.lenght == 8:
-            return notation
-        if note_n != 0 and previous.lenght < 8 and not note.first:
-            notation.append(
-                ((x_axis + def_x, previous.position[1]),
-                (x_axis + def_x, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
-                )
-        if note.lenght == 4:
-            if note_n == 0 or note.first or previous.lenght > 4:
-                note.dotted = True
-                notation.append(
-                    ((x_axis + def_x - 1, y_axis + 4),
-                    (x_axis + def_x + 4, y_axis + 8))
+        lines = []
+        if self.notes[note_n].pitch >= 0:
+            note = self.notes[note_n]
+            x_axis = note.position[0]
+            y_axis = note.position[1] + consts.RHTM_VERTICAL_LINE_START_TO_NOTE_Y
+            if note_n > 0:
+                previous = self.notes[note_n - 1]
+            if note.lenght <= 8:
+                lines.append(
+                    ((x_axis + def_x, y_axis),
+                    (x_axis + def_x, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
                     )
-            return notation
-        notation.append(
-            ((x_axis + def_x2, y_axis),
-            (x_axis + def_x2, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
-            )
-        if note_n != 0 and previous.lenght < 3 and not note.first:
-            notation.append(
-                ((x_axis + def_x2, y_axis - 10),
-                (x_axis + def_x2, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
-                )
-        if note.lenght == 1: #SPECIAL CASE -> NOT IN USE CURRENTLY
-            notation.append(((def_x - 1, y_axis + 4), (def_x + 6, y_axis + 7)))
-            note.dotted = True
-        return notation
+                if note.lenght != 8:
+                    if note_n != 0 and previous.lenght < 8 and not note.first:
+                        lines.append(
+                            ((x_axis + def_x, previous.position[1]),
+                            (x_axis + def_x, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
+                            )
+                    if note.lenght == 4:
+                        if note_n == 0 or note.first or previous.lenght > 4:
+                            note.dotted = True
+                            lines.append(
+                                ((x_axis + def_x - 1, y_axis + 4),
+                                (x_axis + def_x + 4, y_axis + 8))
+                                )
+                    else:
+                        lines.append(
+                            ((x_axis + def_x2, y_axis),
+                            (x_axis + def_x2, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
+                            )
+                        if note_n != 0 and previous.lenght < 3 and not note.first:
+                            lines.append(
+                                ((x_axis + def_x2, y_axis - 10),
+                                (x_axis + def_x2, y_axis + consts.RHYTM_VERTICAL_LINE_LENGHT))
+                                )
+                        if note.lenght == 1: #SPECIAL CASE -> NOT IN USE CURRENTLY
+                            lines.append(((def_x - 1, y_axis + 4), (def_x + 6, y_axis + 7)))
+                            note.dotted = True
+        return ShakuTimeNotation(lines, self.notes[note_n].page)
 
     def part_time_notations(self):
         """Generate note rhythm notation for all notes on part
@@ -255,5 +266,10 @@ class ShakuPart:
         for note_n in range(len(self._notes)):
             notations.append(self.time_notation(note_n))
             if self.notes[note_n].lenght == 4 and note_n > 0 and self.notes[note_n - 1].dotted:
-                notations[-2] = notations[-2][:-1]
+                notations[-2].lines = notations[-2].lines[:-1]
         return notations
+
+class ShakuTimeNotation:
+    def __init__(self, lines: list, page: int):
+        self.lines = lines
+        self.page = page

@@ -85,13 +85,12 @@ class ShakuMusic:
         Returns:
             True if part was added, False if there is no room to add part
         """
-        if self._max_rows() or part_id in self.parts:
-            return False
+        if part_id in self.parts:
+            raise ValueError(f"Part already exists for given id: {part_id}")
         self.spacing += 1
         start_x = self._start_x_of_part(part_id)
         self._parts[part_id] = ShakuPart(part_id, start_x, self.spacing)
         self._realign_parts()
-        return True
 
     def _start_x_of_part(self, part_id: int):
         section_size = consts.NOTE_ROW_SPACING * self.spacing

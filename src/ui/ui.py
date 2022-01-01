@@ -1,4 +1,4 @@
-from tkinter import constants, Frame, Canvas, Tk
+from tkinter import constants, Frame, Canvas, Tk, Scrollbar
 from PIL import Image, ImageTk
 from entities.shaku_music import ShakuMusic
 from entities.shaku_note import ShakuNote
@@ -6,6 +6,103 @@ from entities.shaku_part import ShakuPart
 from entities.shaku_notation import ShakuNotation
 from ui.messages import ShakuMessage
 import config.shaku_constants as consts
+from services.conversions import GraphicsConverter as convert
+
+class SheetCanvas(Frame):
+    def __init__(self, frame):
+        Frame.__init__(self, frame)
+        self.sheet = Canvas(
+            self,
+            background="dark gray",
+            width=consts.SHEET_SIZE[0] + 20,
+            height=consts.SHEET_SIZE[1] + 10
+        )
+        self.frame = Frame(self.sheet, background="dark gray")
+        self.y_scroll = Scrollbar(self, orient="vertical", command=self.sheet.yview)
+        self.x_scroll = Scrollbar(self, orient="horizontal", command=self.sheet.xview)
+        self.sheet.configure(yscrollcommand=self.y_scroll.set, xscrollcommand=self.x_scroll.set)
+        self.y_scroll.pack(side="right", fill="y")
+        self.x_scroll.pack(side="bottom", fill="x")
+        self.sheet.pack(side="left", fill="both")
+        self.sheet.create_window((5, 5), window=self.frame, anchor="nw")
+        self.frame.bind("<Configure>", self.resize_scroll)
+        self.pages = {}
+        self.add_page(1)
+
+    def resize_scroll(self, event):
+        self.sheet.configure(scrollregion=self.sheet.bbox("all"))
+
+    def add_page(self, number, spacing=2):
+        page = Page(self.frame, spacing)
+        self.pages[number] = page
+
+    def clear_pages(self):
+        for page in self.pages.values():
+            page.clear()
+
+    def draw_title_text(self, position, text, anchor, page):
+        font = consts.TEXT_FONT + " " + str(consts.TEXT_FONT_SIZE)
+        return page.page.create_text(position, text=text, fill="black", anchor=anchor, font=font)
+
+class Page():
+    def __init__(self, frame, spacing=2):
+        width=consts.SHEET_SIZE[0]
+        height=consts.SHEET_SIZE[1]
+        self.page = Canvas(
+            frame,
+            width=width,
+            height=height,
+            background="white",
+        )
+        self.page.pack(side="right", padx=3, pady=5)
+        self.spacing = spacing
+        self.clear()
+
+    def clear(self):
+        self.page.delete("all")
+        self.texts = {}
+        self._note_notations = []
+        self._time_notations = []
+        self._misc_notations = []
+        self._grid = self._create_grid(self.page, self.spacing)
+
+    def _draw_grid_line(self, line: tuple, target_page: Canvas):
+        return target_page.create_line(
+            line,
+            fill=convert().rgb_to_hex(consts.GRID_COLOR),
+            width=consts.GRID_LINE_WIDHT
+            )
+
+    def _create_grid(self, target_page: Canvas, spacing, measure_lenght=consts.MEASURE_LENGHT):
+        x_axis = list(consts.GRID_X)
+        y_axis = list(consts.GRID_Y)
+        x_axis[1] -= (x_axis[1] - x_axis[0]) % (consts.NOTE_ROW_SPACING * spacing)
+        grid = []
+        increment = consts.NOTE_ROW_SPACING * spacing
+        for temp_x in range(x_axis[0], x_axis[1] + 3, increment):
+            grid.append(self._draw_grid_line((temp_x, y_axis[0], temp_x, y_axis[1]), target_page))
+        increment = consts.VERTICAL_SPACE_PER_FOURTH_NOTE * measure_lenght
+        for temp_y in range(y_axis[0], y_axis[1] + 1, increment):
+            grid.append(self._draw_grid_line((x_axis[0], temp_y, x_axis[1], temp_y), target_page))
+        return grid
+
+    def _draw_image(self, image, position):
+        return self.page.create_image(
+            position[0]-2, position[1]-3,
+            anchor=constants.NW, image=image
+            )
+
+    def _draw_note(self, image, position):
+        self._note_notations.append(self._draw_image(image, position))
+
+
+    def draw_misc_notation(self, image, position):
+        """Draw a non-pitch, non-duration shakuhachi sheet music notation on sheet
+
+        Args:
+            notation: Reference to ShakuNotation instance describing notation
+        """
+        self._misc_notations.append(self._draw_image(image, position))
 
 class UI:
     """Tkinter UI for Shakunotator
@@ -24,22 +121,21 @@ class UI:
             window: tkinter root window
         """
         self._window = window
-        self._window.geometry(consts.MAIN_WINDOW_SIZE)
-        self._frames = self.generate_frames()
-        self._sheet = self._create_sheet()
-        self._name = None
-        self._composer = None
-        self._messages = []
-        self._note_notations = []
-        self._time_notations = []
-        self._misc_notations = []
         self._music = ShakuMusic()
+        #self._window.geometry(consts.MAIN_WINDOW_SIZE) #maybe no need for constant size?
+        self._frames = self.generate_frames()
+        self._sheet_holder = SheetCanvas(self.frames["left"])
+        self._sheet_holder.pack(side="top", fill="both", expand=True, padx=10, pady=20)
+        self._messages = []
         self._active_part = None
-        self._grid = []
-        self._grid = self._create_grid()
         self._note_images = {}
         self._notation_images = {}
         self._load_images()
+
+    @property
+    def window(self):
+        """Get tkinter root window utilized by UI"""
+        return self._window
 
     @property
     def grid(self):
@@ -99,56 +195,18 @@ class UI:
         }
         frames["top1"].pack(side=constants.TOP)
         frames["top2"].pack(side=constants.TOP)
-        frames["left"].pack(side=constants.LEFT)
+        frames["left"].pack(expand=True, fill=constants.BOTH, side=constants.LEFT)
         frames["right"].pack(side=constants.RIGHT)
         return frames
 
-    def _create_sheet(self):
-        sheet = Canvas(
-            self._frames["left"],
-            width=consts.SHEET_SIZE[0],
-            height=consts.SHEET_SIZE[1],
-            background="white",
-        )
-        sheet.pack(side = constants.LEFT)
-        return sheet
-
-    def _rgb_to_hex(self, rgb: tuple):
-        return "#%02x%02x%02x" % rgb
-
-    def _draw_grid_line(self, line: tuple):
-        return self._sheet.create_line(
-            line,
-            fill=self._rgb_to_hex(consts.GRID_COLOR),
-            width=consts.GRID_LINE_WIDHT
-            )
-
-    def _create_grid(self, measure_lenght=consts.MEASURE_LENGHT):
-        spacing = self.music.spacing
-        x_axis = list(consts.GRID_X)
-        y_axis = list(consts.GRID_Y)
-        x_axis[1] -= (x_axis[1] - x_axis[0]) % (consts.NOTE_ROW_SPACING * spacing)
-        grid = []
-        increment = consts.NOTE_ROW_SPACING * spacing
-        for temp_x in range(x_axis[0], x_axis[1] + 3, increment):
-            grid.append(self._draw_grid_line((temp_x, y_axis[0], temp_x, y_axis[1])))
-        increment = consts.VERTICAL_SPACE_PER_FOURTH_NOTE * measure_lenght
-        for temp_y in range(y_axis[0], y_axis[1] + 1, increment):
-            grid.append(self._draw_grid_line((x_axis[0], temp_y, x_axis[1], temp_y)))
-        return grid
-
-    def _draw_image(self, image, position):
-        return self._sheet.create_image(
-            position[0]-2, position[1]-3,
-            anchor=constants.NW, image=image
-            )
-
     def _draw_note(self, note: ShakuNote):
         image = self._note_images[note.pitch]
-        self._note_notations.append(self._draw_image(image, note.position))
-        self._draw_all_time_notations()
+        if note.page > len(self._sheet_holder.pages):
+            self._sheet_holder.add_page(note.page, self.music.spacing)
+        page = self._sheet_holder.pages[note.page]
+        page._draw_note(image, note.position)
 
-    def draw_misc_notation(self, part: ShakuPart, notation: ShakuNotation):
+    def draw_misc_notation(self, notation: ShakuNotation, part: ShakuPart):
         """Draw a non-pitch, non-duration shakuhachi sheet music notation on sheet
 
         Args:
@@ -160,7 +218,8 @@ class UI:
         else:
             note_pos = part.next_position()
         position = tuple(note_pos[i] + notation.position[i] for i in range(2))
-        self._misc_notations.append(self._draw_image(image, position))
+        page = self._sheet_holder.pages[notation.page]
+        page.draw_notation(image, position)
 
     def add_note(self, note: ShakuNote):
         """Add note into music model and draw it on sheet
@@ -171,67 +230,57 @@ class UI:
         Returns:
             False if sheet was full, True if note was added
         """
-        status = self._active_part.add_note(note)
-        if status:
-            self._draw_note(note)
-            return True
-        self._messages.append(ShakuMessage("Full Sheet"))
-        return False
+        self._active_part.add_note(note)
+        self.update()
+
+    def _draw_time_notation(self, line, page):
+        page = self._sheet_holder.pages[page]
+        fill = convert().rgb_to_hex(consts.NOTE_COLOR)
+        width = 2 # get from consts instead?
+        page.page.create_line(line, fill=fill, width=width)
 
     def _draw_all_time_notations(self):
-        for line in self._time_notations:
-            self._sheet.delete(line)
-        self._time_notations = []
         for part in self.music.parts.values():
             for notation in part.part_time_notations():
-                for line in notation:
-                    fill = self._rgb_to_hex(consts.NOTE_COLOR)
-                    self._time_notations.append(self._sheet.create_line(line, fill=fill, width=2))
+                for line in notation.lines:
+                    self._draw_time_notation(line, notation.page)
 
     def _draw_all_notes(self):
-        for notation in self._note_notations:
-            self._sheet.delete(notation)
-        self._note_notations = []
         for part in self.music.parts.values():
             for note in part.notes:
                 self._draw_note(note)
         self._draw_all_time_notations()
 
     def _draw_all_misc_notations(self):
-        for notation in self._misc_notations:
-            self._sheet.delete(notation)
-        self._misc_notations = []
         for part in self.music.parts.values():
             for notation in part.notations:
                 self.draw_misc_notation(part, notation)
 
     def update(self):
         """Update sheet based on its music instance data"""
-        self._sheet.delete("all")
-        self._create_grid()
+        for page in self._sheet_holder.pages.values():
+            page.spacing = self.music.spacing
+        self._sheet_holder.clear_pages()
         self._draw_all_notes()
         self._draw_all_misc_notations()
         self.draw_texts()
 
-    def _draw_text(self, position, text, anchor):
-        font = consts.TEXT_FONT + " " + str(consts.TEXT_FONT_SIZE)
-        return self._sheet.create_text(position, text=text, fill="black", anchor=anchor, font=font)
-
     def draw_texts(self):
         """Draw name and composer on sheet"""
-        self._erase_texts()
-        self._name = self._draw_text(consts.NAME_POSITION, self.music.name, constants.NE)
+        self._erase_title_texts()
+        front_page = self._sheet_holder.pages[1]
+        name_pos = consts.NAME_POSITION
+        front_page.texts["name"] = self._sheet_holder.draw_title_text(name_pos, self.music.name, constants.NE, front_page)
         composer_pos = consts.COMPOSER_POSITION
         composer = self.music.composer
-        self._composer = self._draw_text(composer_pos, composer, constants.NW)
+        front_page.texts["composer"] = self._sheet_holder.draw_title_text(composer_pos, composer, constants.NW, front_page)
 
-    def _erase_texts(self):
-        if self._name is not None:
-            self._sheet.delete(self._name)
-        if self._composer is not None:
-            self._sheet.delete(self._composer)
+    def _erase_title_texts(self):
+        front_page = self._sheet_holder.pages[1]
+        for text in front_page.texts.values():
+            front_page.page.delete(text)
 
-    def load_json(self, data):
+    def load_json(self, data): #needs update
         """Update sheet based on loaded JSON data
 
         Args:

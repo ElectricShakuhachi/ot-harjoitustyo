@@ -1,7 +1,7 @@
 from PIL import Image, ImageFont, ImageDraw
 import config.shaku_constants as consts
 from entities.shaku_music import ShakuMusic
-from services.conversions import ImageScaler
+from services.conversions import GraphicsConverter
 
 class ImageCreator:
     """Class for generating production grade image of sheet music
@@ -14,7 +14,7 @@ class ImageCreator:
     def __init__(self):
         """Constructor, generates necessary PIL instances"""
         self._image = Image.new("RGB", consts.EXPORT_SHEET_SIZE, (255, 255, 255))
-        self._scaler = ImageScaler().scale
+        self._scaler = GraphicsConverter().scale
         font_size = self._scaler(consts.SHEET_NOTE_SIZE) + consts.EXPORT_NOTE_FONT_SIZE_INCREMENT
         self._note_font = ImageFont.truetype(consts.NOTE_FONT, font_size)
         self._text_font = ImageFont.truetype(consts.TEXT_FONT, self._scaler(consts.TEXT_FONT_SIZE))

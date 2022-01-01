@@ -10,7 +10,7 @@ import config.shaku_constants as consts
 
 class FileManager:
     """Class handling saving, loading and uploading files"""
-    def save_shaku(self, data: dict):
+    def save_shaku(self, data: dict, filename=None):
         """Promtps user with file dialog and saves file into .shaku -format if file was specified
 
         Args:
@@ -19,12 +19,17 @@ class FileManager:
         Returns:
             True if file was saved, else False
         """
-        try:
-            with filedialog.asksaveasfile(mode='w', defaultextension=".shaku") as file:
+        if filename is not None:
+            with open(filename, "w") as file:
                 json.dump(data, file, indent=4)
             return True
-        except AttributeError:
-            return False
+        else:
+            try:
+                with filedialog.asksaveasfile(mode='w', defaultextension=".shaku") as file:
+                    json.dump(data, file, indent=4)
+                return file.name
+            except AttributeError:
+                return False
 
     def load(self):
         """Promtps user with file dialog, and loads file from .shaku -format if file was specified

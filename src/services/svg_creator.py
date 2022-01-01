@@ -1,7 +1,7 @@
 from svgwrite import Drawing, text, image
 import config.shaku_constants as consts
 from entities.shaku_music import ShakuMusic
-from services.conversions import ImageScaler
+from services.conversions import GraphicsConverter
 from services.image_creator import ImageCreator
 
 class SvgCreator:
@@ -13,7 +13,7 @@ class SvgCreator:
     def __init__(self):
         """Constructor, initializes svg-attribute as placeholder"""
         self._svg = None
-        self._scaler = ImageScaler().scale
+        self._scaler = GraphicsConverter().scale
 
     def _rgb(self, numbers: tuple):
         """Converts a tuple of three numbers into rgb format

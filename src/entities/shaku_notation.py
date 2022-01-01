@@ -15,8 +15,14 @@ class ShakuNotation:
             note_id: ID of related shakuhachi pitch
         """
         self._notation_type = notation_type
-        self._position = position
+        self._position = position[:2]
+        self._page = position[2]
         self._relative_note = note_id
+
+    @property
+    def page(self):
+        """Get page number of notation"""
+        return self._page
 
     @property
     def relative_note(self):
