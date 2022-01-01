@@ -7,6 +7,7 @@ from entities.shaku_notation import ShakuNotation
 from ui.messages import ShakuMessage
 import config.shaku_constants as consts
 from services.conversions import GraphicsConverter as convert
+from services.positioning import ShakuPositions
 
 class SheetCanvas(Frame):
     def __init__(self, frame):
@@ -94,7 +95,6 @@ class Page():
 
     def _draw_note(self, image, position):
         self._note_notations.append(self._draw_image(image, position))
-
 
     def draw_misc_notation(self, image, position):
         """Draw a non-pitch, non-duration shakuhachi sheet music notation on sheet
@@ -199,13 +199,6 @@ class UI:
         frames["right"].pack(side=constants.RIGHT)
         return frames
 
-    def _draw_note(self, note: ShakuNote):
-        image = self._note_images[note.pitch]
-        if note.page > len(self._sheet_holder.pages):
-            self._sheet_holder.add_page(note.page, self.music.spacing)
-        page = self._sheet_holder.pages[note.page]
-        page._draw_note(image, note.position)
-
     def draw_misc_notation(self, notation: ShakuNotation, part: ShakuPart):
         """Draw a non-pitch, non-duration shakuhachi sheet music notation on sheet
 
@@ -245,10 +238,38 @@ class UI:
                 for line in notation.lines:
                     self._draw_time_notation(line, notation.page)
 
-    def _draw_all_notes(self):
+    def TEMP_draw_all_notes(self):
         for part in self.music.parts.values():
             for note in part.notes:
                 self._draw_note(note)
+        self._draw_all_time_notations()
+
+    def TEMP_draw_note(self, note: ShakuNote):
+        image = self._note_images[note.pitch]
+        if note.page > len(self._sheet_holder.pages):
+            self._sheet_holder.add_page(note.page, self.music.spacing)
+        page = self._sheet_holder.pages[note.page]
+        page._draw_note(image, note.position)
+
+    def _draw_note(self, pitch, page_no, position):
+        image = self._note_images[pitch]
+        if page_no > len(self._sheet_holder.pages):
+            self._sheet_holder.add_page(page_no, self.music.spacing)
+        page = self._sheet_holder.pages[page_no]
+        page._draw_note(image, position)
+
+    def _draw_all_notes(self):
+        measures = True # base this on consts and later user prefs instead
+        positioner = ShakuPositions()
+        rows = positioner.get_row_count(self.music.spacing)
+        slots = positioner.get_slot_count(measures)
+        for part in self.music.parts.values():
+            rel_pos = positioner.get_relative_positions(part.notes, rows, slots, measures)
+            for i in range(len(part.notes)):
+                page = rel_pos[i]["page"]
+                position = positioner.get_coordinates(rel_pos[i], part.part_no, self.music.spacing, measures)
+                self._draw_note(part.notes[i].pitch, page + 1, position)
+
         self._draw_all_time_notations()
 
     def _draw_all_misc_notations(self):

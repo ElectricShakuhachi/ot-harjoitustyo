@@ -108,13 +108,32 @@ class ShakuPart:
         self._spacing = spacing
         row = 0
         if spacing > 2:
+            previous = self.notes[0].position[0]
             for i in range(1, len(self.notes)):
-                previous = self.notes[i - 1].position[0] + row * change * consts.NOTE_ROW_SPACING
                 if self.notes[i].position[0] < previous:
                     row += 1
                 if self.notes[i].page > self.notes[i - 1].page:
                     row = 0
+                previous = self.notes[i].position[0]
                 self.notes[i].position[0] -= row * change * consts.NOTE_ROW_SPACING
+
+    def _fix_note_pages(self):
+        x = 0
+        note = self.notes[x]
+        while True:
+            while note.position[0] >= 55:
+                x += 1
+                if x >= len(self.notes): # no page overflow found
+                    return
+                note = self.notes[x]
+            correction = (note.position[0] - self.start_x)
+            while note.position[0] < 55:
+                note.page += 1
+                note.position[0] -= correction
+                x += 1
+                if x >= len(self.notes):
+                    return
+                note = self.notes[x]
 
     def realign(self, spacing: int, start_x: int):
         """Change part spacing and x-axis alingment
@@ -123,20 +142,14 @@ class ShakuPart:
             spacing: New spacing between rows on part
             start_x: New x-axis alignment
         """
-        self.spacing = spacing
-        row_increment = (self.spacing - 1) * consts.NOTE_ROW_SPACING
         change = start_x - self._start_x
         self._start_x = start_x
-        prev_over = 0
-        multiplier = 0
+        if len(self.notes) == 0:
+            return
         for note in self.notes:
             note.position[0] += change
-            if note.position[0] < 55:
-                note.page += 1
-                if note.position[0] > prev_over:
-                    prev_over = note.position[0]
-                    multiplier += 1
-                note.position[0] = self.start_x - multiplier * row_increment
+        self.spacing = spacing
+        self._fix_note_pages()
 
     def clear_pre_existing_notation(self):
         """Remove last notation if it is at end of the part where next note is to be inserted"""

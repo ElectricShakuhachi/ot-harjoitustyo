@@ -1,7 +1,16 @@
 import config.shaku_constants as consts
 
-class Positioner:
-    def _calculate_start(part: int, spacing: int):
+class ShakuPositions:
+    def calculate_start(self, part: int, spacing: int):
+        """Return x-axis start spot for given part on sheet music
+
+        Args:
+            part: part number 
+            spacing: music spacing (row size multiplier)
+
+        Returns:
+            x-axis startpoint for part on sheet
+        """
         section_size = consts.NOTE_ROW_SPACING * spacing
         grid_x = consts.GRID_X
         grid_width = grid_x[1] - grid_x[0]
@@ -13,43 +22,94 @@ class Positioner:
         start_x = first_sect + subsection * subsection_count + grid_x[0] - half_of_note
         return start_x
 
-    def position(self, parts: int, part: int, notes: list, mode:str):
-        y = consts.PARTS_Y_START
-        x = self._calculate_start(part, max(parts, 2))
-        if mode == "Tozan":
-            measure_skip = consts.MEASURE_SKIP_LENGHT
+    def get_row_count(self, spacing: int):
+        """Counts how many rows there are going to be on a given page
+
+        Args:
+            spacing: music spacing (row size multiplier)
+
+        Returns:
+            Count of rows per page
+        """
+        row_size = consts.NOTE_ROW_SPACING * spacing
+        grid_x = consts.GRID_X
+        row_count = (grid_x[1] - grid_x[0]) // row_size
+        return row_count
+
+    def _get_measure_skip_count(self):
+        """Internal function"""
+        y_space = consts.GRID_Y[1] - consts.GRID_Y[0]
+        measure_lenght = consts.MEASURE_LENGHT
+        measure_y = consts.NOTE_Y_SPACING * 4 * measure_lenght
+        measure_count = y_space // measure_y
+        return measure_count - 1
+
+    def get_slot_count(self, measures: bool):
+        """Returns count of how many note slots there are per row
+
+        Args:
+            measures: whether or not the target system uses measures
+
+        Returns:
+            Count of how many slots per row there are
+        """
+        y_space = consts.GRID_Y[1] - consts.GRID_Y[0]
+        smallest_slot = consts.NOTE_Y_SPACING
+        if measures:
+            skipcount = self._get_measure_skip_count()
+            y_space -= skipcount * consts.MEASURE_SKIP_LENGHT
+        return y_space // smallest_slot - 1
+
+    def get_relative_positions(self, notes: list, rows: int, slots: int, by_lenght: bool):
+        """Get a list of relative positions where to place notes on sheet music
+
+        Args:
+            notes: list of notes (ShakuNote) in given part
+            rows: Amount of rows per page on sheet music
+            slots: Amount of shortest note slots per row
+            by_lenght: Whether notes will take room based on their lenghts
+
+        Returns:
+            Dictionaries depicting page, row and slot for each note
+        """
+        note_positions = []
+        page = 0
+        row = 0
+        slot = 0
+        for note in notes:
+            note_positions.append({"page": page, "row": row, "slot": slot})
+            increment = 1 if not by_lenght else note.lenght / 2
+            slot += increment
+            if slot > slots:
+                slot = 0
+                row += 1
+                if row >= rows:
+                    row -= rows
+                    page += 1
+        return tuple(note_positions)
+
+    def get_coordinates(self, pos: dict, part: int, spacing: int, measures: bool):
+        """Get absolute coordinates for a note on sheet
+
+        Args:
+            pos: dict depiction of notes relative position
+            part: part number
+            spacing: music spacing (row size multiplier)
+            measures: whether or not to include measure spacing
+
+        Returns:
+            [type]: [description]
+        """
+        start_x = self.calculate_start(part, spacing)
+        start_y = consts.PARTS_Y_START
         y_spacing = consts.NOTE_Y_SPACING
-        max_note_y = consts.SHEET_SIZE[1] - 47 #Get this dir from consts instead?
-
-
-
-
-"""
-What this class is supposed to do 
-
-Receives:
-- number of parts
-- constant values for spacing etc.
-- which notation system
-- measure lenght if Tozan (None or ignored if others)
-- starting x and y positions
-
-- part number
-- stream of notes 
-
-RETURNS:
-
-
-((page_no, (x, y)),
-(page_no, (x, y)),
-(page_no, (x, y))...
-)
-
- -> which page, what coordinates to place each note of part to
-
-
-ATTENTION:
-- We could REFACTOR so that all other notations besides notes (and texts)
-are in fact owned by each note, so that they can then easily be placed together with them.
-
-"""
+        if measures:
+            measure_lenght = consts.MEASURE_LENGHT
+            measure_skip = consts.MEASURE_SKIP_LENGHT
+            skip = measure_skip * (pos["slot"] // (measure_lenght * 4))
+        else:
+            skip = 0
+        row_dist = consts.NOTE_ROW_SPACING * spacing
+        x = start_x - pos["row"] * row_dist
+        y = start_y + pos["slot"] * y_spacing + skip
+        return (x, y)
