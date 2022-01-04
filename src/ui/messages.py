@@ -18,7 +18,8 @@ class ShakuMessage:
             "No Name": consts.MESSAGE_NO_NAME_TO_AWS,
             "Overwrite": consts.MESSAGE_OVERWRITE_ALERT,
             "long_name_and_composer": consts.MESSAGE_LONG_NAME_COMPOSER,
-            "Incorrect File": consts.MESSAGE_INCORRECT_FILE
+            "Incorrect File": consts.MESSAGE_INCORRECT_FILE,
+            "dev": consts.MESSAGE_UNDER_DEVELOPMENT 
         }
         msgtext = messages[message_type]
         pads=consts.MESSAGE_PADDING

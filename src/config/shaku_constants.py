@@ -72,7 +72,7 @@ GRID_Y = (70, 840) #grid min and max y dimensions (however actual grid widht dep
 
 GRID_X = (62, 600) #grid min and max x dimensions (however actual grid widht depends on spacing)
 
-SHEET_NOTE_SIZE = 16
+SHEET_NOTE_SIZE = 16 # has no effect on tkinter at the momente!!!
 
 BUTTON_NOTE_SIZE = 20
 
@@ -82,7 +82,7 @@ EXPORT_NOTE_FONT_SIZE_INCREMENT = 20
 
 EXPORT_NOTE_CORRECTION_ON_X_AXIS = -10
 
-NOTE_TO_RHYTM_SPACING = 14
+NOTE_TO_RHYTM_SPACING = 16
 
 RHYTM_LINE2_TO_LINE1_SPACING = 4
 
@@ -90,9 +90,9 @@ RHYTM_VERTICAL_LINE_LENGHT = 12
 
 RHTM_VERTICAL_LINE_START_TO_NOTE_Y = 1
 
-NOTATION_APPENDIX_X_FROM_NOTE = 8
+NOTATION_APPENDIX_X_FROM_NOTE = 11
 
-NOTATION_APPENDIX_Y_FROM_NOTE = -7
+NOTATION_APPENDIX_Y_FROM_NOTE = -9
 
 NOTE_BUTTON_SIZE = 30
 
@@ -106,7 +106,11 @@ AWS_S3_BUCKET = "shakunotator"
 
 # SHAKUHACHI MUSIC OPTIONS & DETAILS :
 
-NOTES = {}
+MODE = "Tozan"
+
+NOTES = {-4: os.path.join(parent, "graphics/" + str(-4) + ".png"),
+-8: os.path.join(parent, "graphics/" + str(-8) + ".png")
+}
 for i in range(-2, 13):
     NOTES[i] = os.path.join(parent, "graphics/" + str(i) + ".png")
 for i in range(13, 30):
@@ -119,10 +123,13 @@ OCTAVES = {"Otsu": os.path.join(parent, "graphics/otsu.png"),
 "Daikan": os.path.join(parent, "graphics/daikan.png")
 }
 
-BREAK_SIGNS = {
-    4: os.path.join(parent, "graphics/-2.png"),
-    8: os.path.join(parent, "graphics/-1.png")
-    }
+#DEPRECEATED I THINK
+#BREAK_SIGNS = {
+#    1: os.path.join(parent, "graphics/-8.png"),
+#    2: os.path.join(parent, "graphics/-4.png"),
+#    4: os.path.join(parent, "graphics/-2.png"),
+#    8: os.path.join(parent, "graphics/-1.png"),
+#    }
 
 LENGHTS = {2: "16th", 4: "8th", 8: "4th", 16: "half"}
 
@@ -166,3 +173,5 @@ Detected unsaved changes in your current sheet.
 MESSAGE_LONG_NAME_COMPOSER = "Name & Composer combination too long"
 
 MESSAGE_INCORRECT_FILE = "Not a valid .shaku file or data corrupted"
+
+MESSAGE_UNDER_DEVELOPMENT = "The feature associated with the button you pressed\nis currently still under development"

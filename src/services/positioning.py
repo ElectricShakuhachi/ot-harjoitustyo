@@ -1,4 +1,5 @@
 import config.shaku_constants as consts
+from services.conversions import GraphicsConverter
 
 class ShakuPositions:
     def calculate_start(self, part: int, spacing: int):
@@ -60,7 +61,7 @@ class ShakuPositions:
             y_space -= skipcount * consts.MEASURE_SKIP_LENGHT
         return y_space // smallest_slot - 1
 
-    def get_relative_positions(self, notes: list, rows: int, slots: int, by_lenght: bool):
+    def get_relative_positions(self, note_lenghts: list, rows: int, slots: int, by_lenght: bool, misc_notation: bool=False):
         """Get a list of relative positions where to place notes on sheet music
 
         Args:
@@ -68,6 +69,7 @@ class ShakuPositions:
             rows: Amount of rows per page on sheet music
             slots: Amount of shortest note slots per row
             by_lenght: Whether notes will take room based on their lenghts
+            misc_notation: True if looking for misc notation position and not notes
 
         Returns:
             Dictionaries depicting page, row and slot for each note
@@ -76,16 +78,19 @@ class ShakuPositions:
         page = 0
         row = 0
         slot = 0
-        for note in notes:
-            note_positions.append({"page": page, "row": row, "slot": slot})
-            increment = 1 if not by_lenght else note.lenght / 2
+        for note_lenght in note_lenghts:
+            if not misc_notation:
+                note_positions.append({"page": page, "row": row, "slot": slot})
+            increment = 1 if not by_lenght else note_lenght / 2
             slot += increment
-            if slot > slots:
-                slot = 0
+            while slot > slots:
+                slot -= (slots + 1)
                 row += 1
                 if row >= rows:
                     row -= rows
                     page += 1
+            if misc_notation:
+                note_positions.append({"page": page, "row": row, "slot": slot})
         return tuple(note_positions)
 
     def get_coordinates(self, pos: dict, part: int, spacing: int, measures: bool):

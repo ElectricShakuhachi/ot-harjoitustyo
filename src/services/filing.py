@@ -31,7 +31,7 @@ class FileManager:
             except AttributeError:
                 return False
 
-    def load(self):
+    def load_shaku(self):
         """Promtps user with file dialog, and loads file from .shaku -format if file was specified
 
         Returns:
@@ -40,13 +40,15 @@ class FileManager:
         try:
             with filedialog.askopenfile(mode='r', defaultextension=".shaku") as file:
                 data = json.load(file)
-            return data
+            return [file.name, data]
         except JSONDecodeError:
             return "JSON Error"
         except AttributeError:
             return None
 
-    def save_pdf(self, image: Image):
+#filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
+
+    def save_pdf(self, images: dict):
         """Promtps user with file dialog and exports file into .pdf -format if file was specified
 
         Args:
@@ -57,12 +59,17 @@ class FileManager:
         """
         try:
             with filedialog.asksaveasfile(mode='wb', defaultextension=".pdf") as file:
-                image.save(file, format="pdf")
-            return True
+                images[1].save(file, format="pdf")
+            filename = file.name
         except AttributeError:
             return False
+        for key, value in images.items():
+            if key == 1:
+                continue
+            with open(filename[:-4] + "(" + str(key) + ").pdf", mode="wb") as file:
+                value.save(file, format="pdf")
 
-    def save_svg(self, svg: Drawing):
+    def save_svg(self, svgs: dict):
         """Promtps user with file dialog and exports file into .svg -format if file was specified
 
         Args:
@@ -73,10 +80,15 @@ class FileManager:
         """
         try:
             with filedialog.asksaveasfile(mode='w', defaultextension=".svg") as file:
-                svg.write(file, indent=2, pretty=False)
-            return True
+                svgs[1].write(file, indent=2, pretty=False)
+            filename = file.name                    
         except AttributeError:
             return False
+        for key, value in svgs.items():
+            if key == 1:
+                continue
+            with open(filename[:-4] + "(" + str(key) + ").svg", mode="w") as file:
+                value.write(file, indent=2, pretty=False) #DO WE NEED THIS INDENT + PRETTY THING?
 
     def save_midi(self, midi: MIDIFile, name: str=None):
         """Exports file into .mid -format if file is specified

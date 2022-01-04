@@ -8,6 +8,7 @@ from ui.messages import ShakuMessage
 import config.shaku_constants as consts
 from services.conversions import GraphicsConverter as convert
 from services.positioning import ShakuPositions
+from services.time_notation import ShakuRhythmNotation
 
 class SheetCanvas(Frame):
     def __init__(self, frame):
@@ -90,7 +91,7 @@ class Page():
     def _draw_image(self, image, position):
         return self.page.create_image(
             position[0]-2, position[1]-3,
-            anchor=constants.NW, image=image
+            anchor=constants.NW, image=image,
             )
 
     def _draw_note(self, image, position):
@@ -127,7 +128,7 @@ class UI:
         self._sheet_holder = SheetCanvas(self.frames["left"])
         self._sheet_holder.pack(side="top", fill="both", expand=True, padx=10, pady=20)
         self._messages = []
-        self._active_part = None
+        self._active_part = None #CAN WE DELETE THIS ? refactor
         self._note_images = {}
         self._notation_images = {}
         self._load_images()
@@ -136,16 +137,6 @@ class UI:
     def window(self):
         """Get tkinter root window utilized by UI"""
         return self._window
-
-    @property
-    def grid(self):
-        """Get grid - Shakuhachi sheet musical measure grid in use by UI"""
-        return self._grid
-
-    @grid.setter
-    def grid(self, newgrid):
-        """Set grid - Shakuhachi sheet musical measure grid in use by UI"""
-        self._grid = newgrid
 
     @property
     def music(self):
@@ -171,7 +162,7 @@ class UI:
     def messages(self, newlist: list):
         """Set existing error / warning -messages (list of ShakuMessage instances)"""
         for value in newlist:
-            if isinstance(value, ShakuMessage):
+            if not isinstance(value, ShakuMessage):
                 raise ValueError("Only accepting ShakuMessage instances into UI messages")
         self._messages = newlist
 
@@ -199,22 +190,26 @@ class UI:
         frames["right"].pack(side=constants.RIGHT)
         return frames
 
-    def draw_misc_notation(self, notation: ShakuNotation, part: ShakuPart):
+    def draw_misc_notation(self, part: ShakuPart, notation: ShakuNotation): # NEEDS REFACTORING ##################################
         """Draw a non-pitch, non-duration shakuhachi sheet music notation on sheet
 
         Args:
             notation: Reference to ShakuNotation instance describing notation
         """
+        measures = True # base this on consts
         image = self._notation_images[notation.notation_type]
-        if len(part.notes) > notation.relative_note:
-            note_pos = part.notes[notation.relative_note].position
-        else:
-            note_pos = part.next_position()
-        position = tuple(note_pos[i] + notation.position[i] for i in range(2))
-        page = self._sheet_holder.pages[notation.page]
-        page.draw_notation(image, position)
+        duration_until = part.get_duration_until(notation.relative_note)
+        pos = ShakuPositions()
+        rows = pos.get_row_count(self.music.spacing)
+        slots = pos.get_slot_count(measures)
+        rel_pos = pos.get_relative_positions([duration_until], rows, slots, measures, True)[0]
+        page = self._sheet_holder.pages[rel_pos["page"] + 1] # page +1 is happening a lot -> because page ID system needs to standardize to start from either 0 or 1
+        position = list(pos.get_coordinates(rel_pos, part.part_no, self.music.spacing, measures))
+        position[0] += consts.NOTATION_APPENDIX_X_FROM_NOTE
+        position[1] += consts.NOTATION_APPENDIX_Y_FROM_NOTE
+        page.draw_misc_notation(image, position)
 
-    def add_note(self, note: ShakuNote):
+    def add_note(self, pitch: int, lenght: int):
         """Add note into music model and draw it on sheet
 
         Args:
@@ -223,33 +218,45 @@ class UI:
         Returns:
             False if sheet was full, True if note was added
         """
-        self._active_part.add_note(note)
+        self._active_part.add_note(pitch, lenght)
         self.update()
 
-    def _draw_time_notation(self, line, page):
-        page = self._sheet_holder.pages[page]
-        fill = convert().rgb_to_hex(consts.NOTE_COLOR)
-        width = 2 # get from consts instead?
-        page.page.create_line(line, fill=fill, width=width)
-
     def _draw_all_time_notations(self):
-        for part in self.music.parts.values():
-            for notation in part.part_time_notations():
-                for line in notation.lines:
-                    self._draw_time_notation(line, notation.page)
+        measures = True # base this on consts
+        mode = consts.MODE #will always be Tozan for the time being - adding support for others later
+        rhy = ShakuRhythmNotation(mode)
+        pos = ShakuPositions()
+        rows = pos.get_row_count(self.music.spacing)
+        slots = pos.get_slot_count(measures)
 
-    def TEMP_draw_all_notes(self):
         for part in self.music.parts.values():
-            for note in part.notes:
-                self._draw_note(note)
-        self._draw_all_time_notations()
+            rel_pos = pos.get_relative_positions([note.lenght for note in part.notes], rows, slots, measures)
+            posses = [pos.get_coordinates(i, part.part_no, self.music.spacing, measures) for i in rel_pos]
+            if mode == "Tozan":
+                i = 0
+                while i < len(part.notes):
+                    orig_i = i
+                    page = rel_pos[i]["page"]
+                    while i < len(part.notes) and rel_pos[i]["page"] == page:
+                        i += 1
+                    temp_posses = [posses[x] for x in range(orig_i, i)]
+                    temp_notes = [part.notes[x] for x in range(orig_i, i)]
+                    notations = rhy.tozan_rhytms(temp_notes, temp_posses)
+                    for notation in notations:
+                        if isinstance(notation[0], ShakuNote): # "ghost note", a note needs to be redrawn after measure line
+                            note = notation[0]
+                            position = list(notation[1])
+                            if position[1] == consts.PARTS_Y_START:
+                                position[0] -= self.music.spacing * consts.NOTE_ROW_SPACING
+                            self._draw_note(note.pitch, page + 1, tuple(position))
+                        else:
+                            self._draw_time_notation(notation, page)
 
-    def TEMP_draw_note(self, note: ShakuNote):
-        image = self._note_images[note.pitch]
-        if note.page > len(self._sheet_holder.pages):
-            self._sheet_holder.add_page(note.page, self.music.spacing)
-        page = self._sheet_holder.pages[note.page]
-        page._draw_note(image, note.position)
+    def _draw_time_notation(self, line, page):
+        page = self._sheet_holder.pages[page + 1]
+        fill = convert().rgb_to_hex(consts.NOTE_COLOR)
+        width = consts.RHYTHM_NOTATION_WIDHT
+        page.page.create_line(line, fill=fill, width=width, smooth=True)
 
     def _draw_note(self, pitch, page_no, position):
         image = self._note_images[pitch]
@@ -264,7 +271,7 @@ class UI:
         rows = positioner.get_row_count(self.music.spacing)
         slots = positioner.get_slot_count(measures)
         for part in self.music.parts.values():
-            rel_pos = positioner.get_relative_positions(part.notes, rows, slots, measures)
+            rel_pos = positioner.get_relative_positions([note.lenght for note in part.notes], rows, slots, measures)
             for i in range(len(part.notes)):
                 page = rel_pos[i]["page"]
                 position = positioner.get_coordinates(rel_pos[i], part.part_no, self.music.spacing, measures)
@@ -301,7 +308,7 @@ class UI:
         for text in front_page.texts.values():
             front_page.page.delete(text)
 
-    def load_json(self, data): #needs update
+    def load_json(self, data):
         """Update sheet based on loaded JSON data
 
         Args:
@@ -309,9 +316,7 @@ class UI:
         """
         self.music = ShakuMusic()
         self.music.load_json(data)
-        self._sheet.delete('all')
-        self._create_grid()
-        self._draw_all_notes()
+        self.update()
 
     def clear_messages(self):
         """Remove all existing message windows"""

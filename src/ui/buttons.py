@@ -8,8 +8,8 @@ from services.image_creator import ImageCreator
 from services.svg_creator import SvgCreator
 from ui.messages import ShakuMessage
 import config.shaku_constants as consts
-from entities.shaku_note import ShakuNote
 from commands.commands import Commands
+from ui.ui import UI
 
 class Buttons:
     """Container for user interface Buttons"""
@@ -111,9 +111,12 @@ class Buttons:
             i += 4
 
     def _create_break_buttons(self):
-        buttons = [{"text": "Break", "data": -1, "button_class": NoteButton},
-        {"text": "Break", "data": -2, "button_class": NoteButton}
+        buttons = [{"text": "8th_break", "data": -1, "button_class": NoteButton},
+        {"text": "4th_break", "data": -2, "button_class": NoteButton},
+        {"text": "half_break", "data": -4, "button_class": NoteButton}
         ]
+        if consts.MEASURE_LENGHT >= 4:
+            buttons.append({"text": "whole_break", "data": -8, "button_class": NoteButton})
         self._generate_button_frame("Break", buttons, self.main_ui.frames["right"], separator=False)
         self.separators["Break"] = ButtonSeparator(self.main_ui.frames["right"])
 
@@ -278,9 +281,9 @@ class Buttons:
         self.saved = True
 
     def _dummy_command(self):
-        pass
+        self.main_ui.messages.append(ShakuMessage("dev"))
 
-    def _setup_menu(self, root):
+    def _setup_menu(self, root): #maybe refactor -> get list of texts + their commands
         menu = Menu(root)
         file_menu = Menu(menu, tearoff=0)
         file_menu.add_command(label="New", command=self._dummy_command)
@@ -362,8 +365,8 @@ class OctaveButton():
         self.owner = owner
         self.text = text
         self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
-        if self.text == "Otsu":
-            self.button.config(relief=constants.SUNKEN, state="disabled")
+        #if self.text == "Otsu":
+        #   self.button.config(relief=constants.SUNKEN, state="disabled")
         image = Image.open(consts.OCTAVES[self.text])
         scale =  consts.BUTTON_NOTE_SIZE / 1000
         self.pil_img = image.resize([int(scale * s) for s in image.size])
@@ -394,7 +397,7 @@ class OctaveButton():
 class NoteButton():
     """Button used to add a musical note
     """
-    def __init__(self, text, data, main_ui, owner, frame):
+    def __init__(self, text, data, main_ui: UI, owner, frame):
         """Initialize button data and connections
 
         Args:
@@ -410,7 +413,7 @@ class NoteButton():
         self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
         self.pitch = data
         image = Image.open(consts.NOTES[self.pitch])
-        scale =  consts.BUTTON_NOTE_SIZE / 1000
+        scale = consts.BUTTON_NOTE_SIZE / 1000
         self.pil_img = image.resize([int(scale * s) for s in image.size])
         self.image = ImageTk.PhotoImage(self.pil_img)
         self.button.config(
@@ -425,9 +428,7 @@ class NoteButton():
             lenght = abs(self.pitch) * 4
         else:
             lenght = self.owner.chosen_lenght
-        position = self.main_ui.active_part.next_position()
-        note = ShakuNote(self.pitch, position[:2], position[2], lenght)
-        if self.main_ui.add_note(note):
+        if self.main_ui.add_note(self.pitch, lenght):
             self.owner.saved = False
 
 class LenghtButton():
@@ -456,10 +457,6 @@ class LenghtButton():
         for button in self.owner.buttons_by_frame["Duration"]:
             if button.text != self.text:
                 button.button.config(state="normal", relief=constants.RAISED)
-        if self.lenght <= 2 or self.lenght >= 16:
-            self.owner.buttons["Break"].button.config(state="disabled", relief=constants.SUNKEN)
-        else:
-            self.owner.buttons["Break"].button.config(state="normal", relief=constants.RAISED)
 
 class AddPartButton():
     """Button for adding a part on ensemble sheet music
@@ -583,11 +580,11 @@ class ExportPdfButton():
         """Export currently edited music sheet to PDF -format file"""
         filemanager = FileManager()
         image_creator = ImageCreator()
-        image = image_creator.create_image(
+        images = image_creator.create_images(
             self.main_ui.music,
             self.owner.buttons["grid_option_choice"].get()
             )
-        filemanager.save_pdf(image)
+        filemanager.save_pdf(images)
 
 class ExportSvgButton():
     """Button for exporting sheet in svg form

@@ -23,7 +23,7 @@ class Commands:
         """Save currently edited music sheet to file, prompt for filename"""
         filemanager = FileManager()
         data = self._main_ui.music.convert_to_json()
-        result = filemanager.save_shaku(data, filename=self._shaku_filename)
+        result = filemanager.save_shaku(data, filename=None)
         if result is not False:
             self._shaku_filename = result
             self._saved = True
@@ -35,14 +35,15 @@ class Commands:
         if not self._saved:
             self._main_ui.messages.append(ShakuMessage("Overwrite"))
         filemanager = FileManager()
-        data = filemanager.load()
+        data = filemanager.load_shaku()
         self._main_ui.clear_messages()
         if data is None:
             return
+        filename = data[0]
+        data = data[1]
         if data == "JSON Error" or not self._main_ui.music.data_correct(data):
             self._main_ui.messages.append(ShakuMessage("Incorrect File"))
             return
+        self._shaku_filename = filename
+        self._saved = True
         return data
-
-    def set_unsaved(self): # perhaps not to be used finally
-        self._saved = False
