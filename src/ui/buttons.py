@@ -1,12 +1,13 @@
 from tkinter import Button, Entry, constants, Frame, ttk, Label, Checkbutton, BooleanVar, Menu
 import pygame
+import os
 from PIL import Image, ImageTk
 from services.filing import FileManager
 from services.midi_creator import MidiCreator
 from services.music_player import MusicPlayer
 from services.image_creator import ImageCreator
 from services.svg_creator import SvgCreator
-from ui.messages import ShakuMessage
+from ui.messages import ShakuMessage, ShakuQuery
 import config.shaku_constants as consts
 from commands.commands import Commands
 from ui.ui import UI
@@ -226,10 +227,10 @@ class Buttons:
         self.add_name(data['name'])
         self.add_composer(data['composer'])
 
-    def _load(self):
+    def _load(self, filename=None):
         if not self.saved:
             self.main_ui.messages.append(ShakuMessage("Overwrite"))
-        data = self.commands.load()
+        data = self.commands.load(filename=filename)
         if data is None:
             return
         self.load_json(data)
@@ -270,6 +271,21 @@ class Buttons:
     def _relay_to_upload_aws_s3(self):
         result = self.commands.upload_to_aws_s3(self.main_ui.music)        
         self.main_ui.messages.append(ShakuMessage(result))
+
+    def _relay_to_download_aws_s3(self, item):
+        result = self.commands.download_from_aws_s3(item)
+        if result == "No Access":
+            self.main_ui.messages.append(ShakuMessage(result))
+        else:
+            self._load(filename=result)
+            os.remove(result)
+
+    def _relay_to_list_aws_s3(self):
+        result = self.commands.list_files_in_aws_s3()
+        if result == "No Access":
+            self.main_ui.messages.append(ShakuMessage(result))
+        else:
+            self.main_ui.messages.append(ShakuQuery("Download", result, self))
 
     def _relay_to_save_midi(self):
         self.commands.export_midi(self.main_ui.music)
@@ -321,7 +337,6 @@ class Buttons:
             variable=self.buttons["grid_option_choice"],
             onvalue=True,
             offvalue=False,
-
             )
         file_menu.add_cascade(label="Export Sheet", menu=export_sheet_options_menu)
         file_menu.add_command(label="Import", command=self._dummy_command)
@@ -332,7 +347,7 @@ class Buttons:
         file_menu.add_cascade(label="Export Sound", menu=export_sound_options_menu)
         file_menu.add_separator()
         file_menu.add_command(label="Upload", command=self._relay_to_upload_aws_s3)
-        file_menu.add_command(label="Download", command=self._dummy_command)
+        file_menu.add_command(label="Download", command=self._relay_to_list_aws_s3)
         file_menu.add_separator()
         file_menu.add_command(label="Quit", command=self._dummy_command)
         menu.add_cascade(label="File", menu=file_menu)

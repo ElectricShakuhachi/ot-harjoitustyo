@@ -38,10 +38,10 @@ class Commands:
         self._shaku_filename = result
         return True
 
-    def load(self):
+    def load(self, filename=None):
         """Load a .shaku (JSON) -file to edit in software"""
         filemanager = FileManager()
-        data = filemanager.load_shaku()
+        data = filemanager.load_shaku(filename=filename)
         self._main_ui.clear_messages()
         if data is None:
             return
@@ -94,6 +94,20 @@ class Commands:
         elif not filemanager.upload_to_aws_s3(data, name=name):
             return "No Access"
         return "Successful Upload"
+
+    def download_from_aws_s3(self, item):
+        filemanager = FileManager()
+        result = filemanager.download_from_aws_s3(item)
+        if not result:
+            return "No Access"
+        return result
+
+    def list_files_in_aws_s3(self):
+        filemanager = FileManager()
+        result = filemanager.list_files_in_aws_s3()
+        if not result:
+            return "No Access"
+        return result
 
     def add_part(self, music: ShakuMusic):
         i = len(music.parts) + 1

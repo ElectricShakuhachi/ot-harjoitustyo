@@ -10,7 +10,7 @@ from services.conversions import GraphicsConverter as convert
 from services.positioning import ShakuPositions
 from services.time_notation import ShakuRhythmNotation
 
-class SheetCanvas(Frame):
+class SheetCanvas(Frame): # look at messages ShakuQuery for a possible easier solution
     def __init__(self, frame):
         Frame.__init__(self, frame)
         self.sheet = Canvas(

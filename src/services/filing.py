@@ -1,7 +1,9 @@
 import json
+import io
 from json.decoder import JSONDecodeError
 from tkinter import filedialog
 import boto3
+from boto3.session import Session
 from botocore.exceptions import NoCredentialsError
 from svgwrite import Drawing
 from PIL import Image
@@ -31,12 +33,16 @@ class FileManager:
             except AttributeError:
                 return False
 
-    def load_shaku(self):
+    def load_shaku(self, filename=None):
         """Promtps user with file dialog, and loads file from .shaku -format if file was specified
 
         Returns:
             Loaded JSON data, if any was loaded, else None
         """
+        if filename is not None:
+            with open(filename, "r") as file:
+                data = json.load(file)
+            return [file.name, data]
         try:
             with filedialog.askopenfile(mode='r', defaultextension=".shaku") as file:
                 data = json.load(file)
@@ -127,5 +133,26 @@ class FileManager:
             body=json.dumps(data)
             client.put_object(Body=body, Bucket=bucket, Key=name)
             return True
+        except NoCredentialsError:
+            return False
+
+    def list_files_in_aws_s3(self):
+        try:
+            session = Session()
+            resource = session.resource("s3")
+            bucket = resource.Bucket(consts.AWS_S3_BUCKET)
+            result = []
+            for file in bucket.objects.all():
+                result.append(file.key)
+            return result
+        except NoCredentialsError:
+            return False
+
+    def download_from_aws_s3(self, item):
+        try:
+            client = boto3.client("s3")
+            filename = item + ".shaku"
+            client.download_file(consts.AWS_S3_BUCKET, item, filename)
+            return filename
         except NoCredentialsError:
             return False
