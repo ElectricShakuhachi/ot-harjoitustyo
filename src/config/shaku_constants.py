@@ -7,19 +7,6 @@ dirname = os.path.dirname(__file__)
 parent = os.path.dirname(dirname)
 
 
-# AUDIO OPTIONS :
-
-MIDI_INSTRUMENT_NUMBER = 73
-
-PLAYBACK_TEMPO = 65
-
-SAVE_TEMPO = 65
-
-DEFAULT_VOLUME = 100
-
-DEFAULT_TEMPO = 65
-
-
 
 #VISUAL DETAILS :
 #(use rgb format for colors)
@@ -106,8 +93,6 @@ AWS_S3_BUCKET = "shakunotator"
 
 # SHAKUHACHI MUSIC OPTIONS & DETAILS :
 
-MODE = "Tozan"
-
 NOTES = {-4: os.path.join(parent, "graphics/" + str(-4) + ".png"),
 -8: os.path.join(parent, "graphics/" + str(-8) + ".png")
 }
@@ -126,8 +111,6 @@ OCTAVES = {"Otsu": os.path.join(parent, "graphics/otsu.png"),
 MAX_PARTS = 10
 
 LENGHTS = {2: "16th", 4: "8th", 8: "4th", 16: "half"}
-
-MEASURE_LENGHT = 2
 
 NOTE_TEXT_CODES = {-2: ".", -1: ",", 0: "Q", 1: "W", 2: "E", 3: "R",
 4: "T", 5: "Y", 6: "U", 7: "I", 8: "O", 9: "P", 10: "A", 11: "S", 12: "D",
@@ -162,7 +145,7 @@ MESSAGE_NO_NAME_TO_AWS = "You have to add a name to your composition to upload."
 
 MESSAGE_OVERWRITE_ALERT = """
 Detected unsaved changes in your current sheet.
-\nPress cancel on loading screen if you want to save first."""
+\nDo you still want to proceed?"""
 
 MESSAGE_LONG_NAME_COMPOSER = "Name & Composer combination too long"
 
@@ -171,3 +154,5 @@ MESSAGE_INCORRECT_FILE = "Not a valid .shaku file or data corrupted"
 MESSAGE_UNDER_DEVELOPMENT = "The feature associated with the button you pressed\nis currently still under development"
 
 MESSAGE_SUCCESFUL_UPLOAD = f"You have succesfully uploaded the composition to the AWS S3 -bucket : {AWS_S3_BUCKET}"
+
+MESSAGE_CONFIG_MENU = "Set configurations / properties"

@@ -1,3 +1,4 @@
+import os
 from tkinter import constants, Frame, Canvas, Tk, Scrollbar
 from PIL import Image, ImageTk
 from entities.shaku_music import ShakuMusic
@@ -75,7 +76,8 @@ class Page():
             width=consts.GRID_LINE_WIDHT
             )
 
-    def _create_grid(self, target_page: Canvas, spacing, measure_lenght=consts.MEASURE_LENGHT):
+    def _create_grid(self, target_page: Canvas, spacing):
+        measure_lenght = int(os.getenv("MEASURE_LENGHT"))
         x_axis = list(consts.GRID_X)
         y_axis = list(consts.GRID_Y)
         x_axis[1] -= (x_axis[1] - x_axis[0]) % (consts.NOTE_ROW_SPACING * spacing)
@@ -176,6 +178,13 @@ class UI:
         """Set musical part of shakuhachi notation which is under editing"""
         self._active_part = new_part
 
+    def destroy_all_windows(self):
+        """Clear all message windows and main window"""
+        for i in self.messages:
+            if i.state == "active":
+                i.window.destroy()
+        self.window.destroy()
+
     def generate_frames(self):
         """Generate Tkinter frames for divided UI objects to"""
         frames = {
@@ -224,7 +233,7 @@ class UI:
 
     def _draw_all_time_notations(self):
         measures = True # base this on consts
-        mode = consts.MODE #will always be Tozan for the time being - adding support for others later
+        mode = os.getenv("MODE")
         rhy = ShakuRhythmNotation(mode)
         pos = ShakuPositions()
         rows = pos.get_row_count(self.music.spacing)

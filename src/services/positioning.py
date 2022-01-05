@@ -1,3 +1,4 @@
+import os
 import config.shaku_constants as consts
 from services.conversions import GraphicsConverter
 
@@ -40,7 +41,7 @@ class ShakuPositions:
     def _get_measure_skip_count(self):
         """Internal function"""
         y_space = consts.GRID_Y[1] - consts.GRID_Y[0]
-        measure_lenght = consts.MEASURE_LENGHT
+        measure_lenght = int(os.getenv("MEASURE_LENGHT"))
         measure_y = consts.NOTE_Y_SPACING * 4 * measure_lenght
         measure_count = y_space // measure_y
         return measure_count - 1
@@ -109,7 +110,7 @@ class ShakuPositions:
         start_y = consts.PARTS_Y_START
         y_spacing = consts.NOTE_Y_SPACING
         if measures:
-            measure_lenght = consts.MEASURE_LENGHT
+            measure_lenght = int(os.getenv("MEASURE_LENGHT"))
             measure_skip = consts.MEASURE_SKIP_LENGHT
             skip = measure_skip * (pos["slot"] // (measure_lenght * 4))
         else:

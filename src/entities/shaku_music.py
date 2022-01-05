@@ -119,7 +119,7 @@ class ShakuMusic:
             for notation in part_data.notations:
                 data["parts"][part_n]["notations"].append({
                     "type": notation.notation_type,
-                    "note_id": notation.note_id
+                    "relative_note": notation.note_id
                 })
         return data
 
@@ -146,6 +146,6 @@ class ShakuMusic:
             for notation in part_data["notations"]:
                 recovered_notation = ShakuNotation(
                     notation["type"],
-                    notation["note_id"]
+                    notation["relative_note"]
                     )
                 part.notations.append(recovered_notation)

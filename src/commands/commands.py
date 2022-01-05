@@ -6,17 +6,24 @@ from services.svg_creator import SvgCreator
 from services.midi_creator import MidiCreator
 from services.conversions import MusicConverter
 from services.music_player import MusicPlayer
-from ui.messages import ShakuMessage
+from ui.messages import ShakuMessage, ShakuConfigMenu
 from ui.ui import UI
 from entities.shaku_music import ShakuMusic
+import config.shaku_constants as consts
 
 class Commands:
     def __init__(self, main_ui: UI):
         self._main_ui = main_ui
         self._shaku_filename = None
 
-    def new(self):
-        pass
+    def set_properties(self, music: ShakuMusic, ui: UI):
+        ui.messages.append(ShakuConfigMenu(ui, self))
+        #os.environ["MEASURE_LENGHT"] = "4"
+        ui.update()
+
+    def new(self, main_ui: UI):
+        main_ui.music = ShakuMusic()
+        main_ui.update()
 
     def save(self, music: ShakuMusic):
         """Save currently edited music sheet to previously saved file, prompt if none"""
@@ -25,7 +32,8 @@ class Commands:
         result = filemanager.save_shaku(data, filename=self._shaku_filename)
         if not result:
             return False
-        self._shaku_filename = str(result)
+        if result != "proto_keep":
+            self._shaku_filename = str(result)
         return True
 
     def save_as(self, music: ShakuMusic):
@@ -35,7 +43,8 @@ class Commands:
         result = filemanager.save_shaku(data, filename=None)
         if not result:
             return False
-        self._shaku_filename = result
+        if result != "proto_keep":
+            self._shaku_filename = result
         return True
 
     def load(self, filename=None):

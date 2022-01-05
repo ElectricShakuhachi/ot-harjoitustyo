@@ -1,3 +1,4 @@
+import os
 import math
 from copy import deepcopy
 import config.shaku_constants as consts
@@ -24,19 +25,19 @@ class ShakuRhythmNotation:
     def _measure_rhytms(self, notes: list, positions: list): #BREAK THIS DOWN TO SUBFUNCTION FOR EACH CASE TYPE?
         lines = []
         total = sum([note.lenght for note in notes])
-        limit = consts.MEASURE_LENGHT * 8
+        limit = int(os.getenv("MEASURE_LENGHT")) * 8
         if total > limit:
             last_note = notes[-1]
             if last_note.pitch >= 0:
                 remainer = total - limit
                 last_note.lenght -= remainer
                 arch_start = positions[-1][1] + 2
-                arch_end = positions[0][1] + consts.NOTE_Y_SPACING * consts.MEASURE_LENGHT * 4 + consts.MEASURE_SKIP_LENGHT + 4
+                arch_end = positions[0][1] + consts.NOTE_Y_SPACING * int(os.getenv("MEASURE_LENGHT")) * 4 + consts.MEASURE_SKIP_LENGHT + 4
                 arch_x = positions[-1][0] + 20 # get this from config as consts.NOTE_TO_ARCH_X_GAP (or smth)
                 remainer_note = deepcopy(last_note)
                 remainer_note.lenght = remainer
                 ghost_pos = list(positions[-1])
-                ghost_pos[1] = positions[0][1] + consts.MEASURE_LENGHT * 4 * consts.NOTE_Y_SPACING + consts.MEASURE_SKIP_LENGHT
+                ghost_pos[1] = positions[0][1] + int(os.getenv("MEASURE_LENGHT")) * 4 * consts.NOTE_Y_SPACING + consts.MEASURE_SKIP_LENGHT
                 if ghost_pos[1] > consts.GRID_Y[1]:
                     ghost_pos[1] = consts.PARTS_Y_START
                 lines.append((remainer_note, tuple(ghost_pos)))
@@ -113,7 +114,7 @@ class ShakuRhythmNotation:
 
     def tozan_rhytms(self, notes: list, positions: list):
         rhytm_notations = []
-        measure_duration = consts.MEASURE_LENGHT * 8
+        measure_duration = int(os.getenv("MEASURE_LENGHT")) * 8
         i = 0
         measure_notes = []
         measure_positions = []
@@ -136,7 +137,7 @@ class ShakuRhythmNotation:
             if len(notations) > 0 and isinstance(notations[0][0], ShakuNote):
                 measure_notes = [notations[0][0]]
                 ghost_pos = list(measure_positions[0])
-                ghost_pos[1] += consts.MEASURE_LENGHT * 4 * consts.NOTE_Y_SPACING + consts.MEASURE_SKIP_LENGHT
+                ghost_pos[1] += int(os.getenv("MEASURE_LENGHT")) * 4 * consts.NOTE_Y_SPACING + consts.MEASURE_SKIP_LENGHT
                 if ghost_pos[1] > consts.GRID_Y[1]:
                     ghost_pos[1] = consts.PARTS_Y_START
                 measure_positions = [tuple(ghost_pos)]

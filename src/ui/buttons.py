@@ -7,7 +7,7 @@ from services.midi_creator import MidiCreator
 from services.music_player import MusicPlayer
 from services.image_creator import ImageCreator
 from services.svg_creator import SvgCreator
-from ui.messages import ShakuMessage, ShakuQuery
+from ui.messages import ShakuMessage, ShakuQuery, ShakuQuestion
 import config.shaku_constants as consts
 from commands.commands import Commands
 from ui.ui import UI
@@ -114,7 +114,7 @@ class Buttons:
         {"text": "4th_break", "data": -2, "button_class": NoteButton},
         {"text": "half_break", "data": -4, "button_class": NoteButton}
         ]
-        if consts.MEASURE_LENGHT >= 4:
+        if int(os.getenv("MEASURE_LENGHT")) >= 4:
             buttons.append({"text": "whole_break", "data": -8, "button_class": NoteButton})
         self._generate_button_frame("Break", buttons, self.main_ui.frames["right"], separator=False)
         self.separators["Break"] = ButtonSeparator(self.main_ui.frames["right"])
@@ -200,7 +200,7 @@ class Buttons:
         try:
             self.main_ui.music.name = name
         except ValueError:
-            self.main_ui.messages.append(ShakuMessage("long_name_and_composer"))
+            self.main_ui.messages.append(ShakuMessage("long_name_and_composer", self.main_ui))
         self.main_ui.draw_texts()
 
     def add_composer(self, composer=None):
@@ -214,7 +214,7 @@ class Buttons:
         try:
             self.main_ui.music.composer = composer
         except ValueError:
-            self.main_ui.messages.append(ShakuMessage("long_name_and_composer"))
+            self.main_ui.messages.append(ShakuMessage("long_name_and_composer", self.main_ui))
         self.main_ui.draw_texts()
 
     def load_json(self, data):
@@ -227,9 +227,18 @@ class Buttons:
         self.add_name(data['name'])
         self.add_composer(data['composer'])
 
+    def _relay_new(self):
+        if not self.saved:
+            msg = ShakuQuestion(self.main_ui, self, "proto_keep")
+            self.main_ui.messages.append(msg)
+
     def _load(self, filename=None):
         if not self.saved:
-            self.main_ui.messages.append(ShakuMessage("Overwrite"))
+            self.main_ui.messages.append(ShakuQuestion(self.main_ui, self, None))
+        else:
+            self.load(filename)
+
+    def load(self, filename=None):
         data = self.commands.load(filename=filename)
         if data is None:
             return
@@ -270,12 +279,12 @@ class Buttons:
 
     def _relay_to_upload_aws_s3(self):
         result = self.commands.upload_to_aws_s3(self.main_ui.music)        
-        self.main_ui.messages.append(ShakuMessage(result))
+        self.main_ui.messages.append(ShakuMessage(result, self.main_ui))
 
     def _relay_to_download_aws_s3(self, item):
         result = self.commands.download_from_aws_s3(item)
         if result == "No Access":
-            self.main_ui.messages.append(ShakuMessage(result))
+            self.main_ui.messages.append(ShakuMessage(result, self.main_ui))
         else:
             self._load(filename=result)
             os.remove(result)
@@ -283,9 +292,9 @@ class Buttons:
     def _relay_to_list_aws_s3(self):
         result = self.commands.list_files_in_aws_s3()
         if result == "No Access":
-            self.main_ui.messages.append(ShakuMessage(result))
+            self.main_ui.messages.append(ShakuMessage(result, self.main_ui))
         else:
-            self.main_ui.messages.append(ShakuQuery("Download", result, self))
+            self.main_ui.messages.append(ShakuQuery("Download", result, self, self.main_ui))
 
     def _relay_to_save_midi(self):
         self.commands.export_midi(self.main_ui.music)
@@ -302,35 +311,27 @@ class Buttons:
     def _relay_to_play(self):
         self.commands.play_music(self.main_ui.music)
 
-    def press(self, loading_part=None):
-        if loading_part is None:
-            i = len(self.main_ui.music.parts) + 1
-            self.main_ui.music.add_part(i)
-            new_button = self._add_part_button(i)
-        else:
-            new_button = self._add_part_button(loading_part)
-        self.main_ui.update()
-        if new_button and not loading_part:
-            new_button.press()
-        if len(self.main_ui.music.parts) > 3:
-            self.button.config(state="disabled", relief=constants.SUNKEN)
+    def relay_set_properties(self):
+        self.commands.set_properties(self.main_ui.music, self.main_ui)
 
     def _dummy_command(self):
-        self.main_ui.messages.append(ShakuMessage("dev"))
+        self.main_ui.messages.append(ShakuMessage("dev", self.main_ui))
 
     def _setup_menu(self, root): #maybe refactor -> get list of texts + their commands
         menu = Menu(root)
         file_menu = Menu(menu, tearoff=0)
-        file_menu.add_command(label="New", command=self._dummy_command)
+        file_menu.add_command(label="New", command=self._relay_new)
         file_menu.add_command(label="Open", command=self._load)
         file_menu.add_command(label="Save", command=self._relay_to_save)
         file_menu.add_command(label="Save As", command=self._relay_to_save_as)
         file_menu.add_separator()
-        file_menu.add_command(label="Properties", command=self._dummy_command)
+        file_menu.add_command(label="Properties", command=self.relay_set_properties)
+        #file_menu.add_command(label="Properties", command=self._dummy_command)
         file_menu.add_separator()
         export_sheet_options_menu = Menu(menu, tearoff=0)
         export_sheet_options_menu.add_command(label="pdf", command=self._relay_to_save_pdf)
         export_sheet_options_menu.add_command(label="svg", command=self._relay_to_save_svg)
+        export_sheet_options_menu.add_separator()
         self.buttons["grid_option_choice"] = BooleanVar()
         export_sheet_options_menu.add_checkbutton(
             label="Include grid",
@@ -349,7 +350,7 @@ class Buttons:
         file_menu.add_command(label="Upload", command=self._relay_to_upload_aws_s3)
         file_menu.add_command(label="Download", command=self._relay_to_list_aws_s3)
         file_menu.add_separator()
-        file_menu.add_command(label="Quit", command=self._dummy_command)
+        file_menu.add_command(label="Quit", command=self.main_ui.destroy_all_windows)
         menu.add_cascade(label="File", menu=file_menu)
 
         edit_menu = Menu(menu, tearoff=0)

@@ -52,8 +52,6 @@ class FileManager:
         except AttributeError:
             return None
 
-#filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
-
     def save_pdf(self, images: dict):
         """Promtps user with file dialog and exports file into .pdf -format if file was specified
 

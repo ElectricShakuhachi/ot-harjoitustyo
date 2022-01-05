@@ -1,3 +1,4 @@
+import os
 from midiutil import MIDIFile
 from entities.shaku_part import ShakuPart
 import config.shaku_constants as consts
@@ -60,15 +61,15 @@ class MidiCreator:
         tracks: List of MidiTrack instances containing pitch and lenght data for each track
         volume: Volume for MIDI file
     """
-    def __init__(self, tempo: int=consts.DEFAULT_TEMPO):
+    def __init__(self):
         """Constructor, sets up attributes for writing midi data
 
         Args:
             tempo: Tempo for MIDI file. Defaults to 65.
         """
-        self._tempo = tempo
+        self._tempo = os.getenv("TEMPO")
         self._tracks = {}
-        self._volume = consts.DEFAULT_VOLUME
+        self._volume = os.getenv("VOLUME")
 
     def create_track(self, part: ShakuPart, ro_daimeri_pitch: int=60):
         """Generates track and adds it to list of tracks to be written together into MIDI format
@@ -99,7 +100,7 @@ class MidiCreator:
         file = MIDIFile(len(self._tracks))
         time = 0
         for track_id, track in self._tracks.items():
-            file.addProgramChange(track_id, track.channel, 0, consts.MIDI_INSTRUMENT_NUMBER)
+            file.addProgramChange(track_id, track.channel, 0, os.getenv("MIDI_INSTRUMENT_NUMBER"))
             file.addTempo(track_id, time, self._tempo)
             for num, pitch in enumerate(track.notes):
                 volume = 0 if pitch < 0 else self._volume # negative pitch represents break
