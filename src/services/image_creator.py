@@ -82,22 +82,14 @@ class ImageCreator:
         for part in music.parts.values():
             rel_pos = self._pos.get_relative_positions([note.lenght for note in part.notes], rows, slots, measures)
             for i in range(len(part.notes)):
-                print("DRAWING NOTE")
                 page = rel_pos[i]["page"] + 1
-                print(f"on page {page}")
                 if page not in self._images:
-                    print("Creating page")
                     self._add_image(page)
                     self._add_draft(page, self._images[page])
                 position = self._pos.get_coordinates(rel_pos[i], part.part_no, music.spacing, measures)
-                print(f"{position=}")
-                print(f"{self._scaler(position)}")
                 x_axis, y_axis = self._scaler(position)
                 x_axis += consts.EXPORT_NOTE_CORRECTION_ON_X_AXIS
-                print(f"x moved to {x_axis}")
                 text = consts.NOTE_TEXT_CODES[part.notes[i].pitch]
-                print(f"{text=}")
-                print(type(self._drafts[page]))
                 self._drafts[page].text(
                     (x_axis, y_axis),
                     text,
@@ -105,7 +97,6 @@ class ImageCreator:
                     anchor="lt",
                     fill=consts.NOTE_COLOR
                 )
-                print(f"filled with {consts.NOTE_COLOR}")
         name_position = self._scaler(consts.NAME_POSITION)
         composer_position = self._scaler(consts.COMPOSER_POSITION)
         self._drafts[1].text(
@@ -169,7 +160,7 @@ class ImageCreator:
                             text = consts.NOTE_TEXT_CODES[note.pitch]
                             x_axis, y_axis = self._scaler(position)
                             x_axis += consts.EXPORT_NOTE_CORRECTION_ON_X_AXIS
-                            self._drafts[page].text( #SHOULD THIS BE PAGE OR PAGE +1 ???? - probs same in the case of svg too!!!
+                            self._drafts[page + 1].text(
                                 (x_axis, y_axis),
                                 text,
                                 font=self._note_font,

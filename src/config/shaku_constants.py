@@ -123,13 +123,7 @@ OCTAVES = {"Otsu": os.path.join(parent, "graphics/otsu.png"),
 "Daikan": os.path.join(parent, "graphics/daikan.png")
 }
 
-#DEPRECEATED I THINK
-#BREAK_SIGNS = {
-#    1: os.path.join(parent, "graphics/-8.png"),
-#    2: os.path.join(parent, "graphics/-4.png"),
-#    4: os.path.join(parent, "graphics/-2.png"),
-#    8: os.path.join(parent, "graphics/-1.png"),
-#    }
+MAX_PARTS = 10
 
 LENGHTS = {2: "16th", 4: "8th", 8: "4th", 16: "half"}
 
@@ -175,3 +169,5 @@ MESSAGE_LONG_NAME_COMPOSER = "Name & Composer combination too long"
 MESSAGE_INCORRECT_FILE = "Not a valid .shaku file or data corrupted"
 
 MESSAGE_UNDER_DEVELOPMENT = "The feature associated with the button you pressed\nis currently still under development"
+
+MESSAGE_SUCCESFUL_UPLOAD = f"You have succesfully uploaded the composition to the AWS S3 -bucket : {AWS_S3_BUCKET}"

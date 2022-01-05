@@ -107,7 +107,7 @@ class FileManager:
         try:
             with filedialog.asksaveasfile(mode="wb", defaultextension=".mid") as file:
                 midi.writeFile(file)
-            return True
+            return file.name
         except AttributeError:
             return False
 

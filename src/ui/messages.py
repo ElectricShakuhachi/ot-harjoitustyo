@@ -19,7 +19,8 @@ class ShakuMessage:
             "Overwrite": consts.MESSAGE_OVERWRITE_ALERT,
             "long_name_and_composer": consts.MESSAGE_LONG_NAME_COMPOSER,
             "Incorrect File": consts.MESSAGE_INCORRECT_FILE,
-            "dev": consts.MESSAGE_UNDER_DEVELOPMENT 
+            "dev": consts.MESSAGE_UNDER_DEVELOPMENT,
+            "Successful Upload": consts.MESSAGE_SUCCESFUL_UPLOAD
         }
         msgtext = messages[message_type]
         pads=consts.MESSAGE_PADDING

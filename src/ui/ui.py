@@ -220,6 +220,7 @@ class UI:
         """
         self._active_part.add_note(pitch, lenght)
         self.update()
+        return True
 
     def _draw_all_time_notations(self):
         measures = True # base this on consts
