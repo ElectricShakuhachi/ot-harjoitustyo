@@ -1,6 +1,8 @@
 import os
-from tkinter import Label, Toplevel, Listbox, Scrollbar, Frame, constants, Button, Entry, Radiobutton, StringVar, ttk
+from tkinter import Label, Toplevel, Listbox, Scrollbar, Frame, constants, Button, Entry, Radiobutton, StringVar, ttk, Canvas, PhotoImage
+from PIL import Image, ImageTk
 import config.shaku_constants as consts
+
 
 class ShakuMessage:
     def __init__(self, message_type: str, main_ui):
@@ -204,3 +206,24 @@ class ShakuConfigMenu:
         if self.state != "destroyed":
             self.state = "destroyed"
             self.window.destroy()
+
+class ShakuPdfDisplay:
+    def __init__(self, main_ui):
+        self.state = "active"
+        self.window = Toplevel(main_ui.window)
+        root = main_ui.window
+        self.window.geometry(f"860x640+{root.winfo_x()+200}+{root.winfo_y()+80}")
+        self.window.title("Fingering Chart")
+        self.window.protocol("WM_DELETE_WINDOW", self.disactivate)
+        self.canvas = Canvas(self.window, width=820, height=600)
+        self.canvas.pack(side=constants.TOP, padx=40, pady=40)
+        img = Image.open(consts.FINGERING_CHARTS[os.getenv("MODE")])
+        pil_img = img.resize([int(0.5 * size) for size in img.size])
+        self.image = ImageTk.PhotoImage(pil_img)
+        self.canvas.create_image(0,0, anchor=constants.NW, image=self.image)
+
+    def disactivate(self):
+        if self.state != "destroyed":
+            self.state = "destroyed"
+            self.window.destroy()
+    

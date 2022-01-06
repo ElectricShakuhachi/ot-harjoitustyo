@@ -1,3 +1,4 @@
+import os
 from PIL import Image, ImageFont, ImageDraw
 import config.shaku_constants as consts
 from entities.shaku_music import ShakuMusic
@@ -74,7 +75,7 @@ class ImageCreator:
         Returns:
             PIL Image instance with given details drawn on it
         """
-        measures = True
+        measures = consts.MODE_DATA[os.getenv("MODE")]["MEASURES"]
         if music is None:
             raise TypeError("No music instance provided")
         rows = self._pos.get_row_count(music.spacing)
@@ -131,8 +132,8 @@ class ImageCreator:
             page.line(notation, width=width, fill=fill)
 
     def _draw_all_time_notations(self, music: ShakuMusic):
-        measures = True # base this on consts
-        mode = consts.MODE #will always be Tozan for the time being - adding support for others later
+        measures = consts.MODE_DATA[os.getenv("MODE")]["MEASURES"]
+        mode = os.getenv("MODE")
         rhy = ShakuRhythmNotation(mode)
         pos = ShakuPositions()
         rows = pos.get_row_count(music.spacing)

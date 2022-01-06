@@ -1,3 +1,4 @@
+import os
 from svgwrite import Drawing, text, image
 import config.shaku_constants as consts
 from entities.shaku_music import ShakuMusic
@@ -131,7 +132,7 @@ class SvgCreator:
         Returns:
             a list of svg formatted data, a page each from shakuhachi sheet music data 
         """
-        measures = True # Get from config later
+        measures = consts.MODE_DATA[os.getenv("MODE")]["MEASURES"]
         if music is None:
             raise TypeError("No music instance provided")
         rows = self._pos.get_row_count(music.spacing)
@@ -143,7 +144,7 @@ class SvgCreator:
                 if page not in self._svgs:
                     self._svgs[page] = self._page()
                 position = self._scaler(self._pos.get_coordinates(rel_pos[i], part.part_no, music.spacing, measures))
-                img_file = consts.NOTES[part.notes[i].pitch]
+                img_file = consts.MODE_DATA[os.getenv("MODE")]["NOTES"][part.notes[i].pitch]
                 self._draw_note(self._svgs[page], img_file, position)
         self._draw_texts(music.name, music.composer)
         if grid_included:
@@ -159,8 +160,8 @@ class SvgCreator:
         self._draw_line(page, notation, width, fill)
 
     def _draw_all_time_notations(self, music: ShakuMusic):
-        measures = True # base this on consts
-        mode = consts.MODE #will always be Tozan for the time being - adding support for others later
+        measures = consts.MODE_DATA[os.getenv("MODE")]["MEASURES"]
+        mode = os.getenv("MODE")
         rhy = ShakuRhythmNotation(mode)
         pos = ShakuPositions()
         rows = pos.get_row_count(music.spacing)

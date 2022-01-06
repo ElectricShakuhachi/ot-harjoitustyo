@@ -228,7 +228,7 @@ class UI:
         Args:
             notation: Reference to ShakuNotation instance describing notation
         """
-        measures = True # base this on consts
+        measures = consts.MODE_DATA[os.getenv("MODE")]["MEASURES"] # base this on consts
         image = self._notation_images[notation.notation_type]
         duration_until = part.get_duration_until(notation.relative_note)
         pos = ShakuPositions()
@@ -260,7 +260,7 @@ class UI:
         return True
 
     def _draw_all_time_notations(self):
-        measures = True # base this on consts
+        measures = consts.MODE_DATA[os.getenv("MODE")]["MEASURES"]
         mode = os.getenv("MODE")
         rhy = ShakuRhythmNotation(mode)
         pos = ShakuPositions()
@@ -304,7 +304,7 @@ class UI:
         page._draw_note(note, image, position)
 
     def _draw_all_notes(self):
-        measures = True # base this on consts and later user prefs instead
+        measures = consts.MODE_DATA[os.getenv("MODE")]["MEASURES"]
         positioner = ShakuPositions()
         rows = positioner.get_row_count(self.music.spacing)
         slots = positioner.get_slot_count(measures)

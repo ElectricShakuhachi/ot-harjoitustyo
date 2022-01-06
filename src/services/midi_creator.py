@@ -67,6 +67,7 @@ class MidiCreator:
         Args:
             tempo: Tempo for MIDI file. Defaults to 65.
         """
+    
         self._tempo = int(os.getenv("TEMPO"))
         self._tracks = {}
         self._volume = int(os.getenv("VOLUME"))

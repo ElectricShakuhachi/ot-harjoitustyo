@@ -122,6 +122,9 @@ for i in range(13, 30):
 for i in range(29, 41):
     MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/" + str(i - 24) + ".png")
 
+FINGERING_CHARTS = {
+    "Tozan": os.path.join(parent, "graphics/tozan_fingering_chart.png")
+}
 
 #ADD HERE ABOUT OTHER NOTATION STYLE NOTES:::::::::::::::::::::::::::::::::::
 

@@ -7,7 +7,7 @@ from services.midi_creator import MidiCreator
 from services.music_player import MusicPlayer
 from services.image_creator import ImageCreator
 from services.svg_creator import SvgCreator
-from ui.messages import ShakuMessage, ShakuQuery, ShakuQuestion
+from ui.messages import ShakuMessage, ShakuQuery, ShakuQuestion, ShakuPdfDisplay
 import config.shaku_constants as consts
 from commands.commands import Commands
 from ui.ui import UI
@@ -317,6 +317,9 @@ class Buttons:
     def _dummy_command(self):
         self.main_ui.messages.append(ShakuMessage("dev", self.main_ui))
 
+    def _show_fingering(self):
+        self.main_ui.messages.append(ShakuPdfDisplay(self.main_ui))
+
     def _setup_menu(self, root): #maybe refactor -> get list of texts + their commands
         menu = Menu(root)
         file_menu = Menu(menu, tearoff=0)
@@ -396,7 +399,7 @@ class Buttons:
 
         help_menu = Menu(menu, tearoff=0)
         help_menu.add_command(label="Guide", command=self._dummy_command)
-        help_menu.add_command(label="Fingering charts", command=self._dummy_command)
+        help_menu.add_command(label="Fingering charts", command=self._show_fingering)
         menu.add_cascade(label="Help", menu=help_menu)
 
         root.config(menu=menu)
