@@ -12,7 +12,7 @@ from services.positioning import ShakuPositions
 from services.time_notation import ShakuRhythmNotation
 
 class SheetCanvas(Frame): # look at messages ShakuQuery for a possible easier solution
-    def __init__(self, frame):
+    def __init__(self, frame, main_ui):
         Frame.__init__(self, frame)
         self.sheet = Canvas(
             self,
@@ -20,6 +20,7 @@ class SheetCanvas(Frame): # look at messages ShakuQuery for a possible easier so
             width=consts.SHEET_SIZE[0] + 20,
             height=consts.SHEET_SIZE[1] + 10
         )
+        self.main_ui = main_ui
         self.frame = Frame(self.sheet, background="dark gray")
         self.y_scroll = Scrollbar(self, orient="vertical", command=self.sheet.yview)
         self.x_scroll = Scrollbar(self, orient="horizontal", command=self.sheet.xview)
@@ -36,7 +37,7 @@ class SheetCanvas(Frame): # look at messages ShakuQuery for a possible easier so
         self.sheet.configure(scrollregion=self.sheet.bbox("all"))
 
     def add_page(self, number, spacing=2):
-        page = Page(self.frame, spacing)
+        page = Page(self.main_ui, self.frame, spacing)
         self.pages[number] = page
 
     def clear_pages(self):
@@ -48,7 +49,7 @@ class SheetCanvas(Frame): # look at messages ShakuQuery for a possible easier so
         return page.page.create_text(position, text=text, fill="black", anchor=anchor, font=font)
 
 class Page():
-    def __init__(self, frame, spacing=2):
+    def __init__(self, main_ui, frame, spacing=2):
         width=consts.SHEET_SIZE[0]
         height=consts.SHEET_SIZE[1]
         self.page = Canvas(
@@ -60,6 +61,8 @@ class Page():
         self.page.pack(side="right", padx=3, pady=5)
         self.spacing = spacing
         self.clear()
+        self.map_of_canvas_objects_to_notes = {}
+        self.main_ui = main_ui
 
     def clear(self):
         self.page.delete("all")
@@ -96,8 +99,18 @@ class Page():
             anchor=constants.NW, image=image,
             )
 
-    def _draw_note(self, image, position):
-        self._note_notations.append(self._draw_image(image, position))
+    def _draw_note(self, note: ShakuNote, image, position):
+        note_notation = self._draw_image(image, position)
+        self.map_of_canvas_objects_to_notes[note_notation] = note
+        self._note_notations.append(note_notation)
+        self.page.tag_bind(note_notation, "<ButtonPress-1>", self._note_click)
+
+    def _note_click(self, event):
+        tag = event.widget.find_closest(event.x, event.y)
+        note = self.map_of_canvas_objects_to_notes[tag[0]]
+        image = self.main_ui.red_note_images[note.pitch]
+        self.page.itemconfig(tag, image=image)
+        self.main_ui.chosen_note = note
 
     def draw_misc_notation(self, image, position):
         """Draw a non-pitch, non-duration shakuhachi sheet music notation on sheet
@@ -127,11 +140,13 @@ class UI:
         self._music = ShakuMusic()
         #self._window.geometry(consts.MAIN_WINDOW_SIZE) #maybe no need for constant size?
         self._frames = self.generate_frames()
-        self._sheet_holder = SheetCanvas(self.frames["left"])
+        self._sheet_holder = SheetCanvas(self.frames["left"], self)
         self._sheet_holder.pack(side="top", fill="both", expand=True, padx=10, pady=20)
         self._messages = []
         self._active_part = None #CAN WE DELETE THIS ? refactor
+        self._chosen_note = None
         self._note_images = {}
+        self.red_note_images = {}
         self._notation_images = {}
         self._load_images()
 
@@ -177,6 +192,14 @@ class UI:
     def active_part(self, new_part):
         """Set musical part of shakuhachi notation which is under editing"""
         self._active_part = new_part
+
+    @property
+    def chosen_note(self):
+        return self._chosen_note
+
+    @chosen_note.setter
+    def chosen_note(self, note):
+        self._chosen_note = note
 
     def destroy_all_windows(self):
         """Clear all message windows and main window"""
@@ -227,7 +250,12 @@ class UI:
         Returns:
             False if sheet was full, True if note was added
         """
-        self._active_part.add_note(pitch, lenght)
+        if self.chosen_note == None:
+            self._active_part.add_note(pitch, lenght)
+        else:
+            self.chosen_note.pitch = pitch
+            self.chosen_note.lenght = lenght
+            self.chosen_note = None
         self.update()
         return True
 
@@ -258,7 +286,7 @@ class UI:
                             position = list(notation[1])
                             if position[1] == consts.PARTS_Y_START:
                                 position[0] -= self.music.spacing * consts.NOTE_ROW_SPACING
-                            self._draw_note(note.pitch, page + 1, tuple(position))
+                            self._draw_note(None, note.pitch, page + 1, tuple(position))
                         else:
                             self._draw_time_notation(notation, page)
 
@@ -268,12 +296,12 @@ class UI:
         width = consts.RHYTHM_NOTATION_WIDHT
         page.page.create_line(line, fill=fill, width=width, smooth=True)
 
-    def _draw_note(self, pitch, page_no, position):
+    def _draw_note(self, note, pitch, page_no, position):
         image = self._note_images[pitch]
         if page_no > len(self._sheet_holder.pages):
             self._sheet_holder.add_page(page_no, self.music.spacing)
         page = self._sheet_holder.pages[page_no]
-        page._draw_note(image, position)
+        page._draw_note(note, image, position)
 
     def _draw_all_notes(self):
         measures = True # base this on consts and later user prefs instead
@@ -285,7 +313,7 @@ class UI:
             for i in range(len(part.notes)):
                 page = rel_pos[i]["page"]
                 position = positioner.get_coordinates(rel_pos[i], part.part_no, self.music.spacing, measures)
-                self._draw_note(part.notes[i].pitch, page + 1, position)
+                self._draw_note(part.notes[i], part.notes[i].pitch, page + 1, position)
 
         self._draw_all_time_notations()
 
@@ -344,9 +372,9 @@ class UI:
             self._notation_images[key] = image
 
     def _load_note_images(self):
-        for key, image in consts.NOTES.items():
-            image = self._load_image(image)
-            self._note_images[key] = image
+        for key, image in consts.MODE_DATA[os.getenv("MODE")]["NOTES"].items():
+            self._note_images[key] = self._load_image(image)
+            self.red_note_images[key] = self._load_image(image[:-4] + "_red" + ".png")
 
     def _load_image(self, image, resizing=None):
         img = Image.open(image)

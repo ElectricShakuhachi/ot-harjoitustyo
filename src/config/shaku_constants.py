@@ -93,15 +93,39 @@ AWS_S3_BUCKET = "shakunotator"
 
 # SHAKUHACHI MUSIC OPTIONS & DETAILS :
 
-NOTES = {-4: os.path.join(parent, "graphics/" + str(-4) + ".png"),
+MODE_DATA = {
+    "Tozan": {
+        "NOTES": {},
+        "MEASURES": True
+    },
+    "Kinko": {
+        "NOTES": {},
+        "MEASURES": False
+    },
+    "Zensabo": {
+        "NOTES": {},
+        "MEASURES": False
+    },
+    "Ueda": {
+        "NOTES": {},
+        "MEASURES": False
+    }
+    }
+
+MODE_DATA["Tozan"]["NOTES"] = {-4: os.path.join(parent, "graphics/" + str(-4) + ".png"),
 -8: os.path.join(parent, "graphics/" + str(-8) + ".png")
 }
 for i in range(-2, 13):
-    NOTES[i] = os.path.join(parent, "graphics/" + str(i) + ".png")
+    MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/" + str(i) + ".png")
 for i in range(13, 30):
-    NOTES[i] = os.path.join(parent, "graphics/" + str(i - 13) + ".png")
+    MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/" + str(i - 13) + ".png")
 for i in range(29, 41):
-    NOTES[i] = os.path.join(parent, "graphics/" + str(i - 24) + ".png")
+    MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/" + str(i - 24) + ".png")
+
+
+#ADD HERE ABOUT OTHER NOTATION STYLE NOTES:::::::::::::::::::::::::::::::::::
+
+
 
 OCTAVES = {"Otsu": os.path.join(parent, "graphics/otsu.png"),
 "Kan": os.path.join(parent, "graphics/kan.png"),
@@ -155,4 +179,6 @@ MESSAGE_UNDER_DEVELOPMENT = "The feature associated with the button you pressed\
 
 MESSAGE_SUCCESFUL_UPLOAD = f"You have succesfully uploaded the composition to the AWS S3 -bucket : {AWS_S3_BUCKET}"
 
-MESSAGE_CONFIG_MENU = "Set configurations / properties"
+MESSAGE_CONFIG_MENU_TITLE = "Set configurations / properties"
+
+MESSAGE_CONFIG_MENU_BODY = "Some basic settings - Shakunotator will keep your last settings as default"

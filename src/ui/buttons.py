@@ -90,7 +90,7 @@ class Buttons:
             octave: Octave based on which notes are chosen
         """
         self._clear_note_buttons()
-        notes = consts.NOTES
+        notes = consts.MODE_DATA[os.getenv("MODE")]["NOTES"]
         buttons = {}
         for key in notes:
             buttons[key] = {'text': f"Pitch {key}", 'data': key, "button_class": NoteButton}
@@ -475,7 +475,7 @@ class NoteButton():
         self.text = text
         self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
         self.pitch = data
-        image = Image.open(consts.NOTES[self.pitch])
+        image = Image.open(consts.MODE_DATA[os.getenv("MODE")]["NOTES"][self.pitch])
         scale = consts.BUTTON_NOTE_SIZE / 1000
         self.pil_img = image.resize([int(scale * s) for s in image.size])
         self.image = ImageTk.PhotoImage(self.pil_img)

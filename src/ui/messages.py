@@ -1,4 +1,5 @@
-from tkinter import Label, Toplevel, Listbox, Scrollbar, Frame, constants, Button, Entry
+import os
+from tkinter import Label, Toplevel, Listbox, Scrollbar, Frame, constants, Button, Entry, Radiobutton, StringVar, ttk
 import config.shaku_constants as consts
 
 class ShakuMessage:
@@ -124,29 +125,80 @@ class ShakuConfigMenu:
         self.buttons = buttons
         self.window = Toplevel(main_ui.window)
         root = main_ui.window
-        self.window.geometry(f"+{root.winfo_x()+100}+{root.winfo_y()+80}")
+        self.window.geometry(f"640x790+{root.winfo_x()+100}+{root.winfo_y()+80}")
         self.window.attributes("-topmost", True)
         self.window.wait_visibility()
         self.window.grab_set()
         self.state = "active"
         self.window.title("Properties")
+        self.separators = {}
         pads=consts.MESSAGE_PADDING
 
-        self.caption = Label(self.window, text=consts.MESSAGE_CONFIG_MENU)
-        self.label_mode = Label(self.window, text="Mode:")
-        self.textbox_mode = Entry(self.window)
+        self.caption = Label(self.window, font=("Helvetica bold", 22), text=consts.MESSAGE_CONFIG_MENU_TITLE)
+
+        self.info = Label(self.window, text=consts.MESSAGE_CONFIG_MENU_BODY)
+        
+        self.separators["info"] = ttk.Separator(self.window, orient="horizontal")
+
+        self.label_mode = Label(self.window, font=("Helvetica", 14), text="School of notation:")
+        self.mode_choice = StringVar(self.window, "Tozan")
+        self.radio_mode = []
+        self.mode_radio_frame = Frame(self.window)
+        for mode in consts.MODE_DATA:
+            self.radio_mode.append(Radiobutton(self.mode_radio_frame, text=mode, variable=self.mode_choice, value=mode, indicator=0, padx=10, pady=5))
+        self.separators["mode"] = ttk.Separator(self.window, orient="horizontal")
+
+        self.label_sound_settings = Label(self.window, font=("Helvetica", 14), text="Playback / Sound export options:")
+        self.label_tempo = Label(self.window, font=("Helvetica", 10), text="Tempo:")
+        self.textbox_tempo = Entry(self.window)
+
+        self.label_volume = Label(self.window, font=("Helvetica", 10), text="Volume:")
+        self.textbox_volume = Entry(self.window)
+        self.separators["sound"] = ttk.Separator(self.window, orient="horizontal")
+
+        self.visual_settings_label = Label(self.window, font=("Helvetica", 14), text="Visual settings:")
+        self.name_composer_size_label = Label(self.window, font=("Helvetica", 10), text="Name/Composer font size")
+        self.name_composer_textbox = Entry(self.window)
+        self.separators["visual"] = ttk.Separator(self.window, orient="horizontal")
+
+        self.aws_label = Label(self.window, text="AWS S3 -bucket for online music storage:")
+        self.textbox_aws = Entry(self.window)
+        self.separators["aws"] = ttk.Separator(self.window, orient="horizontal")
 
         self.confirm_button = Button(self.window, text="Confirm", command=self.set_config)
 
-        self.caption.pack(side=constants.TOP, padx=pads[0], pady=pads[1])
-        self.label_mode.pack(side=constants.TOP)
-        self.textbox_mode.pack(side=constants.TOP)
 
-        self.confirm_button.pack(side=constants.LEFT, padx=(80, 20), pady=30)
+        self.caption.pack(side=constants.TOP, padx=pads[0], pady=pads[1])
+        self.info.pack(side=constants.TOP)
+        self.separators["info"].pack(side=constants.TOP, fill="x", pady=10, padx=20)
+
+        self.label_mode.pack(side=constants.TOP)
+        self.mode_radio_frame.pack(side=constants.TOP, pady=(0, 20))
+        for radio in self.radio_mode:
+            radio.pack(side=constants.LEFT, padx=10)
+        self.separators["mode"].pack(side=constants.TOP, fill="x", pady=10, padx=20)
+        
+        self.label_sound_settings.pack(side=constants.TOP)
+        self.label_tempo.pack(side=constants.TOP)
+        self.textbox_tempo.pack(side=constants.TOP)
+        self.label_volume.pack(side=constants.TOP)
+        self.textbox_volume.pack(side=constants.TOP)
+        self.separators["sound"].pack(side=constants.TOP, fill="x", pady=10, padx=20)
+
+        self.visual_settings_label.pack(side=constants.TOP)
+        self.name_composer_size_label.pack(side=constants.TOP)
+        self.name_composer_textbox.pack(side=constants.TOP)
+        self.separators["visual"].pack(side=constants.TOP, fill="x", pady=10, padx=20)
+
+        self.aws_label.pack(side=constants.TOP)
+        self.textbox_aws.pack(side=constants.TOP)
+        self.separators["aws"].pack(side=constants.TOP, fill="x", pady=10, padx=20)
+
+        self.confirm_button.pack(side=constants.TOP, padx=(80, 20), pady=30)
         self.window.protocol("WM_DELETE_WINDOW", self.disactivate)
 
     def set_config(self):
-        pass
+        self.disactivate()
 
     def disactivate(self):
         if self.state != "destroyed":

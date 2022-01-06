@@ -15,7 +15,6 @@ class MusicPlayer:
     def __init__(self):
         """Constructor, sets up class instances and inits pygame mixer"""
         self._filemanager = FileManager()
-        self._midi_creator = MidiCreator()
         pygame.mixer.init()
 
     def play(self, parts: list):
@@ -24,6 +23,7 @@ class MusicPlayer:
         Args:
             parts: List of musical score parts in Shakunotator's Part -instance format
         """
+        self._midi_creator = MidiCreator()
         for part in parts:
             self._midi_creator.create_track(part)
         midi = self._midi_creator.generate_midi()

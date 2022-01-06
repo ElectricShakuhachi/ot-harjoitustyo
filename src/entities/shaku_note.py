@@ -20,6 +20,11 @@ class ShakuNote:
         """Get note pitch"""
         return self._pitch
 
+    @pitch.setter
+    def pitch(self, pitch):
+        """Set note pitch"""
+        self._pitch = pitch
+
     @property
     def lenght(self):
         """Get note lenght"""
