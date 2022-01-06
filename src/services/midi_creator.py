@@ -67,9 +67,9 @@ class MidiCreator:
         Args:
             tempo: Tempo for MIDI file. Defaults to 65.
         """
-        self._tempo = os.getenv("TEMPO")
+        self._tempo = int(os.getenv("TEMPO"))
         self._tracks = {}
-        self._volume = os.getenv("VOLUME")
+        self._volume = int(os.getenv("VOLUME"))
 
     def create_track(self, part: ShakuPart, ro_daimeri_pitch: int=60):
         """Generates track and adds it to list of tracks to be written together into MIDI format
@@ -100,7 +100,7 @@ class MidiCreator:
         file = MIDIFile(len(self._tracks))
         time = 0
         for track_id, track in self._tracks.items():
-            file.addProgramChange(track_id, track.channel, 0, os.getenv("MIDI_INSTRUMENT_NUMBER"))
+            file.addProgramChange(track_id, track.channel, 0, int(os.getenv("MIDI_INSTRUMENT_NUMBER")))
             file.addTempo(track_id, time, self._tempo)
             for num, pitch in enumerate(track.notes):
                 volume = 0 if pitch < 0 else self._volume # negative pitch represents break
