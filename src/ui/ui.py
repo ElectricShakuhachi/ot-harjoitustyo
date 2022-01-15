@@ -145,8 +145,10 @@ class UI:
         self._messages = []
         self._active_part = None #CAN WE DELETE THIS ? refactor
         self._chosen_note = None
-        self._note_images = {}
+        self.note_images = {}
+        self.extra_note_images = {}
         self.red_note_images = {}
+        self.red_extra_note_images = {}
         self._notation_images = {}
         self._load_images()
 
@@ -297,7 +299,7 @@ class UI:
         page.page.create_line(line, fill=fill, width=width, smooth=True)
 
     def _draw_note(self, note, pitch, page_no, position):
-        image = self._note_images[pitch]
+        image = self.note_images[pitch]
         if page_no > len(self._sheet_holder.pages):
             self._sheet_holder.add_page(page_no, self.music.spacing)
         page = self._sheet_holder.pages[page_no]
@@ -373,8 +375,17 @@ class UI:
 
     def _load_note_images(self):
         for key, image in consts.MODE_DATA[os.getenv("MODE")]["NOTES"].items():
-            self._note_images[key] = self._load_image(image)
+            self.note_images[key] = self._load_image(image)
             self.red_note_images[key] = self._load_image(image[:-4] + "_red" + ".png")
+        self._load_extra_note_images()
+
+    def _load_extra_note_images(self):
+        for key, imagelist in consts.MODE_DATA[os.getenv("MODE")]["EXTRAS"].items():
+            images = self.extra_note_images[key] = []
+            red_images = self.red_extra_note_images[key] = []
+            for image in imagelist:
+                images.append(self._load_image(image))
+                red_images.append(self._load_image(image[:-4] + "_red" + ".png"))
 
     def _load_image(self, image, resizing=None):
         img = Image.open(image)

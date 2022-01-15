@@ -93,20 +93,36 @@ class Buttons:
         notes = consts.MODE_DATA[os.getenv("MODE")]["NOTES"]
         buttons = {}
         for key in notes:
-            buttons[key] = {'text': f"Pitch {key}", 'data': key, "button_class": NoteButton}
+                buttons[key] = {'text': key, 'data': self.main_ui.note_images[key], "button_class": NoteButton}
         if octave == "Otsu":
             mini = 0
-            maxi = 13
+            maxi = 12
         elif octave == "Kan":
-            mini = 14
-            maxi = 30
+            mini = 13
+            maxi = 28
         elif octave == "Daikan":
             mini = 29
-            maxi = 41
+            maxi = 39
         i = mini
-        while i < maxi:
-            frame_buttons = [buttons[x] for x in range(i, min(i + 4, maxi))]
+        while i <= maxi:
+            frame_buttons = [buttons[x] for x in range(i, min(i + 4, maxi + 1))]
             self._generate_button_frame(f"Note {i}", frame_buttons, frame, separator=False, label=False)
+            i += 4
+        if octave == "Daikan":
+            return
+        self.separators["Notes_Inner"] = ButtonSeparator(frame)
+        extras = consts.MODE_DATA[os.getenv("MODE")]["EXTRAS"]
+        buttons = []
+        mini, maxi = (3, 14) if octave == "Otsu" else (15, 26)
+        for i in range(mini, maxi + 1):
+            if i not in extras:
+                continue
+            for x in range(len(extras[i])):
+                buttons.append({"text": i, "data": self.main_ui.extra_note_images[i][x], "button_class": NoteButton})
+        i = 0
+        while i < len(buttons):
+            frame_buttons = [buttons[x] for x in range(i, min(i + 4, len(buttons)))]
+            self._generate_button_frame(f"Note {i} (alt)", frame_buttons, frame, separator=False, label=False)
             i += 4
 
     def _create_break_buttons(self):
@@ -463,7 +479,7 @@ class OctaveButton():
 class NoteButton():
     """Button used to add a musical note
     """
-    def __init__(self, text, data, main_ui: UI, owner, frame):
+    def __init__(self, text, image, main_ui: UI, owner, frame):
         """Initialize button data and connections
 
         Args:
@@ -475,13 +491,14 @@ class NoteButton():
         """
         self.main_ui = main_ui
         self.owner = owner
-        self.text = text
-        self.button = Button(frame, text=self.text, font="Shakunotator", command=self.press)
-        self.pitch = data
-        image = Image.open(consts.MODE_DATA[os.getenv("MODE")]["NOTES"][self.pitch])
-        scale = consts.BUTTON_NOTE_SIZE / 1000
-        self.pil_img = image.resize([int(scale * s) for s in image.size])
-        self.image = ImageTk.PhotoImage(self.pil_img)
+        self.pitch = text
+        self.button = Button(frame, text=self.pitch, font="Shakunotator", command=self.press)
+        self.image = image
+        #image = Image.open(consts.MODE_DATA[os.getenv("MODE")]["NOTES"][self.pitch])
+        #scale = consts.BUTTON_NOTE_SIZE / 1000
+        #self.pil_img = image.resize([int(scale * s) for s in image.size])
+        #self.image = ImageTk.PhotoImage(self.pil_img)
+        self.image = image
         self.button.config(
             image=self.image,
             width=consts.NOTE_BUTTON_SIZE,

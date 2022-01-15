@@ -83,44 +83,52 @@ NOTATION_APPENDIX_Y_FROM_NOTE = -9
 
 NOTE_BUTTON_SIZE = 30
 
-
-
-# FILING & UPLOAD OPTIONS :
-
-AWS_S3_BUCKET = "shakunotator"
-
-
-
 # SHAKUHACHI MUSIC OPTIONS & DETAILS :
 
 MODE_DATA = {
     "Tozan": {
         "NOTES": {},
+        "EXTRAS": {},
         "MEASURES": True
     },
     "Kinko": {
         "NOTES": {},
+        "EXTRAS": {},
+        "MEASURES": False
+    },
+    "Kinko_new": {
+        "NOTES": {},
+        "EXTRAS": {},
         "MEASURES": False
     },
     "Zensabo": {
         "NOTES": {},
+        "EXTRAS": {},
         "MEASURES": False
     },
     "Ueda": {
         "NOTES": {},
+        "EXTRAS": {},
         "MEASURES": False
     }
     }
 
-MODE_DATA["Tozan"]["NOTES"] = {-4: os.path.join(parent, "graphics/" + str(-4) + ".png"),
--8: os.path.join(parent, "graphics/" + str(-8) + ".png")
+MODE_DATA["Tozan"]["NOTES"] = {-4: os.path.join(parent, "graphics/Tozan/" + str(-4) + ".png"),
+-8: os.path.join(parent, "graphics/Tozan/" + str(-8) + ".png")
 }
-for i in range(-2, 13):
-    MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/" + str(i) + ".png")
-for i in range(13, 30):
-    MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/" + str(i - 13) + ".png")
-for i in range(29, 41):
-    MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/" + str(i - 24) + ".png")
+for i in range(-2, 40):
+    MODE_DATA["Tozan"]["NOTES"][i] = os.path.join(parent, "graphics/Tozan/" + str(i) + ".png")
+
+tozan_extra = {
+    3: ["1"], 5: ["1", "2"], 8: ["1"], 10: ["1"], 12: ["1", "2"], 13: ["1", "2"],
+    14: ["1", "2", "3", "4", "5"], 15: ["1"], 17: ["1", "2"], 19: ["1"], 
+    21: ["1", "2"], 22: ["1"], 23: ["1"]
+}
+
+for key, value in tozan_extra.items():
+    data = MODE_DATA["Tozan"]["EXTRAS"][key] = []
+    for i in value:
+        data.append(os.path.join(parent, "graphics/Tozan/extras/" + str(key) + "-" + str(i) + ".png"))
 
 FINGERING_CHARTS = {
     "Tozan": os.path.join(parent, "graphics/tozan_fingering_chart.png")
@@ -164,7 +172,7 @@ Sheet has no more room for additional parts,\n
 and current version does not support multiple pages."""
 
 MESSAGE_NO_ACCESS_TO_AWS = f"""
-You have not configured credentials to the AWS S3 -bucket : {AWS_S3_BUCKET}\n
+You have not configured credentials to the AWS S3 -bucket : {os.getenv('AWS_S3_BUCKET')}\n
 If necessary, please request access from admin,\n
 or configure a different bucket as guided in documentation."""
 
@@ -180,7 +188,7 @@ MESSAGE_INCORRECT_FILE = "Not a valid .shaku file or data corrupted"
 
 MESSAGE_UNDER_DEVELOPMENT = "The feature associated with the button you pressed\nis currently still under development"
 
-MESSAGE_SUCCESFUL_UPLOAD = f"You have succesfully uploaded the composition to the AWS S3 -bucket : {AWS_S3_BUCKET}"
+MESSAGE_SUCCESFUL_UPLOAD = f"You have succesfully uploaded the composition to the AWS S3 -bucket : {os.getenv('AWS_S3_BUCKET')}"
 
 MESSAGE_CONFIG_MENU_TITLE = "Set configurations / properties"
 
